@@ -56,7 +56,7 @@ public class FeedToShooterCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      intake.runIndexMotor(0, 1);
+      intake.feed();
   }
 
   

@@ -13,12 +13,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * An example command that uses an example subsystem.
  */
-public class RunIntakeCommand extends CommandBase {
+public class StopFeedToShooterCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
 
 
-    private double power = 0;
+
 
 
   //===========================================================================================
@@ -35,9 +35,8 @@ public class RunIntakeCommand extends CommandBase {
    */
 
 
-  public RunIntakeCommand(Intake subsystem, double pow) {
+  public StopFeedToShooterCommand(Intake subsystem) {
     intake = subsystem;
-    power = pow;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -57,12 +56,12 @@ public class RunIntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      intake.runIntake(power);
+      intake.stop();
   }
 
   
   
-  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
   
   

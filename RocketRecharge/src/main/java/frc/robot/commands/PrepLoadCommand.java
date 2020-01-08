@@ -13,12 +13,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * An example command that uses an example subsystem.
  */
-public class RunIntakeCommand extends CommandBase {
+public class PrepLoadCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
+    private boolean loadPrepped;
 
 
-    private double power = 0;
 
 
   //===========================================================================================
@@ -35,9 +35,8 @@ public class RunIntakeCommand extends CommandBase {
    */
 
 
-  public RunIntakeCommand(Intake subsystem, double pow) {
+  public PrepLoadCommand(Intake subsystem) {
     intake = subsystem;
-    power = pow;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -57,12 +56,12 @@ public class RunIntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      intake.runIntake(power);
+      loadPrepped = intake.setIdle();
   }
 
   
   
-  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
   
   
@@ -77,6 +76,6 @@ public class RunIntakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return loadPrepped;
   }
 }

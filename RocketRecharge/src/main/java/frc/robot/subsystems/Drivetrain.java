@@ -9,10 +9,17 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+//CANSparkMax
+
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Drivetrain extends SubsystemBase {
   /**
@@ -20,12 +27,12 @@ public class Drivetrain extends SubsystemBase {
    
    */
 
-   private Spark left1 = new Spark(0);
-   private Spark left2 = new Spark(1);
-   private Spark left3 = new Spark( 2);
-   private Spark right1 = new Spark(3);
-   private Spark right2 = new Spark(4);
-   private Spark right3 = new Spark(5);
+   private CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
+   private CANSparkMax left2 = new CANSparkMax(2, MotorType.kBrushless);
+   private CANSparkMax left3 = new CANSparkMax(3, MotorType.kBrushless);
+   private CANSparkMax right1 = new CANSparkMax(4, MotorType.kBrushless);
+   private CANSparkMax right2 = new CANSparkMax(5, MotorType.kBrushless);
+   private CANSparkMax right3 = new CANSparkMax(6, MotorType.kBrushless);
    SpeedControllerGroup leftSide = new SpeedControllerGroup(left1, left2, left3);
    SpeedControllerGroup rightSide = new SpeedControllerGroup(right1, right2, right3);
    private DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
@@ -34,7 +41,7 @@ public class Drivetrain extends SubsystemBase {
    
    public Drivetrain() {
 
-     //Spark left1 = new Spark();
+     //CANSparkMax left1 = new CANSparkMax();
      /*PIDOutput driveOutput = new PIDOutput(){
       @Override
       public void pidWrite(double output) {

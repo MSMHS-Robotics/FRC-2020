@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -44,7 +45,7 @@ public class Drivetrain extends SubsystemBase {
     // This method will be called once per scheduler run
     drivetrain.tankDrive(, rightSpeed);
   }*/
-  public void tankdrive(double left, double right ) {
-    drivetrain.tankDrive(Math.pow(-left, 3),Math.pow(-right, 3));
+  public void tankDrive(double leftStick, double rightStick) {
+    drivetrain.tankDrive(Math.pow(-leftStick, 3),Math.pow(-rightStick, 3));
   }
 }

@@ -30,6 +30,7 @@ public class RobotContainer {
 
   private final Drivetrain drivetrain = new Drivetrain();
 
+  //this works for some reason and is the only way we can work with joysticks (x + y) apparently
   private final RunCommand runDrivetrain = new RunCommand(() -> drivetrain.tankDrive(
     gamepad1.getRawAxis(1),
     gamepad1.getRawAxis(5)),

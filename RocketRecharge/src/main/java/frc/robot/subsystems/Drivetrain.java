@@ -33,6 +33,8 @@ public class Drivetrain extends SubsystemBase {
    private CANSparkMax right1 = new CANSparkMax(4, MotorType.kBrushless);
    private CANSparkMax right2 = new CANSparkMax(5, MotorType.kBrushless);
    private CANSparkMax right3 = new CANSparkMax(6, MotorType.kBrushless);
+   private double leftPow = 0;
+   private double rightPow = 0;
    SpeedControllerGroup leftSide = new SpeedControllerGroup(left1, left2, left3);
    SpeedControllerGroup rightSide = new SpeedControllerGroup(right1, right2, right3);
    private DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
@@ -46,13 +48,18 @@ public class Drivetrain extends SubsystemBase {
       @Override
       public void pidWrite(double output) {
       */}
-
-  /*@Override
-  public void teleopPeriodic() {
+      /*
+  @Override //why no work
+  public void periodic() {
     // This method will be called once per scheduler run
-    drivetrain.tankDrive(, rightSpeed);
-  }*/
+    drivetrain.tankDrive(leftPow, rightPow);
+  }
+*/
+
   public void tankDrive(double leftStick, double rightStick) {
-    drivetrain.tankDrive(Math.pow(-leftStick, 3),Math.pow(-rightStick, 3));
+    //don't mess with this, drivetrain is a member of a different class, this function is not recursive
+    leftPow = Math.pow(-leftStick, 3);
+    rightPow = Math.pow(-rightStick, 3);
+    drivetrain.tankDrive(leftPow, rightPow);
   }
 }

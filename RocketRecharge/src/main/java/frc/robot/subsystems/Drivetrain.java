@@ -7,11 +7,14 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Joystick;
-//import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
 
 //CANSparkMax
 
@@ -26,7 +29,7 @@ public class Drivetrain extends SubsystemBase {
    * Creates a new ExampleSubsystem.
    
    */
-
+   PIDController pid = new PIDController(1, 0, 0);
    private CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
    private CANSparkMax left2 = new CANSparkMax(2, MotorType.kBrushless);
    private CANSparkMax left3 = new CANSparkMax(3, MotorType.kBrushless);
@@ -61,5 +64,28 @@ public class Drivetrain extends SubsystemBase {
     leftPow = Math.pow(-leftStick, 3);
     rightPow = Math.pow(-rightStick, 3);
     drivetrain.tankDrive(leftPow, rightPow);
+  }
+
+  public void visionPIDReset() {
+    pid.reset();
+  }
+
+  public void visionAlign() {
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry tx = table.getEntry("tx");
+
+    //start loop
+    double x_offset = tx.getDouble(0);
+    /*NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry ta = table.getEntry("ta");
+    */
+    
+    //read values periodically
+    double x = tx.getDouble(0.0);
+    drivetrain.arcadeDrive(0.5, MathUtil.clamp(pid.calculate(x_offset), -0.5, 0.5));
+    //double y = ty.getDouble(0.0);
+    //double area = ta.getDouble(0.0);
+
+    //end loop
   }
 }

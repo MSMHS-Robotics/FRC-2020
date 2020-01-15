@@ -1,30 +1,74 @@
-package frc.robot;
+package org.usfirst.frc.team2723.robot.subsystems;
 
-import edu.wpi.first.wpilibj.RobotBase;
-import com.revrobotics.CANSparkMax;
+package org.usfirst.frc.team2723.robot.subsystems;
+
+
+
+import org.usfirst.frc.team2723.robot.Robot;
+
+import org.usfirst.frc.team2723.util.Constants;
+
+
+
+import edu.wpi.first.wpilibj.Talon;
+
+import edu.revrobotics.CANSparkMax;
+
+import edu.wpi.first.wpilibj.command.Subsystem;
+
+
 
 /**
- * Do NOT add any static variables to this class, or any initialization at all. Unless you know what
- * you are doing, do not modify this file except to change the parameter class to the startRobot
- * call.
+
+ *
+
  */
+
 public class Climber extends SubsystemBase {
 
-    private CANSparkMax Climber = CANSparkMax(7);
 
-    public Climber(){
-        
-        Climber.set(1);
+
+    // Put methods for controlling this subsystem
+
+    // here. Call these from Commands.
+
+	public CANSparkMax Climber;
+
+	
+
+	public Climber() {
+
+	    Climber = Robot.hardware.Climber;
+
+	}
+
+	public ClimberDeploy() {
+
+		Climber.set(Constants.CLIMBER_CLIMBER_SPEED);
+
+	}
+
+	public ClimberS() {
+
+		Climber.set(Constants.INTAKE_OUTTAKE_SPEED);
+
+	}
+
+	public void stop() {
+
+		Climber.set(0);
+
+	}
+
+
+
+    public void initDefaultCommand() {
+
+        // Set the default command for a subsystem here.
+
+      //  setDefaultCommand(new MySpecialCommand());
 
     }
 
-  
-
-  /**
-   * Main initialization function. Do not perform any initialization here.
-   *
-   * <p>If you change your main robot class, change the parameter type.
-   */
-  
-  }
 }
+

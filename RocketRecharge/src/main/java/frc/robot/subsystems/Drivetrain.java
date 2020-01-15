@@ -62,4 +62,16 @@ public class Drivetrain extends SubsystemBase {
     rightPow = Math.pow(-rightStick, 3);
     drivetrain.tankDrive(leftPow, rightPow);
   }
+
+  public void driveOnHeading(){
+
+  }
+
+  public void driveDistance(){
+
+  }
+
+  public void visionAlign(){
+    
+  }
 }

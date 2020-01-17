@@ -18,10 +18,10 @@ import edu.wpi.first.wpiutil.math.MathUtil;
 
 //CANSparkMax
 
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
+//import com.revrobotics.CANEncoder;
+//import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
+//import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Drivetrain extends SubsystemBase {
@@ -29,7 +29,7 @@ public class Drivetrain extends SubsystemBase {
    * Creates a new ExampleSubsystem.
    
    */
-   PIDController pid = new PIDController(1, 0, 0);
+   PIDController pid = new PIDController(0.03, 0, 0);
    private CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
    private CANSparkMax left2 = new CANSparkMax(2, MotorType.kBrushless);
    private CANSparkMax left3 = new CANSparkMax(3, MotorType.kBrushless);
@@ -63,7 +63,7 @@ public class Drivetrain extends SubsystemBase {
     //don't mess with this, drivetrain is a member of a different class, this function is not recursive
     leftPow = Math.pow(-leftStick, 3);
     rightPow = Math.pow(-rightStick, 3);
-    drivetrain.tankDrive(leftPow, rightPow);
+    drivetrain.tankDrive(leftPow * 0.5, rightPow * 0.5);
   }
 
   public void visionPIDReset() {
@@ -72,20 +72,23 @@ public class Drivetrain extends SubsystemBase {
 
   public void visionAlign() {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tx = table.getEntry("tx");
-
-    //start loop
-    double x_offset = tx.getDouble(0);
-    /*NetworkTableEntry ty = table.getEntry("ty");
-    NetworkTableEntry ta = table.getEntry("ta");
-    */
-    
-    //read values periodically
-    double x = tx.getDouble(0.0);
-    drivetrain.arcadeDrive(0.5, MathUtil.clamp(pid.calculate(x_offset), -0.5, 0.5));
-    //double y = ty.getDouble(0.0);
-    //double area = ta.getDouble(0.0);
-
+    NetworkTableEntry tv = table.getEntry("tv");
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+    if(tv.getDouble(0) == 1) {
+      NetworkTableEntry tx = table.getEntry("tx");
+  
+      //start loop
+      double x_offset = tx.getDouble(0);
+      /*NetworkTableEntry ty = table.getEntry("ty");
+      NetworkTableEntry ta = table.getEntry("ta");
+      */
+      drivetrain.arcadeDrive(0, MathUtil.clamp(-pid.calculate(x_offset), -0.5, 0.5));
+      //double y = ty.getDouble(0.0);
+      //double area = ta.getDouble(0.0)  
+    }
+    else {
+      drivetrain.arcadeDrive(0, 0);
+    }
     //end loop
   }
 }

@@ -37,7 +37,7 @@ public class RobotContainer {
     gamepad1.getRawAxis(1),
     gamepad1.getRawAxis(5)),
     drivetrain);
-  JoystickButton aButton = new JoystickButton(gamepad1, 0);
+  JoystickButton aButton = new JoystickButton(gamepad1, 1);
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain);
   
 
@@ -58,6 +58,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     aButton.whenPressed(align);
+    aButton.whenReleased(runDrivetrain);
   }
 
 

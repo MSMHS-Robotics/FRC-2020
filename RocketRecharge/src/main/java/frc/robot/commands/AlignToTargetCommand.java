@@ -40,12 +40,7 @@ public class AlignToTargetCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tv = table.getEntry("tv");
-    if(tv.getDouble(0) == 1) {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
-        drivetrain.visionAlign();
-    }
+    drivetrain.visionAlign();
     
   }
 

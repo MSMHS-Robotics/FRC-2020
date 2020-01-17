@@ -7,18 +7,23 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Joystick;
+import com.kauailabs.navx.frc.AHRS;
+
+//import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpiutil.math.MathUtil;
+
 
 //CANSparkMax
 
+//import com.revrobotics.CANPIDController;
 import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
+//import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Drivetrain extends SubsystemBase {
@@ -26,7 +31,10 @@ public class Drivetrain extends SubsystemBase {
    * Creates a new ExampleSubsystem.
    
    */
-
+  CANEncoder encoder;
+   AHRS ahrs;
+   PIDController headingPID = new PIDController(1, 0, 0);
+   PIDController drivingPID = new PIDController(1, 0, 0);
    private CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
    private CANSparkMax left2 = new CANSparkMax(2, MotorType.kBrushless);
    private CANSparkMax left3 = new CANSparkMax(3, MotorType.kBrushless);
@@ -42,19 +50,26 @@ public class Drivetrain extends SubsystemBase {
    //private double left;
    
    public Drivetrain() {
+     // Sets the error tolerance to 5, and the error derivative tolerance to 10 per second
+     headingPID.setTolerance(5, 10);
+     headingPID.setIntegratorRange(-0.5, 0.5);
+     // Enables continuous input on a range from -180 to 180
+     headingPID.enableContinuousInput(-180, 180);
 
-     //CANSparkMax left1 = new CANSparkMax();
-     /*PIDOutput driveOutput = new PIDOutput(){
-      @Override
-      public void pidWrite(double output) {
-      */}
-      /*
-  @Override //why no work
-  public void periodic() {
-    // This method will be called once per scheduler run
-    drivetrain.tankDrive(leftPow, rightPow);
+     // Sets the error tolerance to 5, and the error derivative tolerance to 10 per second
+     drivingPID.setTolerance(5, 10);
+     drivingPID.setIntegratorRange(-0.5, 0.5);
+     // Enables continuous input on a range from -180 to 180
+     drivingPID.enableContinuousInput(-180, 180);
+   }
+  
+    public void headingPIDReset() {
+    headingPID.reset();
   }
-*/
+    // idk if we need to reset again?
+    //public void drivingPIDReset() {
+    //drivingPID.reset();
+    //}
 
   public void tankDrive(double leftStick, double rightStick) {
     //don't mess with this, drivetrain is a member of a different class, this function is not recursive
@@ -63,15 +78,17 @@ public class Drivetrain extends SubsystemBase {
     drivetrain.tankDrive(leftPow, rightPow);
   }
 
-  public void driveOnHeading(){
-
+  public boolean driveOnHeading(double power,double angle){
+    double currentAngle = ahrs.getYaw(); //is this right?
+    double turnPower = MathUtil.clamp(headingPID.calculate(currentAngle, angle), -0.5, 0.5);
+    drivetrain.arcadeDrive(power,turnPower);
+    return headingPID.atSetpoint();
   }
 
-  public void driveDistance(){
-
-  }
-
-  public void visionAlign(){
-    
+  public boolean driveDistance(double distance, double angle){
+    double currentDistance = encoder.getPosition();//is this right?
+    double drivePower = MathUtil.clamp(drivingPID.calculate(currentDistance, angle), -0.5, 0.5);
+    this.driveOnHeading(drivePower,angle);
+    return drivingPID.atSetpoint();
   }
 }

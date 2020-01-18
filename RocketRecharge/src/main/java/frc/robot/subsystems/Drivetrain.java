@@ -78,14 +78,14 @@ public class Drivetrain extends SubsystemBase {
     drivetrain.tankDrive(leftPow, rightPow);
   }
 
-  public boolean driveOnHeading(double power,double angle){
+  public Boolean driveOnHeading(double power,double angle){
     double currentAngle = ahrs.getYaw(); //is this right?
     double turnPower = MathUtil.clamp(headingPID.calculate(currentAngle, angle), -0.5, 0.5);
     drivetrain.arcadeDrive(power,turnPower);
     return headingPID.atSetpoint();
   }
 
-  public boolean driveDistance(double distance, double angle){
+  public Boolean driveDistance(double distance, double angle){
     double currentDistance = encoder.getPosition();//is this right?
     double drivePower = MathUtil.clamp(drivingPID.calculate(currentDistance, angle), -0.5, 0.5);
     this.driveOnHeading(drivePower,angle);

@@ -19,11 +19,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.devices.RocketEncoder;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 //CANSparkMax
 
+//import com.revrobotics.CANEncoder;
 //import com.revrobotics.CANPIDController;
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 //import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -35,6 +38,7 @@ public class Drivetrain extends SubsystemBase {
    */
   
   AHRS ahrs;
+  PIDController visionPID = new PIDController(0.03, 0, 0);
   PIDController headingPID = new PIDController(.15, 0, 0);
   PIDController drivingPID = new PIDController(1, 0, 0);
   private final CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
@@ -70,7 +74,7 @@ public class Drivetrain extends SubsystemBase {
     drivingPID.setTolerance(2, 5);
     drivingPID.setIntegratorRange(-0.5, 0.5);
     // Enables continuous input on a range from -180 to 180
-    drivingPID.enableContinuousInput(-180, 180);
+    //drivingPID.enableContinuousInput(-180, 180);
 
     encoderLeft1.setPositionConstant(1);//change this later
     encoderLeft2.setPositionConstant(1);//change this later
@@ -120,7 +124,33 @@ public class Drivetrain extends SubsystemBase {
     // function is not recursive
     leftPow = Math.pow(-leftStick, 3);
     rightPow = Math.pow(-rightStick, 3);
-    drivetrain.tankDrive(leftPow, rightPow);
+    drivetrain.tankDrive(leftPow * 0.5, rightPow * 0.5);
+  }
+
+  public void visionPIDReset() {
+    visionPID.reset();
+  }
+
+  public void visionAlign() {
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry tv = table.getEntry("tv");
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+    if(tv.getDouble(0) == 1) {
+      NetworkTableEntry tx = table.getEntry("tx");
+  
+      //start loop
+      double x_offset = tx.getDouble(0);
+      /*NetworkTableEntry ty = table.getEntry("ty");
+      NetworkTableEntry ta = table.getEntry("ta");
+      */
+      drivetrain.arcadeDrive(0, MathUtil.clamp(-visionPID.calculate(x_offset), -0.5, 0.5));
+      //double y = ty.getDouble(0.0);
+      //double area = ta.getDouble(0.0)  
+    }
+    else {
+      drivetrain.arcadeDrive(0, 0);
+    }
+    //end loop
   }
 
   public double encoderAverage() {

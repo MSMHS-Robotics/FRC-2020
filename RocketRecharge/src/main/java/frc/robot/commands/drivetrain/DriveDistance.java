@@ -5,20 +5,21 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.drivetrain;
 
+import frc.robot.commands.RocketTimedCommand;
 import frc.robot.subsystems.Drivetrain;
 //import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class DriveOnHeading extends RocketTimedCommand {
+public class DriveDistance extends RocketTimedCommand {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-  private final Drivetrain driveheading;
+  private final Drivetrain drivetrain;
+  private double distance;
   private double angle;
-  private double power;
-  private boolean onHeading;
+  private boolean atDistance;
   private double timeout;
 
   /**
@@ -26,26 +27,28 @@ public class DriveOnHeading extends RocketTimedCommand {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveOnHeading(Drivetrain headingdrive, double angle, double power, double timeout) {
-    driveheading = headingdrive;
-    this.angle = angle;
-    this.power = power;
-    this.timeout = timeout;
-
+  public DriveDistance(Drivetrain drivetrain, double distance, double angle,double timeout) {
+     this.drivetrain= drivetrain;
+     this.distance = distance;
+     this.angle = angle;
+     this.timeout = timeout;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(headingdrive);
+    addRequirements(drivetrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    drivetrain.encoderReset();
+    drivetrain.drivingPIDReset();
+    drivetrain.headingPIDReset();
     super.setTimeout(timeout);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    onHeading = driveheading.driveOnHeading(power, angle);
+    atDistance = drivetrain.driveDistance(distance, angle);
   }
 
   // Called once the command ends or is interrupted.
@@ -56,6 +59,6 @@ public class DriveOnHeading extends RocketTimedCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return onHeading || super.isTimedOut();
+    return atDistance || super.isTimedOut();
   }
 }

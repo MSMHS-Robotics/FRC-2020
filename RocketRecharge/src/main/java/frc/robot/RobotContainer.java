@@ -11,9 +11,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AlignToTargetCommand;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.drivetrain.TurnOnHeading;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -26,18 +25,24 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+
+  //Joystick
   private final Joystick gamepad1 = new Joystick(0);
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  JoystickButton aButton = new JoystickButton(gamepad1, 1);
 
+  //subsystems go here:
   private final Drivetrain drivetrain = new Drivetrain();
+ 
+ //auto commands
+  private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain,90,-1);
 
+ //Drivetrain Commands
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently
   private final RunCommand runDrivetrain = new RunCommand(() -> drivetrain.tankDrive(
     gamepad1.getRawAxis(1),
     gamepad1.getRawAxis(5)),
     drivetrain);
-  JoystickButton aButton = new JoystickButton(gamepad1, 1);
+ 
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain);
   
 

@@ -41,7 +41,7 @@ public class AlignToTargetCommand extends CommandBase {
   @Override
   public void execute() {
     drivetrain.visionAlign();
-    
+    //SmartDashboard.putBool(drivetrain.isVisionAligned());
   }
 
   // Called once the command ends or is interrupted.

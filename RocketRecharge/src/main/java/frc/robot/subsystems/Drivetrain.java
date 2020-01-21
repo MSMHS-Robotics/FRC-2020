@@ -22,6 +22,7 @@ import frc.robot.devices.RocketEncoder;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 //CANSparkMax
 
@@ -32,15 +33,15 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Drivetrain extends SubsystemBase {
-  /**
-   * Creates a new ExampleSubsystem.
-   * 
-   */
+  //private ShuffleboardTab tab = Shuffleboard.getTab("drivetrain");
+  //private NetworkTableEntry testPIDthing = tab.add("testPIDthing", 1).getEntry();
   
   AHRS ahrs;
+  
   PIDController visionPID = new PIDController(0.03, 0, 0);
   PIDController headingPID = new PIDController(.15, 0, 0);
   PIDController drivingPID = new PIDController(1, 0, 0);
+  
   private final CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
   private final RocketEncoder encoderLeft1 = new RocketEncoder (left1);
   private final CANSparkMax left2 = new CANSparkMax(2, MotorType.kBrushless);
@@ -53,12 +54,16 @@ public class Drivetrain extends SubsystemBase {
   private final RocketEncoder  encoderRight2 = new RocketEncoder (right2);
   private final CANSparkMax right3 = new CANSparkMax(6, MotorType.kBrushless);
   private final RocketEncoder encoderRight3 = new RocketEncoder(right3);
+  
   private double leftPow = 0;
   private double rightPow = 0;
+  
   SpeedControllerGroup leftSide = new SpeedControllerGroup(left1, left2, left3);
   SpeedControllerGroup rightSide = new SpeedControllerGroup(right1, right2, right3);
+  
   private final DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
   public double speed;
+  private boolean aligned = false;
   // private double left;
 
   public Drivetrain() {
@@ -102,6 +107,13 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
+  @Override
+  public void periodic() {
+    //SmartDashboard.putBoolean("aligned", aligned);
+    //System.out.println(testPIDthing.toString());
+    SmartDashboard.putNumber("test", 1);
+  }
+
   public void headingPIDReset() {
     headingPID.reset();
   }
@@ -140,17 +152,22 @@ public class Drivetrain extends SubsystemBase {
   
       //start loop
       double x_offset = tx.getDouble(0);
-      /*NetworkTableEntry ty = table.getEntry("ty");
-      NetworkTableEntry ta = table.getEntry("ta");
-      */
       drivetrain.arcadeDrive(0, MathUtil.clamp(-visionPID.calculate(x_offset), -0.5, 0.5));
-      //double y = ty.getDouble(0.0);
-      //double area = ta.getDouble(0.0)  
+      if(x_offset < 0.1) {
+        aligned = true;
+      }
+      else {
+        aligned = false;
+      }
     }
     else {
       drivetrain.arcadeDrive(0, 0);
     }
     //end loop
+  }
+
+  public boolean isVisionAligned() {
+    return aligned;
   }
 
   public double encoderAverage() {
@@ -177,5 +194,6 @@ public class Drivetrain extends SubsystemBase {
     final boolean headingAligned = this.driveOnHeading(drivePower, angle);
     return drivingPID.atSetpoint() && headingAligned;
   }
+
 }
 

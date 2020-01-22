@@ -9,16 +9,22 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import frc.robot.Constants;
+
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DriverStation;
 //import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.PIDOutput;
+
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.devices.RocketEncoder;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -37,11 +43,23 @@ public class Drivetrain extends SubsystemBase {
   //private NetworkTableEntry testPIDthing = tab.add("testPIDthing", 1).getEntry();
   
   AHRS ahrs;
+  double visionPIDconstant1 = Constants.visionPID[0];
+  double visionPIDconstant2 = Constants.visionPID[1];
+  double visionPIDconstant3 = Constants.visionPID[2];
   
-  PIDController visionPID = new PIDController(0.03, 0, 0);
+  PIDController visionPID = new PIDController(visionPIDconstant1, visionPIDconstant2, visionPIDconstant3);
   PIDController headingPID = new PIDController(.15, 0, 0);
   PIDController drivingPID = new PIDController(1, 0, 0);
   
+  private ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain Tab");
+  private NetworkTableEntry visionConstraintMax = tab.addPersistent("Vision Constraint - Max", Constants.visionPIDconstraints[1]).getEntry();
+  private NetworkTableEntry visionConstraintMin = tab.addPersistent("Vision Constraint - Min", Constants.visionPIDconstraints[0]).getEntry();
+  private NetworkTableEntry headingConstraintMin = tab.addPersistent("Heading Constraint - Min", Constants.headingPIDconstraints[0]).getEntry();
+  private NetworkTableEntry headingConstraintMax = tab.addPersistent("Heading Constraint - max", Constants.headingPIDconstraints[1]).getEntry();
+  private NetworkTableEntry drivingConstraintMin = tab.addPersistent("Driving Constraint - Min", Constants.drivingPIDconstraints[0]).getEntry();
+  private NetworkTableEntry drivingConstraintMax = tab.addPersistent("Driving Constraint - Max", Constants.drivingPIDconstraints[1]).getEntry();
+  //private NetworkTableEntry drivingConstraintMax = tab.addPersistent("Driving Constraint - Max", Constants.drivingPIDconstraints[1]).getEntry();
+
   private final CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
   private final RocketEncoder encoderLeft1 = new RocketEncoder (left1);
   private final CANSparkMax left2 = new CANSparkMax(2, MotorType.kBrushless);
@@ -105,15 +123,20 @@ public class Drivetrain extends SubsystemBase {
     } catch (RuntimeException ex) {
       DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
     }
-  }
-
+  } 
+  //=================================================================================
   @Override
   public void periodic() {
-    //SmartDashboard.putBoolean("aligned", aligned);
-    //System.out.println(testPIDthing.toString());
-    SmartDashboard.putNumber("test", 1);
-  }
+    //ooooooooof get ready
+    Constants.visionPIDconstraints[0] = visionConstraintMin.getDouble(Constants.visionPIDconstraints[0]);
+    Constants.visionPIDconstraints[1] = visionConstraintMax.getDouble(Constants.visionPIDconstraints[1]);
+    Constants.drivingPIDconstraints[0] = drivingConstraintMin.getDouble(Constants.drivingPIDconstraints[0]);
+    Constants.drivingPIDconstraints[1] = drivingConstraintMax.getDouble(Constants.drivingPIDconstraints[1]);
+    Constants.headingPIDconstraints[0] = headingConstraintMin.getDouble(Constants.headingPIDconstraints[0]);
+    Constants.headingPIDconstraints[1] = headingConstraintMax.getDouble(Constants.headingPIDconstraints[1]);
 
+  }
+  //==================================================================================
   public void headingPIDReset() {
     headingPID.reset();
   }
@@ -133,7 +156,7 @@ public class Drivetrain extends SubsystemBase {
   }
   public void tankDrive(final double leftStick, final double rightStick) {
     // don't mess with this, drivetrain is a member of a different class, this
-    // function is not recursive
+    // function is not recursive - Daniel's last message to creation
     leftPow = Math.pow(-leftStick, 3);
     rightPow = Math.pow(-rightStick, 3);
     drivetrain.tankDrive(leftPow * 0.5, rightPow * 0.5);
@@ -143,6 +166,11 @@ public class Drivetrain extends SubsystemBase {
     visionPID.reset();
   }
 
+  /**
+   * Aligns us with the vision target. 
+   * This function is called in the AlignToTargetCommand.java. 
+   * You need to import NetworkTable and NetworkTableEntry
+   */
   public void visionAlign() {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tv = table.getEntry("tv");
@@ -152,7 +180,7 @@ public class Drivetrain extends SubsystemBase {
   
       //start loop
       double x_offset = tx.getDouble(0);
-      drivetrain.arcadeDrive(0, MathUtil.clamp(-visionPID.calculate(x_offset), -0.5, 0.5));
+      drivetrain.arcadeDrive(0, MathUtil.clamp(-visionPID.calculate(x_offset), Constants.visionPIDconstraints[0], Constants.visionPIDconstraints[1]));
       if(x_offset < 0.1) {
         aligned = true;
       }
@@ -166,7 +194,11 @@ public class Drivetrain extends SubsystemBase {
     //end loop
   }
 
+  /**
+   * this function returns if we are aligned with the vision target or not
+   */
   public boolean isVisionAligned() {
+    //might be helpful sometime
     return aligned;
   }
 

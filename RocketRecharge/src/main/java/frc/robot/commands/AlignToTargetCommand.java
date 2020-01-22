@@ -8,13 +8,13 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Drivetrain;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
+//import edu.wpi.first.networktables.NetworkTable;
+//import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
- * An example command that uses an example subsystem.
+ * Aligns us to the target. Uses drivetrain subsystem
  */
 public class AlignToTargetCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
@@ -23,11 +23,10 @@ public class AlignToTargetCommand extends CommandBase {
   /**
    * Creates a new AlignToTargetCommand.
    *
-   * @param subsystem The subsystem used by this command.
+   * @param drivetrain The subsystem used by this command.
    */
   public AlignToTargetCommand(Drivetrain drivetrain_) {
     drivetrain = drivetrain_;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
   }
 

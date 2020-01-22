@@ -2,18 +2,18 @@
   "tabPane": [
     {
       "title": "Driver",
-      "autoPopulate": false,
+      "autoPopulate": true,
       "autoPopulatePrefix": "",
       "widgetPane": {
-        "gridSize": 128.0,
+        "gridSize": 64.0,
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "3,0": {
+          "0,0": {
             "size": [
-              3,
-              2
+              10,
+              6
             ],
             "content": {
               "_type": "Camera Stream",
@@ -24,12 +24,12 @@
               "Controls/Show controls": true,
               "Controls/Rotation": "NONE",
               "compression": -1.0,
-              "fps": -1,
+              "fps": 10,
               "imageWidth": -1,
               "imageHeight": -1
             }
           },
-          "6,0": {
+          "10,0": {
             "size": [
               3,
               1
@@ -128,6 +128,84 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {}
+      }
+    },
+    {
+      "title": "SmartDashboard",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "network_table:///SmartDashboard/",
+      "widgetPane": {
+        "gridSize": 32.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "0,0": {
+            "size": [
+              6,
+              8
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/someNumber",
+              "_title": "someNumber"
+            }
+          },
+          "18,1": {
+            "size": [
+              2,
+              8
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight_PipelineName",
+              "_title": "limelight_PipelineName"
+            }
+          },
+          "22,1": {
+            "size": [
+              2,
+              5
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight_Stream",
+              "_title": "limelight_Stream"
+            }
+          },
+          "6,0": {
+            "size": [
+              5,
+              5
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight_Interface",
+              "_title": "limelight_Interface"
+            }
+          },
+          "11,0": {
+            "size": [
+              7,
+              5
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/test",
+              "_title": "test"
+            }
+          },
+          "9,6": {
+            "size": [
+              5,
+              4
+            ],
+            "content": {
+              "_type": "Text View",
+              "_title": "number"
+            }
+          }
+        }
       }
     }
   ],

@@ -16,4 +16,18 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static double[] visionPID = {0.03, 0, 0};
+    public static double[] visionPIDconstraints = {-0.5, 0.5};
+    public static double[] headingPID = {0.15,0,0};
+    public static double[] headingPIDconstraints = {-0.25, 0.25};
+    public static double[] drivingPID = {1, 0, 0};
+    public static double[] drivingPIDconstraints = {-0.5, 0.5};
+    public static double[] encoderConstants = {0,0,0};
+    public static double[] speed = {1};
+
+    public void setVisionPID(double kp, double ksomething, double ksomethingelse) {
+        visionPID[0] = kp;
+        visionPID[1] = ksomething;
+        visionPID[2] = ksomethingelse;
+    }
 }

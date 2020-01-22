@@ -34,7 +34,7 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain();
  
  //auto commands
-  private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain,90,-1);
+  private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain, 90, -1);
 
  //Drivetrain Commands
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently

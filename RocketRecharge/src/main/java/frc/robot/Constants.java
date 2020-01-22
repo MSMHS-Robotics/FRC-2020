@@ -25,6 +25,12 @@ public final class Constants {
     public static double[] encoderConstants = {0,0,0};
     public static double[] speed = {1};
 
+    public static double[] headingTolerance = {2, 5};
+    public static double[] headingIntegrator = {-0.5, 0.5};
+
+    
+    
+
     public void setVisionPID(double kp, double ksomething, double ksomethingelse) {
         visionPID[0] = kp;
         visionPID[1] = ksomething;

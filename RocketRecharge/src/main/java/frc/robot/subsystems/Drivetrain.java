@@ -58,7 +58,21 @@ public class Drivetrain extends SubsystemBase {
   private NetworkTableEntry headingConstraintMax = tab.addPersistent("Heading Constraint - max", Constants.headingPIDconstraints[1]).getEntry();
   private NetworkTableEntry drivingConstraintMin = tab.addPersistent("Driving Constraint - Min", Constants.drivingPIDconstraints[0]).getEntry();
   private NetworkTableEntry drivingConstraintMax = tab.addPersistent("Driving Constraint - Max", Constants.drivingPIDconstraints[1]).getEntry();
-  //private NetworkTableEntry drivingConstraintMax = tab.addPersistent("Driving Constraint - Max", Constants.drivingPIDconstraints[1]).getEntry();
+  private NetworkTableEntry visionKp = tab.addPersistent("Vision - Kp", Constants.visionPID[0]).getEntry();
+  private NetworkTableEntry visionKi = tab.addPersistent("Vision - Ki", Constants.visionPID[1]).getEntry();
+  private NetworkTableEntry visionKd = tab.addPersistent("Vision - Kd", Constants.visionPID[2]).getEntry();
+  private NetworkTableEntry drivingKp = tab.addPersistent("Driving - Kp", Constants.drivingPID[0]).getEntry();
+  private NetworkTableEntry drivingKi = tab.addPersistent("Driving - Ki", Constants.drivingPID[1]).getEntry();
+  private NetworkTableEntry drivingKd = tab.addPersistent("Driving - Kd", Constants.drivingPID[2]).getEntry();
+  private NetworkTableEntry headingKp = tab.addPersistent("Heading - Kp", Constants.headingPID[0]).getEntry();
+  private NetworkTableEntry headingKi = tab.addPersistent("Heading - Ki", Constants.headingPID[1]).getEntry();
+  private NetworkTableEntry headingKd = tab.addPersistent("Heading - Kd", Constants.headingPID[2]).getEntry();
+  private NetworkTableEntry hPosTolerance = tab.addPersistent("hPosTolerance", Constants.headingTolerance[0]).getEntry();
+  private NetworkTableEntry hVTolerance = tab.addPersistent("hVTolerance", Constants.headingTolerance[1]).getEntry();
+  private NetworkTableEntry hIntegratorMin = tab.addPersistent("hIntegratorMin", Constants.headingIntegrator[0]).getEntry();
+  private NetworkTableEntry hIntegratorMax = tab.addPersistent("hIntegratorMax", Constants.headingTolerance[1]).getEntry();
+
+
 
   private final CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
   private final RocketEncoder encoderLeft1 = new RocketEncoder (left1);
@@ -91,7 +105,6 @@ public class Drivetrain extends SubsystemBase {
     headingPID.setIntegratorRange(-0.5, 0.5);
     // Enables continuous input on a range from -180 to 180
     headingPID.enableContinuousInput(-180, 180);
-
     // Sets the error tolerance to 5, and the error derivative tolerance to 10 per
     // second
     drivingPID.setTolerance(2, 5);
@@ -134,6 +147,70 @@ public class Drivetrain extends SubsystemBase {
     Constants.drivingPIDconstraints[1] = drivingConstraintMax.getDouble(Constants.drivingPIDconstraints[1]);
     Constants.headingPIDconstraints[0] = headingConstraintMin.getDouble(Constants.headingPIDconstraints[0]);
     Constants.headingPIDconstraints[1] = headingConstraintMax.getDouble(Constants.headingPIDconstraints[1]);
+    Constants.headingTolerance[0] = hPosTolerance.getDouble(Constants.headingTolerance[0]);
+    Constants.headingTolerance[1] = hVTolerance.getDouble(Constants.headingTolerance[1]);
+    Constants.headingIntegrator[0] = hIntegratorMin.getDouble(Constants.headingIntegrator[0]);
+    Constants.headingIntegrator[1] = hIntegratorMax.getDouble(Constants.headingIntegrator[1]);
+    //no more constraints (what we clamp to in the PID stuff using Math.clamp())
+
+    //now for changing the PID values on robot and in Constants.java. this is going to be _very_ long
+    double tempVP = visionKp.getDouble(Constants.visionPID[0]);
+    if(Constants.visionPID[0] != tempVP) {
+      Constants.visionPID[0] = tempVP;
+      visionPID.setP(Constants.visionPID[0]);
+    }
+
+    double tempVI = visionKi.getDouble(Constants.visionPID[1]);
+    if(Constants.visionPID[1] != tempVI) {
+      Constants.visionPID[1] = tempVI;
+      visionPID.setI(Constants.visionPID[1]);
+    }
+
+    double tempVD = visionKd.getDouble(Constants.visionPID[2]);
+    if(Constants.visionPID[2] != tempVD) {
+      Constants.visionPID[2] = tempVD;
+      visionPID.setD(Constants.visionPID[2]);
+    }
+    //end visionPID. now for driving
+
+    double tempDP = drivingKp.getDouble(Constants.drivingPID[0]);
+    if(Constants.drivingPID[0] != tempDP) {
+      Constants.drivingPID[0] = tempDP;
+      drivingPID.setP(Constants.drivingPID[0]);
+    }
+
+    double tempDI = drivingKi.getDouble(Constants.drivingPID[1]);
+    if(Constants.drivingPID[1] != tempDI) {
+      Constants.drivingPID[1] = tempDI;
+      drivingPID.setI(Constants.drivingPID[1]);
+    }
+
+    double tempDD = drivingKd.getDouble(Constants.drivingPID[2]);
+    if(Constants.drivingPID[2] != tempDD) {
+      Constants.drivingPID[2] = tempDD;
+      drivingPID.setD(Constants.drivingPID[2]);
+    }
+
+    //heading PID stuff
+    double tempHP = headingKp.getDouble(Constants.headingPID[0]);
+    if(Constants.headingPID[0] != tempHP) {
+      Constants.headingPID[0] = tempHP;
+      headingPID.setP(Constants.headingPID[0]);
+    }
+
+    double tempHI = headingKi.getDouble(Constants.headingPID[1]);
+    if(Constants.headingPID[1] != tempHI) {
+      Constants.headingPID[1] = tempHI;
+      headingPID.setI(Constants.headingPID[1]);
+    }
+
+    double tempHD = headingKd.getDouble(Constants.headingPID[2]);
+    if(Constants.headingPID[2] != tempHD) {
+      Constants.headingPID[2] = tempHD;
+      headingPID.setD(Constants.headingPID[2]);
+    }
+
+    //dang that is some messy code
 
   }
   //==================================================================================

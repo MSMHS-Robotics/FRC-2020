@@ -18,7 +18,11 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 
 public class Shooter extends SubsystemBase {
@@ -27,11 +31,25 @@ public class Shooter extends SubsystemBase {
   CANPIDController pidController;
   CANEncoder encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
+
+  private ShuffleboardTab tab = Shuffleboard.getTab("Shooter");
+  private NetworkTableEntry ShooterkP = tab.addPersistent("ShooterkP", Constants.ShooterkP[1]).getEntry();
+  private NetworkTableEntry ShooterkI = tab.addPersistent("ShooterkI", Constants.ShooterkI[1]).getEntry();
+  private NetworkTableEntry ShooterkD = tab.addPersistent("ShooterkD", Constants.ShooterkD[1]).getEntry();
+  private NetworkTableEntry ShooterkIz = tab.addPersistent("ShooterkIz", Constants.ShooterkIz[1]).getEntry();
+  private NetworkTableEntry ShooterkFF = tab.addPersistent("ShooterkFF", Constants.ShooterkFF[1]).getEntry();
+  private NetworkTableEntry ShooterkMaxOutput = tab.addPersistent("ShooterkMaxOutput", Constants.ShooterkMaxOutput[1]).getEntry();
+  private NetworkTableEntry ShooterkMinOutput = tab.addPersistent("ShooterkMinOutput", Constants.ShooterkMinOutput[1]).getEntry();
+  private NetworkTableEntry ShooterkMaxRPM = tab.addPersistent("ShooterkMaxOutput", Constants.ShooterkMaxRPM[1]).getEntry();
+
+
+
+
   /**
    * Creates a new ExampleSubsystem.
    */
   public Shooter() {
-    shooterMotor = new CANSparkMax(deviceID, MotorType.kBrushless);
+    shooterMotor = new CANSparkMax(7, MotorType.kBrushless);
     shooterMotor.restoreFactoryDefaults();
     pidController = shooterMotor.getPIDController();
     encoder = shooterMotor.getEncoder();
@@ -47,12 +65,12 @@ public class Shooter extends SubsystemBase {
     maxRPM = 5700;
  
     // set PID coefficients
-    pidController.setP(kP);
-    pidController.setI(kI);
-    pidController.setD(kD);
-    pidController.setIZone(kIz);
-    pidController.setFF(kFF);
-    pidController.setOutputRange(kMinOutput, kMaxOutput);
+    pidController.setP(Constants.ShooterkP);
+    pidController.setI(Constants.ShooterkI);
+    pidController.setD(Constants.ShooterkD);
+    pidController.setIZone(Constants.ShooterkIz);
+    pidController.setFF(Constants.ShooterkFF);
+    pidController.setOutputRange(Constants.ShooterkMinOutput, Constants.ShooterkMaxOutput);
 
 
     //angle motor config
@@ -65,10 +83,10 @@ public class Shooter extends SubsystemBase {
 		angleMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
 		/* Config the Velocity closed loop gains in slot0 */
-		angleMotor.config_kF(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kF, Constants.kTimeoutMs);
-		angleMotor.config_kP(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kP, Constants.kTimeoutMs);
-		angleMotor.config_kI(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kI, Constants.kTimeoutMs);
-    angleMotor.config_kD(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kD, Constants.kTimeoutMs);
+		angleMotor.config_kF(Constants.kPIDLoopIdx, Constants.AnglekF, Constants.kTimeoutMs);
+		angleMotor.config_kP(Constants.kPIDLoopIdx, Constants.AnglekP, Constants.kTimeoutMs);
+		angleMotor.config_kI(Constants.kPIDLoopIdx, Constants.AnglekI, Constants.kTimeoutMs);
+    angleMotor.config_kD(Constants.kPIDLoopIdx, Constants.AnglekD, Constants.kTimeoutMs);
     
     /* Shooter with talon
     //shooter motor config

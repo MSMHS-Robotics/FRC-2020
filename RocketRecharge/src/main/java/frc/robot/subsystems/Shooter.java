@@ -33,16 +33,22 @@ public class Shooter extends SubsystemBase {
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Shooter");
-  private NetworkTableEntry ShooterkP = tab.addPersistent("ShooterkP", Constants.ShooterkP[1]).getEntry();
-  private NetworkTableEntry ShooterkI = tab.addPersistent("ShooterkI", Constants.ShooterkI[1]).getEntry();
-  private NetworkTableEntry ShooterkD = tab.addPersistent("ShooterkD", Constants.ShooterkD[1]).getEntry();
-  private NetworkTableEntry ShooterkIz = tab.addPersistent("ShooterkIz", Constants.ShooterkIz[1]).getEntry();
-  private NetworkTableEntry ShooterkFF = tab.addPersistent("ShooterkFF", Constants.ShooterkFF[1]).getEntry();
-  private NetworkTableEntry ShooterkMaxOutput = tab.addPersistent("ShooterkMaxOutput", Constants.ShooterkMaxOutput[1]).getEntry();
-  private NetworkTableEntry ShooterkMinOutput = tab.addPersistent("ShooterkMinOutput", Constants.ShooterkMinOutput[1]).getEntry();
-  private NetworkTableEntry ShooterkMaxRPM = tab.addPersistent("ShooterkMaxOutput", Constants.ShooterkMaxRPM[1]).getEntry();
+  private NetworkTableEntry ShooterkP = tab.addPersistent("ShooterkP", Constants.ShooterkP).getEntry();
+  private NetworkTableEntry ShooterkI = tab.addPersistent("ShooterkI", Constants.ShooterkI).getEntry();
+  private NetworkTableEntry ShooterkD = tab.addPersistent("ShooterkD", Constants.ShooterkD).getEntry();
+  private NetworkTableEntry ShooterkIz = tab.addPersistent("ShooterkIz", Constants.ShooterkIz).getEntry();
+  private NetworkTableEntry ShooterkFF = tab.addPersistent("ShooterkFF", Constants.ShooterkFF).getEntry();
+  private NetworkTableEntry ShooterkMaxOutput = tab.addPersistent("ShooterkMaxOutput", Constants.ShooterkMaxOutput).getEntry();
+  private NetworkTableEntry ShooterkMinOutput = tab.addPersistent("ShooterkMinOutput", Constants.ShooterkMinOutput).getEntry();
+  private NetworkTableEntry ShooterMaxRPM = tab.addPersistent("ShooterkMaxOutput", Constants.ShooterMaxRPM).getEntry();
 
-
+  private NetworkTableEntry kTimeoutMs = tab.addPersistent("ShooterkMaxOutput", Constants.kTimeoutMs).getEntry();
+  private NetworkTableEntry kPIDLoopIdx = tab.addPersistent("ShooterkMaxOutput", Constants.kPIDLoopIdx).getEntry();
+  private NetworkTableEntry AnglekF = tab.addPersistent("ShooterkMaxOutput", Constants.AnglekF).getEntry();
+  private NetworkTableEntry AnglekP = tab.addPersistent("ShooterkMaxOutput", Constants.AnglekP).getEntry();
+  private NetworkTableEntry AnglekI = tab.addPersistent("ShooterkMaxOutput", Constants.AnglekI).getEntry();
+  private NetworkTableEntry AnglekD = tab.addPersistent("ShooterkMaxOutput", Constants.AnglekD).getEntry();
+  
 
 
   /**

@@ -24,7 +24,7 @@ public final class Constants {
     public static double ShooterkFF = 0;
     public static double ShooterkMaxOutput = 1;
     public static double ShooterkMinOutput = -1;
-    public static double ShootermaxRPM = 5700;
+    public static double ShooterMaxRPM = 5700;
 
     //angle PID Constants
     public static final int kTimeoutMs = 30;

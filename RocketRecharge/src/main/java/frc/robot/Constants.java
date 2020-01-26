@@ -25,8 +25,13 @@ public final class Constants {
     public static double[] encoderConstants = {0,0,0};
     public static double[] speed = {1};
 
+    public static double[] drivingTolerance = {2, 5};
+    public static double[] visionTolerance = {2, 5};
     public static double[] headingTolerance = {2, 5};
-    public static double[] headingIntegrator = {-0.5, 0.5};
+
+    public static double rightTickConstant = 1;
+    public static double leftTickConstant = 1;
+    //public static double[] headingIntegrator = {-0.5, 0.5};
 
     
     

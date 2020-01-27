@@ -32,43 +32,49 @@ public class Climber extends SubsystemBase {
 
     // here. Call these from Commands.
 
-	public CANSparkMax Climber;
+	//public CANSparkMax Climber;
+	
+	climberMotor = new CANSparkMax(CAN_ID);
+
+	DigitalInput forwardLimitSwitch, reverseLimitSwitch;
 
 	
 
 	public Climber() {
 
-	    Climber = Robot.hardware.Climber;
+	    climberMotor = Robot.hardware.climberMotor;
+		DigitalInput forwardLimitSwitch = new DigitalInput(1);
+
 
 	}
 
 	public ClimberDeploy() {
 
-		Climber.set(Constants.CLIMBER_CLIMBER_SPEED);
+		climberMotor.set(Constants.CLIMBER_CLIMBER_SPEED);
 
 	}
 
 	public ClimberS() {
 
-		Climber.set(Constants.INTAKE_OUTTAKE_SPEED);
+		climberMotor.set(Constants.INTAKE_OUTTAKE_SPEED);
 
 	}
 
 	public void stop() {
 
-		Climber.set(0);
+		climberMotor.set(0);
 
 	}
 
 
 
-    public void initDefaultCommand() {
+    //public void initDefaultCommand() {
 
         // Set the default command for a subsystem here.
 
       //  setDefaultCommand(new MySpecialCommand());
 
-    }
+    
 
 }
 

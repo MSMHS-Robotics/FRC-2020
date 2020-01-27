@@ -283,6 +283,50 @@
               "_source0": "network_table:///Shuffleboard/Drivetrain Tab/drvVTolerance",
               "_title": "drvVTolerance"
             }
+          },
+          "0,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Drivetrain Tab/RTickConstant",
+              "_title": "RTickConstant"
+            }
+          },
+          "0,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Drivetrain Tab/LTickConstant",
+              "_title": "LTickConstant"
+            }
+          },
+          "0,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Drivetrain Tab/RightEncoder",
+              "_title": "RightEncoder"
+            }
+          },
+          "0,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Drivetrain Tab/LeftEncoder",
+              "_title": "LeftEncoder"
+            }
           }
         }
       }

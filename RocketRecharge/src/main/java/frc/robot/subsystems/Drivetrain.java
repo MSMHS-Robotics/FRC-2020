@@ -124,6 +124,14 @@ public class Drivetrain extends SubsystemBase {
     encoderRight2.setPositionConstant(1);//change this later
     encoderRight3.setPositionConstant(1);//change this later
     
+    //reset for shuffleboard
+    encoderLeft1.reset();
+    encoderLeft2.reset();
+    encoderLeft3.reset();
+    encoderRight1.reset();
+    encoderRight2.reset();
+    encoderRight3.reset();
+
     try {
       /***********************************************************************
        * navX-MXP: - Communication via RoboRIO MXP (SPI, I2C) and USB. - See
@@ -146,23 +154,9 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     //ooooooooof get ready
-    Constants.visionPIDconstraints[0] = visionConstraintMin.getDouble(Constants.visionPIDconstraints[0]);
-    Constants.visionPIDconstraints[1] = visionConstraintMax.getDouble(Constants.visionPIDconstraints[1]);
-    Constants.drivingPIDconstraints[0] = drivingConstraintMin.getDouble(Constants.drivingPIDconstraints[0]);
-    Constants.drivingPIDconstraints[1] = drivingConstraintMax.getDouble(Constants.drivingPIDconstraints[1]);
-    Constants.headingPIDconstraints[0] = headingConstraintMin.getDouble(Constants.headingPIDconstraints[0]);
-    Constants.headingPIDconstraints[1] = headingConstraintMax.getDouble(Constants.headingPIDconstraints[1]);
-    Constants.headingTolerance[0] = hdgTolerance.getDouble(Constants.headingTolerance[0]);
-    Constants.headingTolerance[1] = hdgVTolerance.getDouble(Constants.headingTolerance[1]);
-    Constants.visionTolerance[0] = vsnTolerance.getDouble(Constants.visionTolerance[0]);
-    Constants.visionTolerance[1] = vsnVTolerance.getDouble(Constants.visionTolerance[1]);
-    Constants.drivingTolerance[0] = drvTolerance.getDouble(Constants.drivingTolerance[0]);
-    Constants.drivingTolerance[1] = drvVTolerance.getDouble(Constants.drivingTolerance[1]);
-    Constants.leftTickConstant = leftTickConstant.getDouble(Constants.leftTickConstant);
-    Constants.rightTickConstant = rightTickConstant.getDouble(Constants.rightTickConstant);
     
-    leftEncoderValue.setDouble(0);
-    rightEncoderValue.setDouble(0);
+    leftEncoderValue.setDouble(leftEncoderAverage());
+    rightEncoderValue.setDouble(rightEncoderAverage());
 
    // Constants.headingIntegrator[0] = hIntegratorMin.getDouble(Constants.headingIntegrator[0]);
     //Constants.headingIntegrator[1] = hIntegratorMax.getDouble(Constants.headingIntegrator[1]);
@@ -350,15 +344,29 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double encoderAverage() {
+    double average = leftEncoderAverage();
+    average += rightEncoderAverage();
+    average /=2;
+    return average;
+  }
+
+  public double leftEncoderAverage() {
     double average = encoderLeft1.getPosition();
      average += encoderLeft2.getPosition();
      average += encoderLeft3.getPosition();
-     average += encoderRight1.getPosition();
-     average += encoderRight2.getPosition();
-     average += encoderRight3.getPosition();
-     average /= 6;
+     average /= 3;
     return average;
   }
+
+  public double rightEncoderAverage() {
+    double average = encoderRight1.getPosition();
+     average += encoderRight2.getPosition();
+     average += encoderRight3.getPosition();
+     average /= 3;
+    return average;
+  }
+
+
 
   public boolean driveOnHeading(double power, double angle) {
     final double currentAngle = ahrs.getYaw(); // is this right?

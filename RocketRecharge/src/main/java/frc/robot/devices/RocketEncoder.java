@@ -2,6 +2,7 @@ package frc.robot.devices;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.EncoderType;
 
 public class RocketEncoder extends CANEncoder {
 
@@ -9,7 +10,7 @@ public class RocketEncoder extends CANEncoder {
     private double kPosition = 1;
 
     public RocketEncoder(CANSparkMax device) {
-        super(device);
+        super(device, EncoderType.kHallSensor, 11);
     }
 
     @Override

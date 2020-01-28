@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AlignToTargetCommand;
+import frc.robot.commands.AlignToTargetCommandSnipa;
 import frc.robot.commands.drivetrain.TurnOnHeading;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,6 +30,7 @@ public class RobotContainer {
   //Joystick
   private final Joystick gamepad1 = new Joystick(0);
   JoystickButton aButton = new JoystickButton(gamepad1, 1);
+  JoystickButton bButton = new JoystickButton(gamepad1, 2);
 
   //subsystems go here:
   private final Drivetrain drivetrain = new Drivetrain();
@@ -44,6 +46,7 @@ public class RobotContainer {
     drivetrain);
  
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain);
+  private final AlignToTargetCommandSnipa alignSnipa = new AlignToTargetCommandSnipa(drivetrain);
   
 
   /**
@@ -62,6 +65,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     aButton.whenPressed(align);
+    bButton.whenPressed(alignSnipa);
+    bButton.whenReleased(runDrivetrain);
     aButton.whenReleased(runDrivetrain);
   }
 

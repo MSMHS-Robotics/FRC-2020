@@ -315,6 +315,7 @@ public class Drivetrain extends SubsystemBase {
   public void visionAlign() {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tv = table.getEntry("tv");
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
     if(tv.getDouble(0) == 1) {
       NetworkTableEntry tx = table.getEntry("tx");
@@ -323,6 +324,35 @@ public class Drivetrain extends SubsystemBase {
       double x_offset = tx.getDouble(0);
       drivetrain.arcadeDrive(0, MathUtil.clamp(-visionPID.calculate(x_offset), Constants.visionPIDconstraints[0], Constants.visionPIDconstraints[1]));
       if(x_offset < 0.1) {
+        aligned = true;
+      }
+      else {
+        aligned = false;
+      }
+    }
+    else {
+      drivetrain.arcadeDrive(0, 0);
+    }
+    //end loop
+  }
+
+  /**
+   * Aligns us with the vision target, but with 2x snipaaaaaaaaaa hardware zoom. 
+   * This function is called in the AlignToTargetCommand.java. 
+   * You need to import NetworkTable and NetworkTableEntry
+   */
+  public void visionAlignSnipa() {
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry tv = table.getEntry("tv");
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+    if(tv.getDouble(0) == 1) {
+      NetworkTableEntry tx = table.getEntry("tx");
+  
+      //start loop
+      double x_offset = tx.getDouble(0);
+      drivetrain.arcadeDrive(0, MathUtil.clamp(-visionPID.calculate(x_offset), Constants.visionPIDconstraints[0], Constants.visionPIDconstraints[1]));
+      if(x_offset < Constants.alignAllowedError) {
         aligned = true;
       }
       else {

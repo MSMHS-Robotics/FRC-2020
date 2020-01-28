@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.autonomous.EightBallAuto;
 import frc.robot.commands.AlignToTargetCommand;
 import frc.robot.commands.drivetrain.TurnOnHeading;
 import frc.robot.subsystems.Drivetrain;
@@ -34,7 +35,9 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain();
  
  //auto commands
-  private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain, 90, -1);
+ // private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain, 90, -1);
+ private final EightBallAuto m_autoCommand = new EightBallAuto(drivetrain);
+
 
  //Drivetrain Commands
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently

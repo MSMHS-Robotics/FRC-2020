@@ -39,6 +39,21 @@
               "_source0": "network_table:///FMSInfo",
               "_title": "FMSInfo"
             }
+          },
+          "4,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Gyro",
+              "_source0": "network_table:///LiveWindow/Ungrouped/navX-Sensor",
+              "_title": "LiveWindow/Ungrouped/navX-Sensor",
+              "Visuals/Major tick spacing": 45.0,
+              "Visuals/Starting angle": 180.0,
+              "Visuals/Show tick mark ring": true,
+              "Visuals/Counter clockwise": false
+            }
           }
         }
       }

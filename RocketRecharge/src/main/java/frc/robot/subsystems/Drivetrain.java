@@ -162,6 +162,16 @@ public class Drivetrain extends SubsystemBase {
     //Constants.headingIntegrator[1] = hIntegratorMax.getDouble(Constants.headingIntegrator[1]);
     //no more constraints (what we clamp to in the PID stuff using Math.clamp())
 
+    Constants.headingPIDconstraints[0] = headingConstraintMin.getDouble(Constants.headingPIDconstraints[0]);
+    Constants.headingPIDconstraints[1] = headingConstraintMax.getDouble(Constants.headingPIDconstraints[1]);
+
+    Constants.visionPIDconstraints[0] = visionConstraintMin.getDouble(Constants.visionPIDconstraints[0]);
+    Constants.visionPIDconstraints[1] = visionConstraintMin.getDouble(Constants.visionPIDconstraints[1]);
+
+    Constants.drivingPIDconstraints[0] = drivingConstraintMin.getDouble(Constants.drivingPIDconstraints[0]);
+    Constants.drivingPIDconstraints[1] = drivingConstraintMin.getDouble(Constants.drivingPIDconstraints[1]);
+
+
     //now for changing the PID values on robot and in Constants.java. this is going to be _very_ long
     double tempVP = visionKp.getDouble(Constants.visionPID[0]);
     if(Constants.visionPID[0] != tempVP) {
@@ -400,7 +410,7 @@ public class Drivetrain extends SubsystemBase {
 
   public boolean driveOnHeading(double power, double angle) {
     final double currentAngle = ahrs.getYaw(); // is this right?
-    final double turnPower = MathUtil.clamp(headingPID.calculate(currentAngle, angle), -0.25, 0.25);
+    final double turnPower = MathUtil.clamp(headingPID.calculate(currentAngle, angle), Constants.headingPIDconstraints[0], Constants.headingPIDconstraints[1]);
     drivetrain.arcadeDrive(power, turnPower);
     return headingPID.atSetpoint();
   }

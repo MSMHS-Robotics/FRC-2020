@@ -29,7 +29,7 @@ public class SetDrive extends RocketTimedCommand {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public SetDrive(Drivetrain drivetrain, double angle, double power, double timeout, double distance) {
+  public SetDrive(Drivetrain drivetrain, double angle, double power, double distance, double timeout) {
     this.drivetrain = drivetrain;
     this.angle = angle;
     this.power = power;

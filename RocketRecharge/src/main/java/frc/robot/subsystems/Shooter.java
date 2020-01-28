@@ -28,9 +28,9 @@ import frc.robot.Constants;
 public class Shooter extends SubsystemBase {
   CANSparkMax shooterMotor;
   WPI_TalonSRX angleMotor;
-  CANPIDController pidController;
+  CANPIDController shooterPID;
   CANEncoder encoder;
-  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
+  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Shooter");
   private NetworkTableEntry ShooterkP = tab.addPersistent("ShooterkP", Constants.ShooterkP).getEntry();
@@ -40,7 +40,7 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry ShooterkFF = tab.addPersistent("ShooterkFF", Constants.ShooterkFF).getEntry();
   private NetworkTableEntry ShooterkMaxOutput = tab.addPersistent("ShooterkMaxOutput", Constants.ShooterkMaxOutput).getEntry();
   private NetworkTableEntry ShooterkMinOutput = tab.addPersistent("ShooterkMinOutput", Constants.ShooterkMinOutput).getEntry();
-  private NetworkTableEntry ShooterMaxRPM = tab.addPersistent("ShooterkMaxOutput", Constants.ShooterMaxRPM).getEntry();
+  //RIP MaxRPM you will be missed D:
 
   private NetworkTableEntry kTimeoutMs = tab.addPersistent("ShooterkMaxOutput", Constants.kTimeoutMs).getEntry();
   private NetworkTableEntry kPIDLoopIdx = tab.addPersistent("ShooterkMaxOutput", Constants.kPIDLoopIdx).getEntry();
@@ -57,7 +57,7 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     shooterMotor = new CANSparkMax(7, MotorType.kBrushless);
     shooterMotor.restoreFactoryDefaults();
-    pidController = shooterMotor.getPIDController();
+    shooterPID = shooterMotor.getPIDController();
     encoder = shooterMotor.getEncoder();
 
     // PID coefficients
@@ -68,15 +68,15 @@ public class Shooter extends SubsystemBase {
     kFF = 0; 
     kMaxOutput = 1; 
     kMinOutput = -1;
-    maxRPM = 5700;
+    
  
     // set PID coefficients
-    pidController.setP(Constants.ShooterkP);
-    pidController.setI(Constants.ShooterkI);
-    pidController.setD(Constants.ShooterkD);
-    pidController.setIZone(Constants.ShooterkIz);
-    pidController.setFF(Constants.ShooterkFF);
-    pidController.setOutputRange(Constants.ShooterkMinOutput, Constants.ShooterkMaxOutput);
+    shooterPID.setP(Constants.ShooterkP);
+    shooterPID.setI(Constants.ShooterkI);
+    shooterPID.setD(Constants.ShooterkD);
+    shooterPID.setIZone(Constants.ShooterkIz);
+    shooterPID.setFF(Constants.ShooterkFF);
+    shooterPID.setOutputRange(Constants.ShooterkMinOutput, Constants.ShooterkMaxOutput);
 
 
     //angle motor config
@@ -126,7 +126,7 @@ public class Shooter extends SubsystemBase {
     */
 
     //Shooter with Neo
-    pidController.setReference(RPM, ControlType.kVelocity);
+    shooterPID.setReference(RPM, ControlType.kVelocity);
     return true;
   }
 
@@ -141,6 +141,56 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    //now for changing the PID values on robot and in Constants.java. this is going to be _very_ long
+    double tempSP = ShooterkP.getDouble(Constants.ShooterkP);
+    if(Constants.ShooterkP != tempSP) {
+      Constants.ShooterkP = tempSP;
+      shooterPID.setP(Constants.ShooterkP);
+    }
+
+    double tempSI = ShooterkI.getDouble(Constants.ShooterkI);
+    if(Constants.ShooterkI != tempSI) {
+      Constants.ShooterkI = tempSI;
+      shooterPID.setI(Constants.ShooterkI);
+    }
+
+    double tempSD = ShooterkD.getDouble(Constants.ShooterkD);
+    if(Constants.ShooterkD != tempSD) {
+      Constants.ShooterkD = tempSD;
+      shooterPID.setD(Constants.ShooterkD);
+    }
+
+    double tempSIz = ShooterkIz.getDouble(Constants.ShooterkIz);
+    if(Constants.ShooterkIz != tempSIz) {
+      Constants.ShooterkIz = tempSIz;
+      shooterPID.setIZone(Constants.ShooterkIz);
+    }
+
+    double tempSFF = ShooterkFF.getDouble(Constants.ShooterkFF);
+    if(Constants.ShooterkFF != tempSFF) {
+      Constants.ShooterkFF = tempSFF;
+      shooterPID.setFF(Constants.ShooterkFF);
+    }
+
+    double tempSMax = ShooterkMaxOutput.getDouble(Constants.ShooterkMaxOutput);
+    if(Constants.ShooterkMaxOutput != tempSMax) {
+      Constants.ShooterkMaxOutput = tempSMax;
+      shooterPID.setOutputRange(Constants.ShooterkMinOutput,Constants.ShooterkMaxOutput);
+    }
+  
+    double tempSMin = ShooterkMinOutput.getDouble(Constants.ShooterkMinOutput);
+    if(Constants.ShooterkMinOutput != tempSMin) {
+      Constants.ShooterkMaxOutput = tempSMin;
+      shooterPID.setOutputRange(Constants.ShooterkMinOutput, Constants.ShooterkMaxOutput);
+    }
+
+    //angle motor
+
+    
+
+
+
   }
 }
 

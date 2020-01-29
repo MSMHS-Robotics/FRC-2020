@@ -10,7 +10,7 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 
 import frc.robot.Constants;
-
+import frc.robot.autonomous.DriveOffLine;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DriverStation;
 //import edu.wpi.first.wpilibj.Joystick;
@@ -284,6 +284,8 @@ public class Drivetrain extends SubsystemBase {
       encoderLeft3.setPositionConstant(Constants.leftTickConstant);
     }
 
+    tab.putData("DriveOffLine", new DriveOffLine(this));
+
     //dang that is some messy code
 
   }
@@ -420,6 +422,14 @@ public class Drivetrain extends SubsystemBase {
     final double drivePower = MathUtil.clamp(drivingPID.calculate(currentDistance, angle), -0.5, 0.5);
     final boolean headingAligned = this.driveOnHeading(drivePower, angle);
     return drivingPID.atSetpoint() && headingAligned;
+  }
+
+  /**
+   * Resets our gyro (AHRS) so we don't kill people in auto
+   */
+  public boolean resetGyro() {
+    ahrs.reset();
+    return true;
   }
 
 }

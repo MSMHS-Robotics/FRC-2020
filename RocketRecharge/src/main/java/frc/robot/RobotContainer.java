@@ -10,10 +10,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.autonomous.DriveOffLine;
 import frc.robot.autonomous.EightBallAuto;
 import frc.robot.commands.AlignToTargetCommand;
 import frc.robot.commands.AlignToTargetCommandSnipa;
-import frc.robot.commands.drivetrain.TurnOnHeading;
+//import frc.robot.commands.drivetrain.TurnOnHeading;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -38,7 +39,8 @@ public class RobotContainer {
  
  //auto commands
  // private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain, 90, -1);
- private final EightBallAuto m_autoCommand = new EightBallAuto(drivetrain);
+ private final EightBallAuto eightBallAuto = new EightBallAuto(drivetrain);
+ private final DriveOffLine driveAuto = new DriveOffLine(drivetrain);
 
 
  //Drivetrain Commands
@@ -81,7 +83,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return driveAuto;
   }
 
   public RunCommand getDriveCommand(){

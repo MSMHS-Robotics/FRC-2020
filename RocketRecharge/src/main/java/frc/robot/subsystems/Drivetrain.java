@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+
 import com.kauailabs.navx.frc.AHRS;
 
 import frc.robot.Constants;
@@ -51,6 +52,7 @@ public class Drivetrain extends SubsystemBase {
   PIDController drivingPID = new PIDController(1, 0, 0);
   
   private ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain Tab");
+  
   private NetworkTableEntry visionConstraintMax = tab.addPersistent("VisionPIDMax", Constants.visionPIDconstraints[1]).getEntry();
   private NetworkTableEntry visionConstraintMin = tab.addPersistent("VisionPIDMin", Constants.visionPIDconstraints[0]).getEntry();
   private NetworkTableEntry headingConstraintMin = tab.addPersistent("HeadingPIDMin", Constants.headingPIDconstraints[0]).getEntry();
@@ -76,8 +78,6 @@ public class Drivetrain extends SubsystemBase {
   private NetworkTableEntry leftTickConstant = tab.addPersistent("LTickConstant", Constants.leftTickConstant).getEntry();
   private NetworkTableEntry leftEncoderValue = tab.addPersistent("LeftEncoder", 0).getEntry();
   private NetworkTableEntry rightEncoderValue = tab.addPersistent("RightEncoder", 0).getEntry();
-
-
 
   private final CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
   private final RocketEncoder encoderLeft1 = new RocketEncoder (left1);
@@ -283,8 +283,6 @@ public class Drivetrain extends SubsystemBase {
       encoderLeft2.setPositionConstant(Constants.leftTickConstant);
       encoderLeft3.setPositionConstant(Constants.leftTickConstant);
     }
-
-    tab.putData("DriveOffLine", new DriveOffLine(this));
 
     //dang that is some messy code
 

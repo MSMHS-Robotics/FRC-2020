@@ -7,10 +7,14 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+import java.util.TreeMap;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.autonomous.DriveOffLine;
+import frc.robot.autonomous.DriveOffLineReverse;
 import frc.robot.autonomous.EightBallAuto;
 import frc.robot.commands.AlignToTargetCommand;
 import frc.robot.commands.AlignToTargetCommandSnipa;
@@ -39,8 +43,8 @@ public class RobotContainer {
  
  //auto commands
  // private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain, 90, -1);
- private final EightBallAuto eightBallAuto = new EightBallAuto(drivetrain);
- private final DriveOffLine driveAuto = new DriveOffLine(drivetrain);
+ //private final EightBallAuto eightBallAuto = new EightBallAuto(drivetrain);
+ //private final DriveOffLine driveAuto = new DriveOffLine(drivetrain);
 
 
  //Drivetrain Commands
@@ -52,7 +56,10 @@ public class RobotContainer {
  
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain);
   private final AlignToTargetCommandSnipa alignSnipa = new AlignToTargetCommandSnipa(drivetrain);
-  
+  private TreeMap<String, Command> autos = new TreeMap<String, Command>();
+  private ArrayList<String> autoNames;
+  private int curr_auto = 0;
+  private int lengthOfList;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -60,6 +67,11 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    autos.put("Drive Off Line", new DriveOffLine(drivetrain));
+    autos.put("Drive Off Line Reverse", new DriveOffLineReverse(drivetrain));
+    autos.put("Eight Ball Auto", new EightBallAuto(drivetrain));
+    autoNames = new ArrayList<>(autos.keySet());
+    lengthOfList = autoNames.size();
   }
 
   /**
@@ -75,6 +87,25 @@ public class RobotContainer {
     aButton.whenReleased(runDrivetrain);
   }
 
+  public String getNames() {
+    String tempAutoNames = "";
+    for(int i = 0; i < this.getLength(); i++) {
+      tempAutoNames += (autoNames.get(i) + ", ");
+    }
+    return tempAutoNames;
+  }
+
+  public String getName(int y) {
+    return "\n>>" + autoNames.get(y);
+  }
+
+  public void setAutoNum(int x) {
+    curr_auto = x;
+  }
+
+  public int getLength() {
+    return lengthOfList;
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -82,8 +113,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return driveAuto;
+    //this might automagically work. no touchy.
+    return autos.get(autoNames.get(curr_auto));
   }
 
   public RunCommand getDriveCommand(){

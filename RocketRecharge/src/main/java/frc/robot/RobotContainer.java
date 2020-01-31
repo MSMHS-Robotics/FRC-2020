@@ -8,10 +8,7 @@
 package frc.robot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -46,8 +43,8 @@ public class RobotContainer {
  
  //auto commands
  // private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain, 90, -1);
- private final EightBallAuto eightBallAuto = new EightBallAuto(drivetrain);
- private final DriveOffLine driveAuto = new DriveOffLine(drivetrain);
+ //private final EightBallAuto eightBallAuto = new EightBallAuto(drivetrain);
+ //private final DriveOffLine driveAuto = new DriveOffLine(drivetrain);
 
 
  //Drivetrain Commands
@@ -91,7 +88,11 @@ public class RobotContainer {
   }
 
   public String getNames() {
-    return autoNames.toString();
+    String tempAutoNames = "";
+    for(int i = 0; i < this.getLength(); i++) {
+      tempAutoNames += (autoNames.get(i) + ", ");
+    }
+    return tempAutoNames;
   }
 
   public String getName(int y) {

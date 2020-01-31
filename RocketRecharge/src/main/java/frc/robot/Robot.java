@@ -27,11 +27,10 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  private String tempAutoNames;
   private int tempCurrAuto = 0;
   private ShuffleboardTab autoTab = Shuffleboard.getTab("Auto Tab");
   private NetworkTableEntry CurrentAuto = autoTab.addPersistent("Current Auto", "initializing").getEntry();
-
+  private NetworkTableEntry allAutos = autoTab.addPersistent("All Auto Programs", "intiializing").getEntry();
   private Joystick gamepad1 = new Joystick(0);
 
   /**
@@ -67,20 +66,20 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    allAutos.setString(m_robotContainer.getNames());
   }
 
   @Override
   public void disabledPeriodic() {
-    tempAutoNames = m_robotContainer.getNames();
     m_robotContainer.setAutoNum(tempCurrAuto);
     //dpad is 6. 0 is up and 4 is down
-    if(gamepad1.getPOV() == 0) {
+    if(gamepad1.getPOV() == 180) {
       if(tempCurrAuto < m_robotContainer.getLength() - 1) {
         tempCurrAuto += 1;
       }
       m_robotContainer.setAutoNum(tempCurrAuto);
     }
-    else if(gamepad1.getPOV() == 180) {
+    else if(gamepad1.getPOV() == 0) {
       if(tempCurrAuto > 0) {
         tempCurrAuto -= 1;
       }

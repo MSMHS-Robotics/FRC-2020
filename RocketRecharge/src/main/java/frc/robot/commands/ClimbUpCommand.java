@@ -11,15 +11,11 @@
 
 /*----------------------------------------------------------------------------*/
 
-
-
 package frc.robot.commands;
 
-
-
-import frc.robot.subsystems.Climber;
-
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Climber;;
 
 /////HOLD UP I AIN"T DONE WITH EDITING PLEASE DO NOT WORRY!
 
@@ -30,6 +26,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  */
 
 public class ClimbUpCommand extends CommandBase {
+      private static final String Angle = null;
+  DigitalInput forwardLimitSwitch, reverseLimitSwitch;
 
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
@@ -42,15 +40,17 @@ public class ClimbUpCommand extends CommandBase {
    
    */
 
-  public ClimbUpCommand(Shooter angleadjust,double angle) {
+  public ClimbUpCommand(double angleadjust, double angle) { //CHANGE THIS LATER!
 
-    angleAdjust = angleadjust;
+    DigitalInput forwardLimitSwitch = new DigitalInput(1);
 
-    Angle = angle;
+    double angleAdjust = angleadjust; //FIX LATER
+
+    double Angle = angle;
 
     // Use addRequirements() here to declare subsystem dependencies.
 
-    addRequirements(angleadjust);
+    //addRequirements(angleadjust);
 
   }
 
@@ -72,8 +72,17 @@ public class ClimbUpCommand extends CommandBase {
 
   public void execute() {
 
-    isLinedUp = angleAdjust.shooterAngle(Angle);
+    Object angleAdjust;
+    Object isLinedUp = angleAdjust.shooterAngle(Angle);
 
+    Object output;
+    if (forwardLimitSwitch.get()) // If the forward limit switch is pressed, we want to keep the values between -1
+                                  // and 0
+            output = Math.min((int) output, 0);
+
+        else if(reverseLimitSwitch.get()) // If the reversed limit switch is pressed, we want to keep the values between 0 and 1
+            output = Math.max((int) output, 0);
+      //I ADDED THE BOOLEAN STATEMENT FOR THE LIMIT SWITCH. 
   }
 
 

@@ -17,9 +17,9 @@
 package frc.robot.commands;
 
 
-
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 
 /////HOLD UP I AIN"T DONE WITH EDITING PLEASE DO NOT WORRY!
 
@@ -40,7 +40,7 @@ public class StopClimber extends CommandBase {
    
    */
 
-  public StopClimber {
+  public StopClimber() {
 
     
 
@@ -76,12 +76,12 @@ public class StopClimber extends CommandBase {
 
 
   // Called once the command ends or is interrupted.
-
-  @Override
-public void end {
-
-  }
-
+/*
+@Override
+public void end() {
+  
+}
+*/
 
 
   // Returns true when the command should end.
@@ -89,8 +89,8 @@ public void end {
   @Override
 
   public boolean isFinished() {
-      Climber.set(0);
-
+    Climber.set(0);
+    return true;
   }
 
 }

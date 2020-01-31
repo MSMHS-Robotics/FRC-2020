@@ -1,30 +1,17 @@
-package org.usfirst.frc.team2723.robot.subsystems;
+package frc.robot.subsystems;
 
-package org.usfirst.frc.team2723.robot.subsystems;
+import edu.wpi.first.wpilibj.DigitalInput;
+//import edu.wpi.first.wpilibj.Counter;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
-
-
-import org.usfirst.frc.team2723.robot.Robot;
-
-import org.usfirst.frc.team2723.util.Constants;
-
-
-
-import edu.wpi.first.wpilibj.Talon;
-
-import edu.revrobotics.CANSparkMax;
-
-import edu.wpi.first.wpilibj.command.Subsystem;
-
-
-
-/**
-
- *
-
- */
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANDigitalInput.LimitSwitch;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Climber extends SubsystemBase {
+	
+	private final CANSparkMax climberMotor = new CANSparkMax(8, MotorType.kBrushless);
 
 
 
@@ -34,29 +21,38 @@ public class Climber extends SubsystemBase {
 
 	//public CANSparkMax Climber;
 	
-	climberMotor = new CANSparkMax(CAN_ID);
-
+	
 	DigitalInput forwardLimitSwitch, reverseLimitSwitch;
 
 	
 
 	public Climber() {
 
-	    climberMotor = Robot.hardware.climberMotor;
-		DigitalInput forwardLimitSwitch = new DigitalInput(1);
+	    
+		final DigitalInput forwardLimitSwitch = new DigitalInput(1);
 
 
 	}
 
-	public ClimberDeploy() {
+	public boolean DeployClimber() {
 
-		climberMotor.set(Constants.CLIMBER_CLIMBER_SPEED);
+		climberMotor.set(Constants.motorPosition);
+		if(forwardLimitSwitch.get()){
+			climberMotor.set(0);
+			return true;	
+		}
+			return false;
 
+		//climberMotor.set(Constants.motorPosition);
+		//if (forwardLimitSwitch.get()){
+			//return true;
+		//}
+		//return false;
 	}
 
-	public ClimberS() {
+	public void ClimbUpCommand() {
 
-		climberMotor.set(Constants.INTAKE_OUTTAKE_SPEED);
+		climberMotor.set(Constants.motorUp);
 
 	}
 
@@ -64,6 +60,9 @@ public class Climber extends SubsystemBase {
 
 		climberMotor.set(0);
 
+	}
+
+	public static void set(int i) {
 	}
 
 

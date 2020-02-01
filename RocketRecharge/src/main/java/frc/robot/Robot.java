@@ -7,9 +7,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+//import frc.robot.subsystems.Drivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -21,6 +26,12 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+
+  private int tempCurrAuto = 0;
+  private ShuffleboardTab autoTab = Shuffleboard.getTab("Auto Tab");
+  private NetworkTableEntry CurrentAuto = autoTab.addPersistent("Current Auto", "initializing").getEntry();
+  private NetworkTableEntry allAutos = autoTab.addPersistent("All Auto Programs", "intiializing").getEntry();
+  private Joystick gamepad1 = new Joystick(0);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -47,6 +58,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    //SmartDashboard.putBoolean(drivetrain.isVisionAligned());
   }
 
   /**
@@ -54,10 +66,32 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    allAutos.setString(m_robotContainer.getNames());
   }
 
   @Override
   public void disabledPeriodic() {
+    m_robotContainer.setAutoNum(tempCurrAuto);
+    //dpad is 6. 0 is up and 4 is down
+    if(gamepad1.getPOV() == 180) {
+      if(tempCurrAuto < m_robotContainer.getLength() - 1) {
+        tempCurrAuto += 1;
+      }
+      m_robotContainer.setAutoNum(tempCurrAuto);
+    }
+    else if(gamepad1.getPOV() == 0) {
+      if(tempCurrAuto > 0) {
+        tempCurrAuto -= 1;
+      }
+      m_robotContainer.setAutoNum(tempCurrAuto);
+    }
+    try {
+      Thread.sleep(100);
+    }
+    catch(InterruptedException e) {
+      e.printStackTrace();
+    }
+    CurrentAuto.setString(m_robotContainer.getName(tempCurrAuto));
   }
 
   /**
@@ -89,13 +123,16 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    
+    // Let the driver take over
+    m_robotContainer.getDriveCommand().schedule();
   }
 
   /**
    * This function is called periodically during operator control.
    */
   @Override
-  public void teleopPeriodic() {
+  public void teleopPeriodic(){
   }
 
   @Override

@@ -18,8 +18,10 @@ import frc.robot.autonomous.DriveOffLineReverse;
 import frc.robot.autonomous.EightBallAuto;
 import frc.robot.commands.AlignToTargetCommand;
 import frc.robot.commands.AlignToTargetCommandSnipa;
+import frc.robot.commands.WarmupCommand;
 //import frc.robot.commands.drivetrain.TurnOnHeading;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -37,9 +39,11 @@ public class RobotContainer {
   private final Joystick gamepad1 = new Joystick(0);
   JoystickButton aButton = new JoystickButton(gamepad1, 1);
   JoystickButton bButton = new JoystickButton(gamepad1, 2);
+  JoystickButton xButton = new JoystickButton(gamepad1, 3);
 
   //subsystems go here:
   private final Drivetrain drivetrain = new Drivetrain();
+  private final Shooter shooter = new Shooter();
  
  //auto commands
  // private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain, 90, -1);
@@ -85,6 +89,8 @@ public class RobotContainer {
     bButton.whenPressed(alignSnipa);
     bButton.whenReleased(runDrivetrain);
     aButton.whenReleased(runDrivetrain);
+    xButton.whenHeld(new WarmupCommand(shooter, gamepad1, -1, false));
+  
   }
 
   public String getNames() {

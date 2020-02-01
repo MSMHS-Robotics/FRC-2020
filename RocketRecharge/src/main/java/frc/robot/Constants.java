@@ -32,4 +32,16 @@ public final class Constants {
     public static double AnglekP = 0.15;
     public static double AnglekI = 0.0;
     public static double AnglekD = 1.0;
+    public static double AnglekF = 0;
+
+    //Preset Constants
+    public static double TrenchAngle = 35;
+    public static double TrenchRPM = 6;
+    public static double TenFootAngle = 45; 
+    public static double TenFootRPM = 10;
+    public static double LayupAngle = 10;
+    public static double LayupRPM = 5;
+
+    public static double RPMTolerance = 10;
+    public static double AngleTolerance = 10;
 }

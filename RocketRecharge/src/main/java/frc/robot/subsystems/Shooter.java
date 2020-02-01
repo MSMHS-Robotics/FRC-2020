@@ -27,28 +27,36 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
   CANSparkMax shooterMotor;
+  CANSparkMax shooterMotor2;
   WPI_TalonSRX angleMotor;
   CANPIDController shooterPID;
+  CANPIDController anglePID;
   CANEncoder encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
+  private double RPMSetpoint;
+  private double angleSetpoint;
 
-  private ShuffleboardTab tab = Shuffleboard.getTab("Shooter");
-  private NetworkTableEntry ShooterkP = tab.addPersistent("ShooterkP", Constants.ShooterkP).getEntry();
-  private NetworkTableEntry ShooterkI = tab.addPersistent("ShooterkI", Constants.ShooterkI).getEntry();
-  private NetworkTableEntry ShooterkD = tab.addPersistent("ShooterkD", Constants.ShooterkD).getEntry();
-  private NetworkTableEntry ShooterkIz = tab.addPersistent("ShooterkIz", Constants.ShooterkIz).getEntry();
-  private NetworkTableEntry ShooterkFF = tab.addPersistent("ShooterkFF", Constants.ShooterkFF).getEntry();
-  private NetworkTableEntry ShooterkMaxOutput = tab.addPersistent("ShooterkMaxOutput", Constants.ShooterkMaxOutput).getEntry();
-  private NetworkTableEntry ShooterkMinOutput = tab.addPersistent("ShooterkMinOutput", Constants.ShooterkMinOutput).getEntry();
+  private ShuffleboardTab tab1 = Shuffleboard.getTab("Shooter");
+  private NetworkTableEntry ShooterkP = tab1.addPersistent("ShooterkP", Constants.ShooterkP).getEntry();
+  private NetworkTableEntry ShooterkI = tab1.addPersistent("ShooterkI", Constants.ShooterkI).getEntry();
+  private NetworkTableEntry ShooterkD = tab1.addPersistent("ShooterkD", Constants.ShooterkD).getEntry();
+  private NetworkTableEntry ShooterkIz = tab1.addPersistent("ShooterkIz", Constants.ShooterkIz).getEntry();
+  private NetworkTableEntry ShooterkFF = tab1.addPersistent("ShooterkFF", Constants.ShooterkFF).getEntry();
+  private NetworkTableEntry ShooterkMaxOutput = tab1.addPersistent("ShooterkMaxOutput", Constants.ShooterkMaxOutput).getEntry();
+  private NetworkTableEntry ShooterkMinOutput = tab1.addPersistent("ShooterkMinOutput", Constants.ShooterkMinOutput).getEntry();
   //RIP MaxRPM you will be missed D:
 
-  private NetworkTableEntry kTimeoutMs = tab.addPersistent("ShooterkMaxOutput", Constants.kTimeoutMs).getEntry();
-  private NetworkTableEntry kPIDLoopIdx = tab.addPersistent("ShooterkMaxOutput", Constants.kPIDLoopIdx).getEntry();
-  private NetworkTableEntry AnglekF = tab.addPersistent("ShooterkMaxOutput", Constants.AnglekF).getEntry();
-  private NetworkTableEntry AnglekP = tab.addPersistent("ShooterkMaxOutput", Constants.AnglekP).getEntry();
-  private NetworkTableEntry AnglekI = tab.addPersistent("ShooterkMaxOutput", Constants.AnglekI).getEntry();
-  private NetworkTableEntry AnglekD = tab.addPersistent("ShooterkMaxOutput", Constants.AnglekD).getEntry();
+  private NetworkTableEntry AnglekP = tab1.addPersistent("ShooterkMaxOutput", Constants.AnglekP).getEntry();
+  private NetworkTableEntry AnglekI = tab1.addPersistent("ShooterkMaxOutput", Constants.AnglekI).getEntry();
+  private NetworkTableEntry AnglekD = tab1.addPersistent("ShooterkMaxOutput", Constants.AnglekD).getEntry();
   
+  private ShuffleboardTab tab2 = Shuffleboard.getTab("Shooter Presets");
+  private NetworkTableEntry TrenchAngle = tab2.addPersistent("TrenchAngle", Constants.TrenchAngle).getEntry();
+  private NetworkTableEntry TrenchRPM = tab2.addPersistent("TrenchRPM", Constants.TrenchRPM).getEntry();
+  private NetworkTableEntry TenFootAngle = tab2.addPersistent("TenFootAngle", Constants.TenFootAngle).getEntry();
+  private NetworkTableEntry TenFootRPM = tab2.addPersistent("TenFootRPM", Constants.TenFootRPM).getEntry();
+  private NetworkTableEntry LayupAngle = tab2.addPersistent("LayupAngle", Constants.LayupAngle).getEntry();
+  private NetworkTableEntry LayupRPM = tab2.addPersistent("LayupRPM", Constants.LayupRPM).getEntry();
 
 
   /**
@@ -59,17 +67,12 @@ public class Shooter extends SubsystemBase {
     shooterMotor.restoreFactoryDefaults();
     shooterPID = shooterMotor.getPIDController();
     encoder = shooterMotor.getEncoder();
-
-    // PID coefficients
-    kP = 5e-5; 
-    kI = 1e-6;
-    kD = 0; 
-    kIz = 0; 
-    kFF = 0; 
-    kMaxOutput = 1; 
-    kMinOutput = -1;
-    
  
+    //second motor
+    shooterMotor2 = new CANSparkMax(8,MotorType.kBrushless);
+    shooterMotor2.restoreFactoryDefaults();
+    shooterMotor2.follow(shooterMotor, true);
+
     // set PID coefficients
     shooterPID.setP(Constants.ShooterkP);
     shooterPID.setI(Constants.ShooterkI);
@@ -114,17 +117,7 @@ public class Shooter extends SubsystemBase {
     
   }
 
-  public boolean warmUp(double RPM) {
-    /* Shooter with talon
-			 //Convert 500 RPM to units / 100ms.
-			 //4096 Units/Rev * 500 RPM / 600 100ms/min in either direction:
-			 // velocity setpoint is in units/100ms
-			 
-			double targetVelocity = RPM * 4096 / 600; 
-    shooterMotor.set(ControlMode.Velocity,targetVelocity);
-    return true;
-    */
-
+  public boolean warmUp(double RPM) { 
     //Shooter with Neo
     shooterPID.setReference(RPM, ControlType.kVelocity);
     return true;
@@ -136,7 +129,38 @@ public class Shooter extends SubsystemBase {
     return true;
   }
 
-  
+  public boolean stopPlease(){
+    shooterMotor.setVoltage(0);
+    return true;
+  }
+
+  public void trenchShot(){
+    shooterAngle(Constants.TrenchAngle);
+    warmUp(Constants.TrenchRPM);
+    RPMSetpoint = Constants.TrenchRPM;
+    angleSetpoint = Constants.TrenchAngle;
+  }
+
+  public void tenFootShot(){
+    shooterAngle(Constants.TenFootAngle);
+    warmUp(Constants.TenFootRPM);
+    RPMSetpoint = Constants.TenFootRPM;
+    angleSetpoint = Constants.TenFootAngle;
+  }
+
+  public void layupShot(){
+    shooterAngle(Constants.LayupAngle);
+    warmUp(Constants.LayupAngle);
+    RPMSetpoint = Constants.LayupRPM;
+    angleSetpoint = Constants.LayupAngle;
+  }
+
+  public boolean isShooterGood(){
+    if(Math.abs(encoder.getVelocity() - RPMSetpoint) < Constants.RPMTolerance && Math.abs(encoder.getPosition() - angleSetpoint) < Constants.AnglekF){
+      return true;
+    }
+    return false;
+  }
 
   @Override
   public void periodic() {
@@ -187,9 +211,54 @@ public class Shooter extends SubsystemBase {
 
     //angle motor
 
+    double tempAkp = AnglekP.getDouble(Constants.AnglekP);
+    if(Constants.AnglekP != tempAkp) {
+      Constants.AnglekP = tempAkp;
+      anglePID.setP(Constants.AnglekP);
+    }
     
+    double tempAki = AnglekI.getDouble(Constants.AnglekI);
+    if(Constants.AnglekI != tempAki) {
+      Constants.AnglekI = tempAki;
+      anglePID.setI(Constants.AnglekI);
+    }
 
+    double tempAkd = AnglekD.getDouble(Constants.AnglekD);
+    if(Constants.AnglekD != tempAkd) {
+      Constants.AnglekD = tempAkd;
+      anglePID.setD(Constants.AnglekD);
+    }
+    
+    //Preset
+    double tempTrenchAngle = TrenchAngle.getDouble(Constants.TrenchAngle);
+    if(Constants.TrenchAngle != tempTrenchAngle) {
+      Constants.TrenchAngle = tempTrenchAngle;
+    }
 
+    double tempTrenchRPM = TrenchRPM.getDouble(Constants.TrenchRPM);
+    if(Constants.TrenchRPM != tempTrenchRPM){
+      Constants.TrenchRPM = tempTrenchRPM;
+    }
+
+    double tempTenFootAngle = TenFootAngle.getDouble(Constants.TenFootAngle);
+    if(Constants.TenFootAngle != tempTenFootAngle) {
+      Constants.TenFootAngle = tempTenFootAngle;
+    }
+
+    double tempTenFootRPM = TenFootRPM.getDouble(Constants.TenFootRPM);
+    if(Constants.TenFootRPM != tempTenFootRPM){
+      Constants.TenFootRPM = tempTenFootRPM;
+    }
+
+    double tempLayupAngle = LayupAngle.getDouble(Constants.LayupAngle);
+    if(Constants.LayupAngle != tempLayupAngle) {
+      Constants.LayupAngle = tempTrenchAngle;
+    }
+
+    double tempLayupRPM = LayupRPM.getDouble(Constants.LayupRPM);
+    if(Constants.LayupRPM != tempLayupRPM){
+      Constants.LayupRPM = tempLayupRPM;
+    }
 
   }
 }

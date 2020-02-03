@@ -11,7 +11,6 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 
 import frc.robot.Constants;
-import frc.robot.autonomous.DriveOffLine;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DriverStation;
 //import edu.wpi.first.wpilibj.Joystick;
@@ -166,10 +165,10 @@ public class Drivetrain extends SubsystemBase {
     Constants.headingPIDconstraints[1] = headingConstraintMax.getDouble(Constants.headingPIDconstraints[1]);
 
     Constants.visionPIDconstraints[0] = visionConstraintMin.getDouble(Constants.visionPIDconstraints[0]);
-    Constants.visionPIDconstraints[1] = visionConstraintMin.getDouble(Constants.visionPIDconstraints[1]);
+    Constants.visionPIDconstraints[1] = visionConstraintMax.getDouble(Constants.visionPIDconstraints[1]);
 
     Constants.drivingPIDconstraints[0] = drivingConstraintMin.getDouble(Constants.drivingPIDconstraints[0]);
-    Constants.drivingPIDconstraints[1] = drivingConstraintMin.getDouble(Constants.drivingPIDconstraints[1]);
+    Constants.drivingPIDconstraints[1] = drivingConstraintMax.getDouble(Constants.drivingPIDconstraints[1]);
 
 
     //now for changing the PID values on robot and in Constants.java. this is going to be _very_ long
@@ -197,7 +196,7 @@ public class Drivetrain extends SubsystemBase {
       visionPID.setTolerance(Constants.visionTolerance[0], Constants.visionTolerance[1]);
     }
 
-    double tempVisionVTolerance = vsnTolerance.getDouble(Constants.visionTolerance[1]);
+    double tempVisionVTolerance = vsnVTolerance.getDouble(Constants.visionTolerance[1]);
     if(Constants.visionTolerance[1] != tempVisionVTolerance) {
       Constants.visionTolerance[1] = tempVisionVTolerance;
       visionPID.setTolerance(Constants.visionTolerance[0], Constants.visionTolerance[1]);
@@ -229,7 +228,7 @@ public class Drivetrain extends SubsystemBase {
       drivingPID.setTolerance(Constants.drivingTolerance[0], Constants.drivingTolerance[1]);
     }
 
-    double tempDrivingVTolerance = drvTolerance.getDouble(Constants.drivingTolerance[1]);
+    double tempDrivingVTolerance = drvVTolerance.getDouble(Constants.drivingTolerance[1]);
     if(Constants.drivingTolerance[1] != tempDrivingVTolerance) {
       Constants.drivingTolerance[1] = tempDrivingVTolerance;
       drivingPID.setTolerance(Constants.drivingTolerance[0], Constants.drivingTolerance[1]);
@@ -260,7 +259,7 @@ public class Drivetrain extends SubsystemBase {
       headingPID.setTolerance(Constants.headingTolerance[0], Constants.headingTolerance[1]);
     }
 
-    double tempHeadingVTolerance = hdgTolerance.getDouble(Constants.headingTolerance[1]);
+    double tempHeadingVTolerance = hdgVTolerance.getDouble(Constants.headingTolerance[1]);
     if(Constants.headingTolerance[1] != tempHeadingVTolerance) {
       Constants.headingTolerance[1] = tempHeadingVTolerance;
       headingPID.setTolerance(Constants.headingTolerance[0], Constants.headingTolerance[1]);

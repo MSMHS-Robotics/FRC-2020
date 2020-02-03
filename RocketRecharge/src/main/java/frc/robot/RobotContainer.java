@@ -120,4 +120,8 @@ public class RobotContainer {
   public RunCommand getDriveCommand(){
     return runDrivetrain;
   }
+
+  public Joystick getJoystick1(){
+    return gamepad1;
+  }
 }

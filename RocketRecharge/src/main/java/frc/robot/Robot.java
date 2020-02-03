@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
   private NetworkTableEntry CurrentAuto = autoTab.addPersistent("Current Auto", "initializing").getEntry();
   private NetworkTableEntry allAutos = autoTab.addPersistent("All Auto Programs", "intiializing").getEntry();
   private Joystick gamepad1;
+  private Boolean wasPressed = false;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -71,22 +72,30 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    if(gamepad1.getPOV() == -1) {
+      wasPressed = false;
+    }
+    else if(!wasPressed) {
+      
+      //dpad is 6. 0 is up and 4 is down
+      if(gamepad1.getPOV() == 180) {
+        if(tempCurrAuto < m_robotContainer.getLength() - 1) {
+          tempCurrAuto += 1;
+          wasPressed = true;
+        }
+        m_robotContainer.setAutoNum(tempCurrAuto);
+      }
+      else if(gamepad1.getPOV() == 0) {
+        if(tempCurrAuto > 0) {
+          tempCurrAuto -= 1;
+          wasPressed = true;
+        }
+        m_robotContainer.setAutoNum(tempCurrAuto);
+      }
+    }
     m_robotContainer.setAutoNum(tempCurrAuto);
-    //dpad is 6. 0 is up and 4 is down
-    if(gamepad1.getPOV() == 180) {
-      if(tempCurrAuto < m_robotContainer.getLength() - 1) {
-        tempCurrAuto += 1;
-      }
-      m_robotContainer.setAutoNum(tempCurrAuto);
-    }
-    else if(gamepad1.getPOV() == 0) {
-      if(tempCurrAuto > 0) {
-        tempCurrAuto -= 1;
-      }
-      m_robotContainer.setAutoNum(tempCurrAuto);
-    }
     try {
-      Thread.sleep(100);
+      Thread.sleep(5);
     }
     catch(InterruptedException e) {
       e.printStackTrace();

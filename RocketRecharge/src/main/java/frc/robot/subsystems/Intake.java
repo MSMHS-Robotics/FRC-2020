@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -17,10 +19,11 @@ public class Intake extends SubsystemBase {
 
   private ShuffleboardTab Intaketab = Shuffleboard.getTab("Intake");
   private NetworkTableEntry intakeMotorSpeed = Intaketab.addPersistent("Intake Motor Speed", 0.5).getEntry();
-
+  private NetworkTableEntry intakePosition = Intaketab.addPersistent("Intake Position", false).getEntry();
+  private NetworkTableEntry shotPrepped = Intaketab.addPersistent("Shot Prepped", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
   //now for sensors
-  private DigitalInput intakeSensor;
-  private DigitalInput firstSensor;
+  //private DigitalInput intakeSensor;
+  //private DigitalInput firstSensor;
   private DigitalInput lastSensor;
   private DigitalInput bigWheelSensor;
   /**
@@ -31,8 +34,8 @@ public class Intake extends SubsystemBase {
 	armPistons = new Solenoid(1);
 	intakeMotor = new Talon(0); //our motors
 	beltMotor = new Talon(1);
-	intakeSensor = new DigitalInput(0); //some sensors
-	firstSensor = new DigitalInput(1);
+	//intakeSensor = new DigitalInput(0); //some sensors
+	//firstSensor = new DigitalInput(1);
 	lastSensor = new DigitalInput(2);
 	bigWheelSensor = new DigitalInput(3);
 	bigWheelMotor = new Talon(2);
@@ -57,19 +60,24 @@ public class Intake extends SubsystemBase {
 		//pretty sure that works, might take some tuning
 		if(bigWheelSensor.get()) {
 			bigWheelMotor.set(1);
+			shotPrepped.setBoolean(this.prepShot());
 			return true;
 		}
 		else {
 			bigWheelMotor.set(0);
+			shotPrepped.setBoolean(this.prepShot());
 		}
 	  }
 	  else {
 		  beltMotor.set(1);
+		  shotPrepped.setBoolean(this.prepShot());
 		  return false;
 	  }
+	  shotPrepped.setBoolean(this.prepShot());
 	  return false;
   }
 
+  /*
   public boolean setIdle() {
 	  if(firstSensor.get()) {
 		beltMotor.set(0);
@@ -80,6 +88,7 @@ public class Intake extends SubsystemBase {
 		return false;
 	  }
   }
+  */
 
   public void raiseIntake() {
 	armPistons.set(true);
@@ -89,6 +98,10 @@ public class Intake extends SubsystemBase {
 	  armPistons.set(false);
   }
 
+  public boolean isRaised() {
+	  return armPistons.get();
+  }
+
   @Override
 	public void periodic() {
 		double tempMotorSpeed = intakeMotorSpeed.getDouble(0.5);
@@ -96,5 +109,6 @@ public class Intake extends SubsystemBase {
 			Constants.intakeMotorSpeed = tempMotorSpeed;
 			intakeMotorSpeed.setDouble(Constants.intakeMotorSpeed);
 		}
+		intakePosition.setBoolean(armPistons.get());
 	}
 }

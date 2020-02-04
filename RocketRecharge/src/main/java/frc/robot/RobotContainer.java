@@ -10,11 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.FeedToShooterCommand;
-import frc.robot.commands.PrepLoadCommand;
+import frc.robot.commands.LowerIntakeCommand;
+//import frc.robot.commands.PrepLoadCommand;
 import frc.robot.commands.PrepShotCommand;
+import frc.robot.commands.RaiseIntakeCommand;
 import frc.robot.commands.RunIntakeCommand;
 import frc.robot.commands.StopFeedToShooterCommand;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -33,6 +34,8 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final Intake intake = new Intake();
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+
+  //joystick stuff starts
   private final Joystick gamepad1 = new Joystick(0);
   private final Joystick gamepad2 = new Joystick(1);
   JoystickButton aButton = new JoystickButton(gamepad1, 0);
@@ -41,12 +44,17 @@ public class RobotContainer {
   JoystickButton yButton = new JoystickButton(gamepad2, 3);
   Joystick leftStick = new Joystick(0);
 
+  //left and right bumpers
+  JoystickButton leftBumper = new JoystickButton(gamepad1, 5);
+  JoystickButton rightBumper = new JoystickButton(gamepad1, 6);
+
   RunIntakeCommand runIntake = new RunIntakeCommand(intake, (int) leftStick.getX());
-  PrepLoadCommand prepLoad = new PrepLoadCommand(intake);
+  //PrepLoadCommand prepLoad = new PrepLoadCommand(intake);
   FeedToShooterCommand feed = new FeedToShooterCommand(intake);
   PrepShotCommand prepShot = new PrepShotCommand(intake);
   StopFeedToShooterCommand stopFeed = new StopFeedToShooterCommand(intake);
-
+  LowerIntakeCommand lowerIntake = new LowerIntakeCommand(intake);
+  RaiseIntakeCommand raiseIntake = new RaiseIntakeCommand(intake);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -65,8 +73,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
     aButton.whenPressed(prepShot);
     bButton.whenPressed(feed);
-    xButton.whenPressed(prepLoad);
+    //xButton.whenPressed(prepLoad);
     yButton.whenReleased(stopFeed);
+    leftBumper.whenPressed(lowerIntake);
+    rightBumper.whenPressed(raiseIntake);
   }
 
 

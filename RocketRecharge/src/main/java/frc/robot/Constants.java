@@ -16,6 +16,34 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    //shooter PID constants
+    public static double ShooterkP = 5e-5;
+    public static double ShooterkI = 1e-6;
+    public static double ShooterkD = 0;
+    public static double ShooterkIz = 0;
+    public static double ShooterkFF = 0;
+    public static double ShooterkMaxOutput = 1;
+    public static double ShooterkMinOutput = -1;
+  
+
+    //angle PID Constants
+    public static final int kTimeoutMs = 30;
+    public static final int kPIDLoopIdx = 0;
+    public static double AnglekP = 0.15;
+    public static double AnglekI = 0.0;
+    public static double AnglekD = 1.0;
+    public static double AnglekF = 0;
+
+    //Preset Constants
+    public static double TrenchAngle = 35;
+    public static double TrenchRPM = 6;
+    public static double TenFootAngle = 45; 
+    public static double TenFootRPM = 10;
+    public static double LayupAngle = 10;
+    public static double LayupRPM = 5;
+
+    public static double RPMTolerance = 10;
+    public static double AngleTolerance = 10;
     public static double[] visionPID = {0.03, 0, 0};
     public static double[] visionPIDconstraints = {-0.5, 0.5};
     public static double[] headingPID = {0.15,0,0};

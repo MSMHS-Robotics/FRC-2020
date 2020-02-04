@@ -18,11 +18,12 @@ import frc.robot.autonomous.DriveOffLineReverse;
 import frc.robot.autonomous.EightBallAuto;
 import frc.robot.commands.AlignToTargetCommand;
 import frc.robot.commands.AlignToTargetCommandSnipa;
+import frc.robot.commands.WarmupCommand;
 //import frc.robot.commands.drivetrain.TurnOnHeading;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.FeedToShooterCommand;
 import frc.robot.commands.LowerIntakeCommand;
 //import frc.robot.commands.PrepLoadCommand;
@@ -30,7 +31,6 @@ import frc.robot.commands.PrepShotCommand;
 import frc.robot.commands.RaiseIntakeCommand;
 import frc.robot.commands.RunIntakeCommand;
 import frc.robot.commands.StopFeedToShooterCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -45,14 +45,13 @@ public class RobotContainer {
 
   //subsystems go here:
   private final Drivetrain drivetrain = new Drivetrain();
+  private final Shooter shooter = new Shooter();
  
  //auto commands
  // private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain, 90, -1);
  //private final EightBallAuto eightBallAuto = new EightBallAuto(drivetrain);
  //private final DriveOffLine driveAuto = new DriveOffLine(drivetrain);
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final Intake intake = new Intake();
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   //joystick stuff starts
   private final Joystick gamepad1 = new Joystick(0);
@@ -116,6 +115,8 @@ public class RobotContainer {
     yButton.whenReleased(stopFeed);
     leftBumper.whenPressed(lowerIntake);
     rightBumper.whenPressed(raiseIntake);
+    //xButton.whenHeld(new WarmupCommand(shooter, gamepad1, -1, false));
+  
   }
 
   public String getNames() {

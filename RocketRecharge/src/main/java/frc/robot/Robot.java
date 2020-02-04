@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
     }
     m_robotContainer.setAutoNum(tempCurrAuto);
     try {
-      Thread.sleep(5);
+      Thread.sleep(10);
     }
     catch(InterruptedException e) {
       e.printStackTrace();
@@ -108,7 +108,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+   // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

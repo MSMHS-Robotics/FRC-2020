@@ -66,7 +66,7 @@ public class RobotContainer {
     aButton.whenPressed(prepShot);
     bButton.whenPressed(feed);
     xButton.whenPressed(prepLoad);
-    yButton.whenPressed(stopFeed);
+    yButton.whenReleased(stopFeed);
   }
 
 

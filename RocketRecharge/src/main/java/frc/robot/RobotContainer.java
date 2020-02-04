@@ -125,14 +125,15 @@ public class RobotContainer {
     }
     return tempAutoNames;
   }
-/*
+
+  public String getName(int y) {
     return "\n>>" + autoNames.get(y);
   }
 
   public void setAutoNum(int x) {
     curr_auto = x;
   }
-*/
+
   public int getLength() {
     return lengthOfList;
   }

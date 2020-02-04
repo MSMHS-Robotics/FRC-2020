@@ -22,6 +22,16 @@ import frc.robot.commands.AlignToTargetCommandSnipa;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.FeedToShooterCommand;
+import frc.robot.commands.LowerIntakeCommand;
+//import frc.robot.commands.PrepLoadCommand;
+import frc.robot.commands.PrepShotCommand;
+import frc.robot.commands.RaiseIntakeCommand;
+import frc.robot.commands.RunIntakeCommand;
+import frc.robot.commands.StopFeedToShooterCommand;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -33,11 +43,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  //Joystick
-  private final Joystick gamepad1 = new Joystick(0);
-  JoystickButton aButton = new JoystickButton(gamepad1, 1);
-  JoystickButton bButton = new JoystickButton(gamepad1, 2);
-
   //subsystems go here:
   private final Drivetrain drivetrain = new Drivetrain();
  
@@ -45,7 +50,22 @@ public class RobotContainer {
  // private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain, 90, -1);
  //private final EightBallAuto eightBallAuto = new EightBallAuto(drivetrain);
  //private final DriveOffLine driveAuto = new DriveOffLine(drivetrain);
+  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final Intake intake = new Intake();
+  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  //joystick stuff starts
+  private final Joystick gamepad1 = new Joystick(0);
+  private final Joystick gamepad2 = new Joystick(1);
+  JoystickButton aButton = new JoystickButton(gamepad1, 0);
+  JoystickButton bButton = new JoystickButton(gamepad1, 1);
+  JoystickButton xButton = new JoystickButton(gamepad1, 2);
+  JoystickButton yButton = new JoystickButton(gamepad2, 3);
+  Joystick leftStick = new Joystick(0);
+
+  //left and right bumpers
+  JoystickButton leftBumper = new JoystickButton(gamepad1, 5);
+  JoystickButton rightBumper = new JoystickButton(gamepad1, 6);
 
  //Drivetrain Commands
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently
@@ -60,6 +80,13 @@ public class RobotContainer {
   private ArrayList<String> autoNames;
   private int curr_auto = 0;
   private int lengthOfList;
+  RunIntakeCommand runIntake = new RunIntakeCommand(intake, (int) leftStick.getX());
+  //PrepLoadCommand prepLoad = new PrepLoadCommand(intake);
+  FeedToShooterCommand feed = new FeedToShooterCommand(intake);
+  PrepShotCommand prepShot = new PrepShotCommand(intake);
+  StopFeedToShooterCommand stopFeed = new StopFeedToShooterCommand(intake);
+  LowerIntakeCommand lowerIntake = new LowerIntakeCommand(intake);
+  RaiseIntakeCommand raiseIntake = new RaiseIntakeCommand(intake);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -83,8 +110,12 @@ public class RobotContainer {
   private void configureButtonBindings() {
     aButton.whenPressed(align);
     bButton.whenPressed(alignSnipa);
-    bButton.whenReleased(runDrivetrain);
     aButton.whenReleased(runDrivetrain);
+    xButton.whenPressed(prepShot);
+    //bButton.whenPressed(feed);
+    yButton.whenReleased(stopFeed);
+    leftBumper.whenPressed(lowerIntake);
+    rightBumper.whenPressed(raiseIntake);
   }
 
   public String getNames() {
@@ -94,15 +125,14 @@ public class RobotContainer {
     }
     return tempAutoNames;
   }
-
-  public String getName(int y) {
+/*
     return "\n>>" + autoNames.get(y);
   }
 
   public void setAutoNum(int x) {
     curr_auto = x;
   }
-
+*/
   public int getLength() {
     return lengthOfList;
   }

@@ -43,4 +43,5 @@ public final class Constants {
         visionPID[1] = ksomething;
         visionPID[2] = ksomethingelse;
     }
+    public static double intakeMotorSpeed = 0.5;
 }

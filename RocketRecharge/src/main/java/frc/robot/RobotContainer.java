@@ -24,6 +24,12 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.commands.AlignToTargetCommand;
+import frc.robot.commands.drivetrain.TurnOnHeading;
+import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.commands.ClimbUpCommand;
+import frc.robot.commands.DeployClimber;
 import frc.robot.commands.FeedToShooterCommand;
 import frc.robot.commands.LowerIntakeCommand;
 //import frc.robot.commands.PrepLoadCommand;
@@ -31,6 +37,10 @@ import frc.robot.commands.PrepShotCommand;
 import frc.robot.commands.RaiseIntakeCommand;
 import frc.robot.commands.RunIntakeCommand;
 import frc.robot.commands.StopFeedToShooterCommand;
+import frc.robot.commands.RaiseClimber;
+import frc.robot.commands.RunIntakeCommand;
+import frc.robot.commands.StopFeedToShooterCommand;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -54,17 +64,31 @@ public class RobotContainer {
   private final Intake intake = new Intake();
 
   //joystick stuff starts
+  //Joystick
+
+  //subsystems go here:
+  
+ //auto commands
+  private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain, 90, -1);
+  private final Climber climber = new Climber();
   private final Joystick gamepad1 = new Joystick(0);
   private final Joystick gamepad2 = new Joystick(1);
   JoystickButton aButton = new JoystickButton(gamepad1, 0);
   JoystickButton bButton = new JoystickButton(gamepad1, 1);
   JoystickButton xButton = new JoystickButton(gamepad1, 2);
   JoystickButton yButton = new JoystickButton(gamepad2, 3);
+  JoystickButton aButton2 = new JoystickButton(gamepad2, 0);
+  JoystickButton bButton2 = new JoystickButton(gamepad2, 1);
+  JoystickButton xButton2 = new JoystickButton(gamepad2, 2);
+  
   Joystick leftStick = new Joystick(0);
 
   //left and right bumpers
   JoystickButton leftBumper = new JoystickButton(gamepad1, 5);
   JoystickButton rightBumper = new JoystickButton(gamepad1, 6);
+  RaiseClimber raiseClimber = new RaiseClimber(climber);
+  ClimbUpCommand climbUp = new ClimbUpCommand(climber);
+  DeployClimber deployClimber = new DeployClimber(climber);
 
  //Drivetrain Commands
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently
@@ -115,6 +139,15 @@ public class RobotContainer {
     yButton.whenReleased(stopFeed);
     leftBumper.whenPressed(lowerIntake);
     rightBumper.whenPressed(raiseIntake);
+    aButton.whenReleased(runDrivetrain);
+    //aButton.whenPressed(prepShot);
+    bButton.whenPressed(feed);
+    yButton.whenPressed(stopFeed);
+
+    //climber commands
+    aButton2.whenPressed(deployClimber);
+    xButton2.whenPressed(raiseClimber);
+    bButton2.whenHeld(climbUp);
     //xButton.whenHeld(new WarmupCommand(shooter, gamepad1, -1, false));
   
   }

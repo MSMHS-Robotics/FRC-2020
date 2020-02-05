@@ -11,15 +11,10 @@
 
 /*----------------------------------------------------------------------------*/
 
-
-
 package frc.robot.commands;
 
-
-
-import frc.robot.subsystems.Climber;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Climber;;
 
 /////HOLD UP I AIN"T DONE WITH EDITING PLEASE DO NOT WORRY!
 
@@ -30,9 +25,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  */
 
 public class ClimbUpCommand extends CommandBase {
-
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-
+  private Climber climber;
   /**
 
    * Creates a new ExampleCommand.
@@ -42,15 +36,11 @@ public class ClimbUpCommand extends CommandBase {
    
    */
 
-  public ClimbUpCommand(Shooter angleadjust,double angle) {
-
-    angleAdjust = angleadjust;
-
-    Angle = angle;
-
+  public ClimbUpCommand(Climber climber_) {
+    climber = climber_;
     // Use addRequirements() here to declare subsystem dependencies.
 
-    addRequirements(angleadjust);
+    //addRequirements(angleadjust);
 
   }
 
@@ -71,9 +61,7 @@ public class ClimbUpCommand extends CommandBase {
   @Override
 
   public void execute() {
-
-    isLinedUp = angleAdjust.shooterAngle(Angle);
-
+    climber.climbUp();
   }
 
 
@@ -83,7 +71,7 @@ public class ClimbUpCommand extends CommandBase {
   @Override
 
   public void end(boolean interrupted) {
-
+    climber.stopRaise();
   }
 
 
@@ -93,9 +81,7 @@ public class ClimbUpCommand extends CommandBase {
   @Override
 
   public boolean isFinished() {
-
-    return isLinedUp;
-
+    return false;
   }
 
 }

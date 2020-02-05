@@ -1,80 +1,52 @@
-package org.usfirst.frc.team2723.robot.subsystems;
+package frc.robot.subsystems;
 
-package org.usfirst.frc.team2723.robot.subsystems;
-
-
-
-import org.usfirst.frc.team2723.robot.Robot;
-
-import org.usfirst.frc.team2723.util.Constants;
-
-
-
+import frc.robot.Constants;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
-
-import edu.revrobotics.CANSparkMax;
-
-import edu.wpi.first.wpilibj.command.Subsystem;
-
-
-
-/**
-
- *
-
- */
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
 
-
-
     // Put methods for controlling this subsystem
-
     // here. Call these from Commands.
-
 	//public CANSparkMax Climber;
-	
-	climberMotor = new CANSparkMax(CAN_ID);
 
 	DigitalInput forwardLimitSwitch, reverseLimitSwitch;
-
+	Talon climberMotor;
+	Solenoid climberPistons;
+	Object arm;
 	
 
 	public Climber() {
-
-	    climberMotor = Robot.hardware.climberMotor;
-		DigitalInput forwardLimitSwitch = new DigitalInput(1);
-
-
+		forwardLimitSwitch = new DigitalInput(1);
+		reverseLimitSwitch = new DigitalInput(2);
+		//need to assign actual channel values
+		climberMotor = new Talon(5);
+		climberPistons = new Solenoid(7);
 	}
 
-	public ClimberDeploy() {
+	public void ClimberDeploy() {
+		climberPistons.set(true);
+	}
 
+	public void raiseClimber() {
 		climberMotor.set(Constants.CLIMBER_CLIMBER_SPEED);
-
 	}
 
-	public ClimberS() {
-
+	public void climbUp() {
+		climberMotor.set(-Constants.CLIMBER_CLIMBER_SPEED);
+	}
+/*
+	public void ClimberStart() {
 		climberMotor.set(Constants.INTAKE_OUTTAKE_SPEED);
-
 	}
-
-	public void stop() {
-
+*/
+	public boolean stopRaise() {
 		climberMotor.set(0);
-
+		return forwardLimitSwitch.get();
 	}
 
-
-
-    //public void initDefaultCommand() {
-
-        // Set the default command for a subsystem here.
-
-      //  setDefaultCommand(new MySpecialCommand());
-
-    
 
 }
 

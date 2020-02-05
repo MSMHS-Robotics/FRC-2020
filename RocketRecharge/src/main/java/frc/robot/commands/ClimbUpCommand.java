@@ -71,7 +71,7 @@ public class ClimbUpCommand extends CommandBase {
   @Override
 
   public void end(boolean interrupted) {
-    climber.stopRaise();
+    climber.stop();
   }
 
 

@@ -33,23 +33,17 @@ public class Climber extends SubsystemBase {
 
 	public void raiseClimber() {
 		if(isDeployed) {
-			climberMotor.set(Constants.CLIMBER_CLIMBER_SPEED);
+			if(!forwardLimitSwitch.get()) {
+				climberMotor.set(Constants.CLIMBER_CLIMBER_SPEED);
+			}
 		}
 	}
 
 	public void climbUp() {
 		climberMotor.set(-Constants.CLIMBER_CLIMBER_SPEED);
 	}
-/*
-	public void ClimberStart() {
-		climberMotor.set(Constants.INTAKE_OUTTAKE_SPEED);
-	}
-*/
-	public boolean stopRaise() {
+	public void stop() {
 		climberMotor.set(0);
-		return forwardLimitSwitch.get();
 	}
-
-
 }
 

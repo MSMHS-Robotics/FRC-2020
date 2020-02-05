@@ -146,7 +146,7 @@ public class RobotContainer {
 
     //climber commands
     aButton2.whenPressed(deployClimber);
-    xButton2.whenPressed(raiseClimber);
+    xButton2.whenHeld(raiseClimber);
     bButton2.whenHeld(climbUp);
     //xButton.whenHeld(new WarmupCommand(shooter, gamepad1, -1, false));
   

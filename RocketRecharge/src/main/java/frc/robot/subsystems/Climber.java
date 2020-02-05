@@ -1,79 +1,52 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-//import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANDigitalInput.LimitSwitch;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
-	
-	private final CANSparkMax climberMotor = new CANSparkMax(8, MotorType.kBrushless);
-
-
 
     // Put methods for controlling this subsystem
-
     // here. Call these from Commands.
-
 	//public CANSparkMax Climber;
-	
-	
-	DigitalInput forwardLimitSwitch, reverseLimitSwitch;
 
+	DigitalInput forwardLimitSwitch, reverseLimitSwitch;
+	Talon climberMotor;
+	Solenoid climberPistons;
+	Object arm;
 	
 
 	public Climber() {
-
-	    
-		final DigitalInput forwardLimitSwitch = new DigitalInput(1);
-
-
+		forwardLimitSwitch = new DigitalInput(1);
+		reverseLimitSwitch = new DigitalInput(2);
+		//need to assign actual channel values
+		climberMotor = new Talon(5);
+		climberPistons = new Solenoid(7);
 	}
 
-	public boolean DeployClimber() {
-
-		climberMotor.set(Constants.motorPosition);
-		if(forwardLimitSwitch.get()){
-			climberMotor.set(0);
-			return true;	
-		}
-			return false;
-
-		//climberMotor.set(Constants.motorPosition);
-		//if (forwardLimitSwitch.get()){
-			//return true;
-		//}
-		//return false;
+	public void ClimberDeploy() {
+		climberPistons.set(true);
 	}
 
-	public void ClimbUpCommand() {
-
-		climberMotor.set(Constants.motorUp);
-
+	public void raiseClimber() {
+		climberMotor.set(Constants.CLIMBER_CLIMBER_SPEED);
 	}
 
-	public void stop() {
-
+	public void climbUp() {
+		climberMotor.set(-Constants.CLIMBER_CLIMBER_SPEED);
+	}
+/*
+	public void ClimberStart() {
+		climberMotor.set(Constants.INTAKE_OUTTAKE_SPEED);
+	}
+*/
+	public boolean stopRaise() {
 		climberMotor.set(0);
-
+		return forwardLimitSwitch.get();
 	}
 
-	public static void set(int i) {
-	}
-
-
-
-    //public void initDefaultCommand() {
-
-        // Set the default command for a subsystem here.
-
-      //  setDefaultCommand(new MySpecialCommand());
-
-    
 
 }
 

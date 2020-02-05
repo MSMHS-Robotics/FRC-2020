@@ -12,10 +12,10 @@ public class Climber extends SubsystemBase {
     // here. Call these from Commands.
 	//public CANSparkMax Climber;
 
-	DigitalInput forwardLimitSwitch, reverseLimitSwitch;
-	Talon climberMotor;
-	Solenoid climberPistons;
-	Object arm;
+	private DigitalInput forwardLimitSwitch, reverseLimitSwitch;
+	private Talon climberMotor;
+	private Solenoid climberPistons;
+	private Boolean isDeployed = false;
 	
 
 	public Climber() {
@@ -28,10 +28,13 @@ public class Climber extends SubsystemBase {
 
 	public void ClimberDeploy() {
 		climberPistons.set(true);
+		isDeployed = true;
 	}
 
 	public void raiseClimber() {
-		climberMotor.set(Constants.CLIMBER_CLIMBER_SPEED);
+		if(isDeployed) {
+			climberMotor.set(Constants.CLIMBER_CLIMBER_SPEED);
+		}
 	}
 
 	public void climbUp() {

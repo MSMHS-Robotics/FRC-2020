@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
     }
     else if(!wasPressed) {
       
-      //dpad is 6. 0 is up and 4 is down
+      //180 is up and 0 is down
       if(gamepad1.getPOV() == 180) {
         if(tempCurrAuto < m_robotContainer.getLength() - 1) {
           tempCurrAuto += 1;

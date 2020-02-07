@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.intake;
 
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -13,17 +13,31 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * An example command that uses an example subsystem.
  */
-public class LowerIntakeCommand extends CommandBase {
-    @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-    private final Intake m_subsystem;
+public class RunIntakeCommand extends CommandBase {
+  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
-    /**
-     * Creates a new ExampleCommand.
-     *
-     * @param subsystem The subsystem used by this command.
-     */
-    public LowerIntakeCommand(Intake subsystem) {
-    m_subsystem = subsystem;
+
+
+    private double power = 0;
+
+
+  //===========================================================================================
+  private Intake intake; //add actual parameters for motor values and stuff here
+  //===========================================================================================
+
+
+
+
+  /**
+   * Creates a new ExampleCommand.
+   *
+   * @param subsystem The subsystem used by this command.
+   */
+
+
+  public RunIntakeCommand(Intake subsystem, double pow) {
+    intake = subsystem;
+    power = pow;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -33,20 +47,37 @@ public class LowerIntakeCommand extends CommandBase {
   public void initialize() {
   }
 
+  
+  
+  //=================================================================
+  //actual work is in next command
+  
+  
+  
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      m_subsystem.lowerIntake();
+      intake.runIntake(power);
   }
 
+  
+  
+  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+  
+  
+  
+  
+  
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intake.runIntake(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !m_subsystem.isRaised();
+    return false;
   }
 }

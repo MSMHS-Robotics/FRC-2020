@@ -26,6 +26,8 @@ public class Intake extends SubsystemBase {
   //private DigitalInput firstSensor;
   private DigitalInput lastSensor;
   private DigitalInput bigWheelSensor;
+
+  private boolean intakeRaised = true;
   /**
    * Creates a new ExampleSubsystem.
    */
@@ -90,12 +92,9 @@ public class Intake extends SubsystemBase {
   }
   */
 
-  public void raiseIntake() {
-	armPistons.set(true);
-  }
-
-  public void lowerIntake() {
-	  armPistons.set(false);
+  public void toggleIntake() {
+	intakeRaised = !intakeRaised;
+	armPistons.set(intakeRaised);
   }
 
   public boolean isRaised() {

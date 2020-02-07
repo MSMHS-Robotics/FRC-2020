@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.intake;
 
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -13,16 +13,16 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * An example command that uses an example subsystem.
  */
-public class RunIntakeCommand extends CommandBase {
+public class FeedToShooterCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
 
 
-    private double power = 0;
+
 
 
   //===========================================================================================
-  private Intake intake; //add actual parameters for motor values and stuff here
+  private Intake intake = new Intake(); //add actual parameters for motor values and stuff here
   //===========================================================================================
 
 
@@ -35,9 +35,8 @@ public class RunIntakeCommand extends CommandBase {
    */
 
 
-  public RunIntakeCommand(Intake subsystem, double pow) {
+  public FeedToShooterCommand(Intake subsystem) {
     intake = subsystem;
-    power = pow;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -57,12 +56,12 @@ public class RunIntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      intake.runIntake(power);
+      intake.feed();
   }
 
   
   
-  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
   
   

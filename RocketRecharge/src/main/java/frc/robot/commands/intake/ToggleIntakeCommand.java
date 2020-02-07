@@ -5,53 +5,48 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.intake;
 
-import frc.robot.subsystems.Drivetrain;
-//import edu.wpi.first.networktables.NetworkTable;
-//import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
- * Aligns us to the target. Uses drivetrain subsystem
+ * An example command that uses an example subsystem.
  */
-public class AlignToTargetCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Drivetrain drivetrain;
+public class ToggleIntakeCommand extends CommandBase {
+  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
+  private final Intake m_subsystem;
 
   /**
-   * Creates a new AlignToTargetCommand.
+   * Creates a new ExampleCommand.
    *
-   * @param drivetrain The subsystem used by this command.
+   * @param subsystem The subsystem used by this command.
    */
-  public AlignToTargetCommand(Drivetrain drivetrain_) {
-    drivetrain = drivetrain_;
-    addRequirements(drivetrain);
+  public ToggleIntakeCommand(Intake subsystem) {
+    m_subsystem = subsystem;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drivetrain.visionPIDReset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.visionAlign();
-    //SmartDashboard.putBool(drivetrain.isVisionAligned());
+      m_subsystem.toggleIntake();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_subsystem.isRaised();
   }
 }

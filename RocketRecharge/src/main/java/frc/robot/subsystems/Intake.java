@@ -38,7 +38,7 @@ public class Intake extends SubsystemBase {
 	beltMotor = new Talon(1);
 	//intakeSensor = new DigitalInput(0); //some sensors
 	//firstSensor = new DigitalInput(1);
-	lastSensor = new DigitalInput(2);
+	lastSensor = new DigitalInput(4);
 	bigWheelSensor = new DigitalInput(3);
 	bigWheelMotor = new Talon(2);
   }

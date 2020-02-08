@@ -89,6 +89,8 @@ public class Shooter extends SubsystemBase {
     shooterMotor2.restoreFactoryDefaults();
     shooterMotor2.follow(shooterMotor, true);
 
+    angleMotor = new WPI_TalonSRX(15);
+
     // set PID coefficients
     shooterPID.setP(Constants.ShooterkP);
     shooterPID.setI(Constants.ShooterkI);

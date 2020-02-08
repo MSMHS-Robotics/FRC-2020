@@ -31,6 +31,11 @@ public class Climber extends SubsystemBase {
 		isDeployed = true;
 	}
 
+	public void ClimberPistonsBackIn() {
+		climberPistons.set(false);
+		isDeployed = false;
+	}
+
 	public void raiseClimber() {
 		if(isDeployed) {
 			if(!forwardLimitSwitch.get()) {
@@ -42,6 +47,11 @@ public class Climber extends SubsystemBase {
 	public void climbUp() {
 		climberMotor.set(-Constants.CLIMBER_CLIMBER_SPEED);
 	}
+
+	public void climbUsingStick(double x) {
+		climberMotor.set(x);
+	}
+	
 	public void stop() {
 		climberMotor.set(0);
 	}

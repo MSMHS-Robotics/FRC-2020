@@ -51,6 +51,10 @@ public class Intake extends SubsystemBase {
 	bigWheelMotor.set(1);
   }
 
+  public void feedReverse() {
+	  beltMotor.set(-1);
+  }
+
   public void stop() {
 	beltMotor.set(0);
 	bigWheelMotor.set(0);
@@ -99,6 +103,18 @@ public class Intake extends SubsystemBase {
 
   public boolean isRaised() {
 	  return armPistons.get();
+  }
+
+  public void triggerForward() {
+	  bigWheelMotor.set(1);
+  }
+
+  public void triggerBackward() {
+	bigWheelMotor.set(-1);
+  }
+
+  public void triggerStop() {
+	  bigWheelMotor.set(0);
   }
 
   @Override

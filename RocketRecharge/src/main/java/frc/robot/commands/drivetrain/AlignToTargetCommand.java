@@ -39,7 +39,12 @@ public class AlignToTargetCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.visionAlign();
+    if(drivetrain.getVisionType()) { //true is snipa, false is normal
+      drivetrain.visionAlignSnipa();
+    }
+    else {
+      drivetrain.visionAlign();
+    }
     //SmartDashboard.putBool(drivetrain.isVisionAligned());
   }
 

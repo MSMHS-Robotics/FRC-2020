@@ -23,11 +23,11 @@ public class ShootAngleWarmupCommand extends CommandBase {
    *
    * @param angleadjust The subsystem used by this command.
    */
-  public ShootAngleWarmupCommand(Shooter angleadjust,double angle) {
-    angleAdjust = angleadjust;
-    Angle = angle;
+  public ShootAngleWarmupCommand(Shooter angleAdjust, double Angle) {
+    this.angleAdjust = angleAdjust;
+    this.Angle = Angle;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(angleadjust);
+    addRequirements(angleAdjust);
   }
 
   // Called when the command is initially scheduled.
@@ -38,7 +38,7 @@ public class ShootAngleWarmupCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   // isLinedUp = angleAdjust.shooterAngle(Angle);
+    isLinedUp = angleAdjust.shooterAngle(Angle);
   }
 
   // Called once the command ends or is interrupted.

@@ -47,6 +47,7 @@ public class ToggleIntakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_subsystem.isRaised();
+   // return m_subsystem.isRaised();
+   return false;
   }
 }

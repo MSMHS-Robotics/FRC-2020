@@ -14,7 +14,7 @@ public class Climber extends SubsystemBase {
 
 	private DigitalInput forwardLimitSwitch, reverseLimitSwitch;
 	private Talon climberMotor;
-	private Solenoid climberPistons;
+	//private Solenoid climberPistons;
 	private Boolean isDeployed = false;
 	
 
@@ -23,16 +23,16 @@ public class Climber extends SubsystemBase {
 		reverseLimitSwitch = new DigitalInput(2);
 		//need to assign actual channel values
 		climberMotor = new Talon(5);
-		climberPistons = new Solenoid(7);
+		//climberPistons = new Solenoid(7);
 	}
 
 	public void ClimberDeploy() {
-		climberPistons.set(true);
+	//	climberPistons.set(true);
 		isDeployed = true;
 	}
 
 	public void ClimberPistonsBackIn() {
-		climberPistons.set(false);
+	//	climberPistons.set(false);
 		isDeployed = false;
 	}
 

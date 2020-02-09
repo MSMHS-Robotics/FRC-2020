@@ -15,7 +15,7 @@ public class Intake extends SubsystemBase {
   private Talon intakeMotor;
   private Talon beltMotor;
   private Talon bigWheelMotor;
-  private Solenoid armPistons;
+ // private Solenoid armPistons;
 
   private ShuffleboardTab Intaketab = Shuffleboard.getTab("Intake Tab");
   private NetworkTableEntry intakeMotorSpeed = Intaketab.addPersistent("Intake Motor Speed", 0.5).getEntry();
@@ -33,7 +33,7 @@ public class Intake extends SubsystemBase {
    */
   public Intake() {
 	//the "1" is a port number. change
-	armPistons = new Solenoid(1);
+	//armPistons = new Solenoid(1);
 	intakeMotor = new Talon(0); //our motors
 	beltMotor = new Talon(1);
 	//intakeSensor = new DigitalInput(0); //some sensors
@@ -97,13 +97,13 @@ public class Intake extends SubsystemBase {
   */
 
   public void toggleIntake() {
-	intakeRaised = !intakeRaised;
-	armPistons.set(intakeRaised);
+	/*intakeRaised = !intakeRaised;
+	armPistons.set(intakeRaised);*/
   }
 
-  public boolean isRaised() {
-	  return armPistons.get();
-  }
+ /* public boolean isRaised() {
+	  //return armPistons.get();
+  }*/
 
   public void triggerForward() {
 	  bigWheelMotor.set(1);
@@ -124,11 +124,11 @@ public class Intake extends SubsystemBase {
 			Constants.intakeMotorSpeed = tempMotorSpeed;
 			intakeMotorSpeed.setDouble(Constants.intakeMotorSpeed);
 		}
-		try{
+		/*try{
 		intakePosition.setBoolean(armPistons.get());
 		}
 		catch(NullPointerException exception){
 			intakePosition.setBoolean(false);
-		}
+		}*/
 	}
 }

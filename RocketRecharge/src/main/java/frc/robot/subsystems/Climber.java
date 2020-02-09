@@ -1,9 +1,9 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
@@ -13,8 +13,9 @@ public class Climber extends SubsystemBase {
 	//public CANSparkMax Climber;
 
 	private DigitalInput forwardLimitSwitch, reverseLimitSwitch;
-	private Talon climberMotor;
-	//private Solenoid climberPistons;
+	private WPI_TalonSRX climberMotor;
+	private Solenoid climberPistons1;
+	private Solenoid climberPistons2;
 	private Boolean isDeployed = false;
 	
 
@@ -22,38 +23,39 @@ public class Climber extends SubsystemBase {
 		forwardLimitSwitch = new DigitalInput(1);
 		reverseLimitSwitch = new DigitalInput(2);
 		//need to assign actual channel values
-		climberMotor = new Talon(5);
-		//climberPistons = new Solenoid(7);
+		climberMotor = new WPI_TalonSRX(5);
+		//climberPistons1 = new Solenoid(7);
+		//climberPistons2 = new Solenoid (6);
 	}
 
 	public void ClimberDeploy() {
-	//	climberPistons.set(true);
-		isDeployed = true;
+		//if(climberPistons1 != null) {climberPistons1.set(true);isDeployed = true;}
+		//if(climberPistons2 != null) {climberPistons2.set(true);isDeployed = true;}
 	}
 
 	public void ClimberPistonsBackIn() {
-	//	climberPistons.set(false);
-		isDeployed = false;
+		//if(climberPistons1 != null) {climberPistons1.set(false);isDeployed = false;}
+		//if(climberPistons2 != null) {climberPistons2.set(false);isDeployed = false;}
 	}
 
 	public void raiseClimber() {
 		if(isDeployed) {
 			if(!forwardLimitSwitch.get()) {
-				climberMotor.set(Constants.CLIMBER_CLIMBER_SPEED);
+				if(climberMotor != null) {climberMotor.set(Constants.CLIMBER_CLIMBER_SPEED);}
 			}
 		}
 	}
 
 	public void climbUp() {
-		climberMotor.set(-Constants.CLIMBER_CLIMBER_SPEED);
+		if(climberMotor != null) {climberMotor.set(-Constants.CLIMBER_CLIMBER_SPEED);}
 	}
 
 	public void climbUsingStick(double x) {
-		climberMotor.set(x);
+		if(climberMotor != null) {climberMotor.set(x);}
 	}
 	
 	public void stop() {
-		climberMotor.set(0);
+		if(climberMotor != null) {climberMotor.set(0);}
 	}
 }
 

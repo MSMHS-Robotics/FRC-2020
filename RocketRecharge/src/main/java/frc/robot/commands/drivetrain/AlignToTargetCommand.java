@@ -8,6 +8,7 @@
 package frc.robot.commands.drivetrain;
 
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Lights;
 //import edu.wpi.first.networktables.NetworkTable;
 //import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -19,14 +20,16 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class AlignToTargetCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Drivetrain drivetrain;
+  private final Lights blinkin;
 
   /**
    * Creates a new AlignToTargetCommand.
    *
    * @param drivetrain The subsystem used by this command.
    */
-  public AlignToTargetCommand(Drivetrain drivetrain_) {
+  public AlignToTargetCommand(Drivetrain drivetrain_, Lights x) {
     drivetrain = drivetrain_;
+    blinkin = x;
     addRequirements(drivetrain);
   }
 
@@ -41,9 +44,15 @@ public class AlignToTargetCommand extends CommandBase {
   public void execute() {
     if(drivetrain.getVisionType()) { //true is snipa, false is normal
       drivetrain.visionAlignSnipa();
+      if(drivetrain.isVisionAligned()) {
+        blinkin.setRed();
+      }
     }
     else {
       drivetrain.visionAlign();
+      if(drivetrain.isVisionAligned()) {
+        blinkin.setBlue();
+      }
     }
     //SmartDashboard.putBool(drivetrain.isVisionAligned());
   }

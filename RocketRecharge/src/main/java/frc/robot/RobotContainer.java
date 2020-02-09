@@ -90,7 +90,7 @@ public class RobotContainer {
   private final UnDeployClimber unDeployClimber = new UnDeployClimber(climber);
 
   //drivetrain
-  private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain);
+  private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
   private final ToggleVisionTypeCommand toggleVision = new ToggleVisionTypeCommand(drivetrain);
   private final SetRedCommand setRed = new SetRedCommand(blinkin);
   

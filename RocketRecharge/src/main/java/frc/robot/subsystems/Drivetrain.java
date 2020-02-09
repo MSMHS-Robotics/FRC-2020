@@ -100,7 +100,7 @@ public class Drivetrain extends SubsystemBase {
   private final DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
   public double speed;
   private boolean aligned = false;
-  // private double left;
+  private boolean alignZoom = false;
 
   public Drivetrain() {
     // Sets the error tolerance to 5, and the error derivative tolerance to 10 per
@@ -380,6 +380,14 @@ public class Drivetrain extends SubsystemBase {
   public boolean isVisionAligned() {
     //might be helpful sometime
     return aligned;
+  }
+
+  public void toggleVisionAlign() {
+    alignZoom = !alignZoom;
+  }
+
+  public boolean getVisionType() {
+    return alignZoom;
   }
 
   public double encoderAverage() {

@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
     }
     else if(!wasPressed) {
       
-      //dpad is 6. 0 is up and 4 is down
+      //180 is up and 0 is down
       if(gamepad1.getPOV() == 180) {
         if(tempCurrAuto < m_robotContainer.getLength() - 1) {
           tempCurrAuto += 1;
@@ -94,12 +94,7 @@ public class Robot extends TimedRobot {
       }
     }
     m_robotContainer.setAutoNum(tempCurrAuto);
-    try {
-      Thread.sleep(5);
-    }
-    catch(InterruptedException e) {
-      e.printStackTrace();
-    }
+    
     CurrentAuto.setString(m_robotContainer.getName(tempCurrAuto));
   }
 
@@ -108,7 +103,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+   // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

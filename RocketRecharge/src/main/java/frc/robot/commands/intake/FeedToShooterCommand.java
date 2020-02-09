@@ -5,48 +5,73 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.intake;
 
-import frc.robot.subsystems.Drivetrain;
-//import edu.wpi.first.networktables.NetworkTable;
-//import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
- * Aligns us to the target. Uses drivetrain subsystem
+ * An example command that uses an example subsystem.
  */
-public class AlignToTargetCommandSnipa extends CommandBase {
+public class FeedToShooterCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Drivetrain drivetrain;
+
+
+
+
+
+
+  //===========================================================================================
+  private Intake intake; //add actual parameters for motor values and stuff here
+  //===========================================================================================
+
+
+
 
   /**
-   * Creates a new AlignToTargetCommand.
+   * Creates a new ExampleCommand.
    *
-   * @param drivetrain The subsystem used by this command.
+   * @param subsystem The subsystem used by this command.
    */
-  public AlignToTargetCommandSnipa(Drivetrain drivetrain_) {
-    drivetrain = drivetrain_;
-    addRequirements(drivetrain);
+
+
+  public FeedToShooterCommand(Intake subsystem) {
+    intake = subsystem;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drivetrain.visionPIDReset();
   }
 
+  
+  
+  //=================================================================
+  //actual work is in next command
+  
+  
+  
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.visionAlignSnipa();
-    //SmartDashboard.putBool(drivetrain.isVisionAligned());
+      intake.feed();
   }
 
+  
+  
+  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+  
+  
+  
+  
+  
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+    intake.stop();
   }
 
   // Returns true when the command should end.

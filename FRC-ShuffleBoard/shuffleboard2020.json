@@ -345,6 +345,243 @@
           }
         }
       }
+    },
+    {
+      "title": "Shooter",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "network_table:///Shuffleboard/Shooter/",
+      "widgetPane": {
+        "gridSize": 68.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "6,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/ShooterkMaxOutput",
+              "_title": "ShooterkMaxOutput"
+            }
+          },
+          "8,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/AnglekD",
+              "_title": "AnglekD"
+            }
+          },
+          "8,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/AnglekI",
+              "_title": "AnglekI"
+            }
+          },
+          "8,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/AnglekP",
+              "_title": "AnglekP"
+            }
+          },
+          "4,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/ShooterkFF",
+              "_title": "ShooterkFF"
+            }
+          },
+          "6,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/ShooterkMinOutput",
+              "_title": "ShooterkMinOutput"
+            }
+          },
+          "4,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/ShooterkD",
+              "_title": "ShooterkD"
+            }
+          },
+          "4,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/ShooterkI",
+              "_title": "ShooterkI"
+            }
+          },
+          "4,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/ShooterkP",
+              "_title": "ShooterkP"
+            }
+          },
+          "6,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/ShooterkIz",
+              "_title": "ShooterkIz"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Shooter Presets",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "network_table:///Shuffleboard/Shooter Presets/",
+      "widgetPane": {
+        "gridSize": 68.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "8,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter Presets/TenFootRPM",
+              "_title": "TenFootRPM"
+            }
+          },
+          "8,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter Presets/TenFootAngle",
+              "_title": "TenFootAngle"
+            }
+          },
+          "6,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter Presets/LayupAngle",
+              "_title": "LayupAngle"
+            }
+          },
+          "4,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter Presets/TrenchRPM",
+              "_title": "TrenchRPM"
+            }
+          },
+          "6,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter Presets/LayupRPM",
+              "_title": "LayupRPM"
+            }
+          },
+          "4,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter Presets/TrenchAngle",
+              "_title": "TrenchAngle"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Auto Tab",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "network_table:///Shuffleboard/Auto Tab/",
+      "widgetPane": {
+        "gridSize": 68.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "0,2": {
+            "size": [
+              5,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Auto Tab/Current Auto",
+              "_title": "Current Auto"
+            }
+          },
+          "4,0": {
+            "size": [
+              5,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Auto Tab/All Auto Programs",
+              "_title": "All Auto Programs"
+            }
+          }
+        }
+      }
     }
   ],
   "windowGeometry": {

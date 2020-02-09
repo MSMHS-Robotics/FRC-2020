@@ -10,14 +10,11 @@ package frc.robot;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.autonomous.DriveOffLine;
 import frc.robot.autonomous.DriveOffLineReverse;
 import frc.robot.autonomous.EightBallAuto;
 import frc.robot.commands.drivetrain.AlignToTargetCommand;
-import frc.robot.commands.drivetrain.AlignToTargetCommandSnipa;
 import frc.robot.commands.drivetrain.ToggleVisionTypeCommand;
 import frc.robot.commands.WarmupCommand;
 import frc.robot.subsystems.Drivetrain;
@@ -163,7 +160,7 @@ public class RobotContainer {
 
     //climber
     //this might work don't trust it
-    leftBumper.whenPressed(climbUsingTehStick);
+    leftBumper2.whenPressed(climbUsingTehStick);
     
     //this part should be good but find a way to make it available only during endgame otherwise trouble. true for all climber features
     aButton2.whenPressed(deployClimber);

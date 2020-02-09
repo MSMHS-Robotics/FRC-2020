@@ -14,7 +14,7 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
   private WPI_TalonSRX intakeMotor;
   private WPI_TalonSRX beltMotor;
-  private Talon bigWheelMotor;
+  private WPI_TalonSRX bigWheelMotor;
   private Solenoid armPistons1;
   private Solenoid armPistons2;
 
@@ -34,11 +34,11 @@ public class Intake extends SubsystemBase {
 	//the "1" is a port number. change
 	//armPistons1 = new Solenoid(0);
 	//armPistons2 = new Solenoid(1);
-	intakeMotor = new WPI_TalonSRX(0); //our motors
-	beltMotor = new WPI_TalonSRX(1);
+	intakeMotor = new WPI_TalonSRX(12); //our motors
+	beltMotor = new WPI_TalonSRX(13);
 	lastSensor = new DigitalInput(4); //are we still using sensors?
 	bigWheelSensor = new DigitalInput(3);
-	bigWheelMotor = new Talon(2); //change?
+	bigWheelMotor = new WPI_TalonSRX(9); //change?
   }
 
   public void runIntake(double power) {

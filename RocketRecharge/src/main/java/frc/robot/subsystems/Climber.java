@@ -23,7 +23,7 @@ public class Climber extends SubsystemBase {
 		forwardLimitSwitch = new DigitalInput(1);
 		reverseLimitSwitch = new DigitalInput(2);
 		//need to assign actual channel values
-		climberMotor = new WPI_TalonSRX(5);
+		climberMotor = new WPI_TalonSRX(10);
 		//climberPistons1 = new Solenoid(7);
 		//climberPistons2 = new Solenoid (6);
 	}

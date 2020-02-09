@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
 import java.util.Map;
-
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -12,18 +12,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  private Talon intakeMotor;
-  private Talon beltMotor;
+  private WPI_TalonSRX intakeMotor;
+  private WPI_TalonSRX beltMotor;
   private Talon bigWheelMotor;
-  private Solenoid armPistons;
+  private Solenoid armPistons1;
+  private Solenoid armPistons2;
 
   private ShuffleboardTab Intaketab = Shuffleboard.getTab("Intake Tab");
   private NetworkTableEntry intakeMotorSpeed = Intaketab.addPersistent("Intake Motor Speed", 0.5).getEntry();
   private NetworkTableEntry intakePosition = Intaketab.addPersistent("Intake Position", false).getEntry();
   private NetworkTableEntry shotPrepped = Intaketab.addPersistent("Shot Prepped", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
   //now for sensors
-  //private DigitalInput intakeSensor;
-  //private DigitalInput firstSensor;
   private DigitalInput lastSensor;
   private DigitalInput bigWheelSensor;
 
@@ -33,54 +32,54 @@ public class Intake extends SubsystemBase {
    */
   public Intake() {
 	//the "1" is a port number. change
-	armPistons = new Solenoid(1);
-	intakeMotor = new Talon(0); //our motors
-	beltMotor = new Talon(1);
-	//intakeSensor = new DigitalInput(0); //some sensors
-	//firstSensor = new DigitalInput(1);
-	lastSensor = new DigitalInput(4);
+	//armPistons1 = new Solenoid(0);
+	//armPistons2 = new Solenoid(1);
+	intakeMotor = new WPI_TalonSRX(0); //our motors
+	beltMotor = new WPI_TalonSRX(1);
+	lastSensor = new DigitalInput(4); //are we still using sensors?
 	bigWheelSensor = new DigitalInput(3);
-	bigWheelMotor = new Talon(2);
+	bigWheelMotor = new Talon(2); //change?
   }
+
   public void runIntake(double power) {
-	  intakeMotor.set(power);
+	if(intakeMotor != null) {intakeMotor.set(power);}
   }
 
   public void feed() {
-	beltMotor.set(1);
-	bigWheelMotor.set(1);
+	if(beltMotor != null) {beltMotor.set(1);}
+	if(bigWheelMotor != null) {bigWheelMotor.set(1);}
   }
 
   public void feedReverse() {
-	  beltMotor.set(-1);
+	if(beltMotor!= null) {beltMotor.set(-1);}
   }
 
   public void stop() {
-	beltMotor.set(0);
-	bigWheelMotor.set(0);
+	if(beltMotor != null) {beltMotor.set(0);}
+	if(bigWheelMotor != null) {bigWheelMotor.set(0);}
   }
 
   public boolean prepShot() {
-	  if(lastSensor.get()) {
-		beltMotor.set(0);
+	if(lastSensor.get()) {
+		if(beltMotor != null) {beltMotor.set(0);}
 		//pretty sure that works, might take some tuning
 		if(bigWheelSensor.get()) {
-			bigWheelMotor.set(1);
+			if(bigWheelMotor != null) {bigWheelMotor.set(1);}
 			shotPrepped.setBoolean(this.prepShot());
 			return true;
 		}
 		else {
-			bigWheelMotor.set(0);
+			if(bigWheelMotor != null) {bigWheelMotor.set(0);}
 			shotPrepped.setBoolean(this.prepShot());
 		}
-	  }
-	  else {
-		  beltMotor.set(1);
-		  shotPrepped.setBoolean(this.prepShot());
-		  return false;
-	  }
-	  shotPrepped.setBoolean(this.prepShot());
-	  return false;
+		}
+	else {
+		if(beltMotor != null) {beltMotor.set(1);}
+		shotPrepped.setBoolean(this.prepShot());
+		return false;
+	}
+	shotPrepped.setBoolean(this.prepShot());
+	return false;
   }
 
   /*
@@ -98,23 +97,24 @@ public class Intake extends SubsystemBase {
 
   public void toggleIntake() {
 	intakeRaised = !intakeRaised;
-	armPistons.set(intakeRaised);
+	//if(armPistons1 != null) {armPistons1.set(intakeRaised);}
+	//if(armPistons2 != null) {armPistons2.set(intakeRaised);}
   }
 
   public boolean isRaised() {
-	  return armPistons.get();
+	return armPistons1.get();
   }
 
   public void triggerForward() {
-	  bigWheelMotor.set(1);
+	if(bigWheelMotor != null) {bigWheelMotor.set(1);}
   }
 
   public void triggerBackward() {
-	bigWheelMotor.set(-1);
+	if(bigWheelMotor != null) {bigWheelMotor.set(-1);}
   }
 
   public void triggerStop() {
-	  bigWheelMotor.set(0);
+	if(bigWheelMotor != null) {bigWheelMotor.set(0);}
   }
 
   @Override
@@ -124,11 +124,11 @@ public class Intake extends SubsystemBase {
 			Constants.intakeMotorSpeed = tempMotorSpeed;
 			intakeMotorSpeed.setDouble(Constants.intakeMotorSpeed);
 		}
-		try{
-		intakePosition.setBoolean(armPistons.get());
+		/*try{
+			intakePosition.setBoolean(armPistons1.get());
 		}
 		catch(NullPointerException exception){
 			intakePosition.setBoolean(false);
-		}
+		}*/
 	}
 }

@@ -17,7 +17,6 @@ import frc.robot.autonomous.DriveOffLine;
 import frc.robot.autonomous.DriveOffLineReverse;
 import frc.robot.autonomous.EightBallAuto;
 import frc.robot.commands.drivetrain.AlignToTargetCommand;
-import frc.robot.commands.drivetrain.AlignToTargetCommandSnipa;
 import frc.robot.commands.drivetrain.ToggleVisionTypeCommand;
 import frc.robot.commands.WarmupCommand;
 import frc.robot.subsystems.Drivetrain;

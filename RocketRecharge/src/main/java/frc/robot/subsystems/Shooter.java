@@ -80,59 +80,81 @@ public class Shooter extends SubsystemBase {
    */
   public Shooter() {
     shooterMotor = new CANSparkMax(7, MotorType.kBrushless);
-    shooterMotor.restoreFactoryDefaults();
-    shooterPID = shooterMotor.getPIDController();
-    encoder = shooterMotor.getEncoder();
- 
+    if (shooterMotor != null) {
+      shooterMotor.restoreFactoryDefaults();
+      shooterPID = shooterMotor.getPIDController();
+      encoder = shooterMotor.getEncoder();  
+    }
+
+   
     //second motor
     shooterMotor2 = new CANSparkMax(8,MotorType.kBrushless);
-    shooterMotor2.restoreFactoryDefaults();
-    shooterMotor2.follow(shooterMotor, true);
+    if (shooterMotor2 != null){
+      shooterMotor2.restoreFactoryDefaults();
+      shooterMotor2.follow(shooterMotor, true);
+    }
 
     angleMotor = new WPI_TalonSRX(15);
 
+    if (shooterPID != null){
+      shooterPID.setP(Constants.ShooterkP);
+      shooterPID.setI(Constants.ShooterkI);
+      shooterPID.setD(Constants.ShooterkD);
+      shooterPID.setIZone(Constants.ShooterkIz);
+      shooterPID.setFF(Constants.ShooterkFF);
+      shooterPID.setOutputRange(Constants.ShooterkMinOutput, Constants.ShooterkMaxOutput);
+    }
     // set PID coefficients
-    shooterPID.setP(Constants.ShooterkP);
-    shooterPID.setI(Constants.ShooterkI);
-    shooterPID.setD(Constants.ShooterkD);
-    shooterPID.setIZone(Constants.ShooterkIz);
-    shooterPID.setFF(Constants.ShooterkFF);
-    shooterPID.setOutputRange(Constants.ShooterkMinOutput, Constants.ShooterkMaxOutput);
+    
 
     
     //angle motor config
-    angleMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-
+    if (angleMotor != null){
+      angleMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    }
      //Config the peak and nominal outputs 
-		angleMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
-		angleMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		angleMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
-		angleMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-
+    if (angleMotor != null){
+		  angleMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
+		  angleMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
+		  angleMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
+		  angleMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+    }
   
-		//Config the Velocity closed loop gains in slot0 
-		angleMotor.config_kF(Constants.kPIDLoopIdx, Constants.AnglekF, Constants.kTimeoutMs);
-		angleMotor.config_kP(Constants.kPIDLoopIdx, Constants.AnglekP, Constants.kTimeoutMs);
-		angleMotor.config_kI(Constants.kPIDLoopIdx, Constants.AnglekI, Constants.kTimeoutMs);
-    angleMotor.config_kD(Constants.kPIDLoopIdx, Constants.AnglekD, Constants.kTimeoutMs);
+    //Config the Velocity closed loop gains in slot0
+    if (angleMotor != null){ 
+		  angleMotor.config_kF(Constants.kPIDLoopIdx, Constants.AnglekF, Constants.kTimeoutMs);
+		  angleMotor.config_kP(Constants.kPIDLoopIdx, Constants.AnglekP, Constants.kTimeoutMs);
+		  angleMotor.config_kI(Constants.kPIDLoopIdx, Constants.AnglekI, Constants.kTimeoutMs);
+      angleMotor.config_kD(Constants.kPIDLoopIdx, Constants.AnglekD, Constants.kTimeoutMs);
+    }
   }
 
+ 
   public boolean warmUp(double RPM) { 
-    //Shooter with Neo
-    shooterPID.setReference(RPM, ControlType.kVelocity);
-    return true;
+    if (shooterPID != null){
+      //Shooter with Neo
+      shooterPID.setReference(RPM, ControlType.kVelocity);
+      return true;
+    }
+    return false; 
   }
 
   
   public boolean shooterAngle(double angle) {
-    angleMotor.set(ControlMode.Position, angle);
-    return Math.abs(angleMotor.getClosedLoopError()) < 1;
+    if (angleMotor != null){
+      angleMotor.set(ControlMode.Position, angle);
+      return Math.abs(angleMotor.getClosedLoopError()) < 1;
+    }
+    return false;
   }
   
 
   public boolean stopPlease(){
-    shooterMotor.setVoltage(0);
-    return true;
+    if (shooterMotor != null){
+      shooterMotor.setVoltage(0);
+      return true;
+    }
+    return false;
   }
 
   public void trenchShot(){
@@ -157,10 +179,13 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean isShooterGood(){
+    if (encoder == null){
+      return false;
+    }
     if(Math.abs(encoder.getVelocity() - RPMSetpoint) < Constants.RPMTolerance && Math.abs(encoder.getPosition() - angleSetpoint) < Constants.AnglekF){
       return true;
     }
-    return false;
+   return false;
   }
 
   @Override
@@ -169,43 +194,43 @@ public class Shooter extends SubsystemBase {
 
     //now for changing the PID values on robot and in Constants.java. this is going to be _very_ long
     double tempSP = ShooterkP.getDouble(Constants.ShooterkP);
-    if(Constants.ShooterkP != tempSP) {
+    if(Constants.ShooterkP != tempSP && shooterPID != null) {
       Constants.ShooterkP = tempSP;
       shooterPID.setP(Constants.ShooterkP);
     }
 
     double tempSI = ShooterkI.getDouble(Constants.ShooterkI);
-    if(Constants.ShooterkI != tempSI) {
+    if(Constants.ShooterkI != tempSI && shooterPID != null) {
       Constants.ShooterkI = tempSI;
       shooterPID.setI(Constants.ShooterkI);
     }
 
     double tempSD = ShooterkD.getDouble(Constants.ShooterkD);
-    if(Constants.ShooterkD != tempSD) {
+    if(Constants.ShooterkD != tempSD && shooterPID != null) {
       Constants.ShooterkD = tempSD;
       shooterPID.setD(Constants.ShooterkD);
     }
 
     double tempSIz = ShooterkIz.getDouble(Constants.ShooterkIz);
-    if(Constants.ShooterkIz != tempSIz) {
+    if(Constants.ShooterkIz != tempSIz && shooterPID != null) {
       Constants.ShooterkIz = tempSIz;
       shooterPID.setIZone(Constants.ShooterkIz);
     }
 
     double tempSFF = ShooterkFF.getDouble(Constants.ShooterkFF);
-    if(Constants.ShooterkFF != tempSFF) {
+    if(Constants.ShooterkFF != tempSFF && shooterPID != null) {
       Constants.ShooterkFF = tempSFF;
       shooterPID.setFF(Constants.ShooterkFF);
     }
 
     double tempSMax = ShooterkMaxOutput.getDouble(Constants.ShooterkMaxOutput);
-    if(Constants.ShooterkMaxOutput != tempSMax) {
+    if(Constants.ShooterkMaxOutput != tempSMax && shooterPID != null) {
       Constants.ShooterkMaxOutput = tempSMax;
       shooterPID.setOutputRange(Constants.ShooterkMinOutput,Constants.ShooterkMaxOutput);
     }
   
     double tempSMin = ShooterkMinOutput.getDouble(Constants.ShooterkMinOutput);
-    if(Constants.ShooterkMinOutput != tempSMin) {
+    if(Constants.ShooterkMinOutput != tempSMin && shooterPID != null) {
       Constants.ShooterkMaxOutput = tempSMin;
       shooterPID.setOutputRange(Constants.ShooterkMinOutput, Constants.ShooterkMaxOutput);
     }
@@ -215,19 +240,19 @@ public class Shooter extends SubsystemBase {
     //angle motor
 
     double tempAkp = AnglekP.getDouble(Constants.AnglekP);
-    if(Constants.AnglekP != tempAkp) {
+    if(Constants.AnglekP != tempAkp && anglePID != null) {
       Constants.AnglekP = tempAkp;
       anglePID.setP(Constants.AnglekP);
     }
     
     double tempAki = AnglekI.getDouble(Constants.AnglekI);
-    if(Constants.AnglekI != tempAki) {
+    if(Constants.AnglekI != tempAki && anglePID != null) {
       Constants.AnglekI = tempAki;
       anglePID.setI(Constants.AnglekI);
     }
 
     double tempAkd = AnglekD.getDouble(Constants.AnglekD);
-    if(Constants.AnglekD != tempAkd) {
+    if(Constants.AnglekD != tempAkd && anglePID != null) {
       Constants.AnglekD = tempAkd;
       anglePID.setD(Constants.AnglekD);
     }

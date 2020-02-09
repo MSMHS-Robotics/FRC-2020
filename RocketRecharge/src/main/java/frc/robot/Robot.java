@@ -94,12 +94,7 @@ public class Robot extends TimedRobot {
       }
     }
     m_robotContainer.setAutoNum(tempCurrAuto);
-    try {
-      Thread.sleep(10);
-    }
-    catch(InterruptedException e) {
-      e.printStackTrace();
-    }
+    
     CurrentAuto.setString(m_robotContainer.getName(tempCurrAuto));
   }
 

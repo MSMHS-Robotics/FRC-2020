@@ -17,7 +17,7 @@ public class Intake extends SubsystemBase {
   private Talon bigWheelMotor;
   private Solenoid armPistons;
 
-  private ShuffleboardTab Intaketab = Shuffleboard.getTab("Intake");
+  private ShuffleboardTab Intaketab = Shuffleboard.getTab("Intake Tab");
   private NetworkTableEntry intakeMotorSpeed = Intaketab.addPersistent("Intake Motor Speed", 0.5).getEntry();
   private NetworkTableEntry intakePosition = Intaketab.addPersistent("Intake Position", false).getEntry();
   private NetworkTableEntry shotPrepped = Intaketab.addPersistent("Shot Prepped", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
@@ -124,6 +124,11 @@ public class Intake extends SubsystemBase {
 			Constants.intakeMotorSpeed = tempMotorSpeed;
 			intakeMotorSpeed.setDouble(Constants.intakeMotorSpeed);
 		}
+		try{
 		intakePosition.setBoolean(armPistons.get());
+		}
+		catch(NullPointerException exception){
+			intakePosition.setBoolean(false);
+		}
 	}
 }

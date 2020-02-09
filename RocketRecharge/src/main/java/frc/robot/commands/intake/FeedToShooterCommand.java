@@ -22,7 +22,7 @@ public class FeedToShooterCommand extends CommandBase {
 
 
   //===========================================================================================
-  private Intake intake = new Intake(); //add actual parameters for motor values and stuff here
+  private Intake intake; //add actual parameters for motor values and stuff here
   //===========================================================================================
 
 

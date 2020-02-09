@@ -17,7 +17,7 @@ public class FeedToShooterReverse extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
 
   // ===========================================================================================
-  private Intake intake = new Intake(); // add actual parameters for motor values and stuff here
+  private Intake intake; // add actual parameters for motor values and stuff here
   // ===========================================================================================
 
   /**

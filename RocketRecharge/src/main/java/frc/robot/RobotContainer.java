@@ -146,6 +146,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //drivetrain stuff. working on toggle hardware zoom with 1 button
     //update: TOGGLING DONE! untested though
+    drivetrain.limelightLEDOff(); //so we don't default to on and blind peeps
     aButton.whenPressed(align);
     aButton.whenReleased(runDrivetrain);
     start.whenPressed(toggleVision); //so we can use less buttons

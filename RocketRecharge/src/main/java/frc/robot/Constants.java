@@ -63,17 +63,9 @@ public final class Constants {
     public static double leftTickConstant = -2.2005;
     //public static double[] headingIntegrator = {-0.5, 0.5};
 
-    
-    
-
-    public void setVisionPID(double kp, double ksomething, double ksomethingelse) {
-        visionPID[0] = kp;
-        visionPID[1] = ksomething;
-        visionPID[2] = ksomethingelse;
-    }
     public static double intakeMotorSpeed = 0.5;
-    public static final double CLIMBER_CLIMBER_SPEED = 0;
-	public static final double INTAKE_OUTTAKE_SPEED = 0;
+    public static double CLIMBER_CLIMBER_SPEED = 0;
+	public static double INTAKE_OUTTAKE_SPEED = 0;
 	public static double motorPosition = 0;//fix later
     public static double motorUp = 10;//fix later
 }

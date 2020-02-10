@@ -17,6 +17,7 @@ import frc.robot.autonomous.DriveOffLine;
 import frc.robot.autonomous.DriveOffLineReverse;
 import frc.robot.autonomous.EightBallAuto;
 import frc.robot.commands.drivetrain.AlignToTargetCommand;
+import frc.robot.commands.drivetrain.SetFireCommand;
 import frc.robot.commands.drivetrain.ToggleVisionTypeCommand;
 import frc.robot.commands.WarmupCommand;
 import frc.robot.subsystems.Drivetrain;
@@ -31,6 +32,7 @@ import frc.robot.commands.RaiseClimber;
 import frc.robot.commands.UnDeployClimber;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lights;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -53,7 +55,8 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter();
   private final Drivetrain drivetrain = new Drivetrain();
-
+  private final Lights blinkin = new Lights();
+  
   //joysticks
   //raw axis 2 and 5 are the Y axis for the left and right joysticks.
   private final Joystick gamepad1 = new Joystick(0);
@@ -87,8 +90,10 @@ public class RobotContainer {
   private final UnDeployClimber unDeployClimber = new UnDeployClimber(climber);
 
   //drivetrain
-  private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain);
+  private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
   private final ToggleVisionTypeCommand toggleVision = new ToggleVisionTypeCommand(drivetrain);
+  private final SetFireCommand setFire = new SetFireCommand(blinkin);
+  //private final SetRedCommand setRed = new SetRedCommand(blinkin);
   
   //intake + indexer
   private final RunIntakeCommand intakeIn = new RunIntakeCommand(intake, 1);
@@ -148,7 +153,9 @@ public class RobotContainer {
     //update: TOGGLING DONE! untested though
     aButton.whenPressed(align);
     aButton.whenReleased(runDrivetrain);
+    aButton.whenPressed(setFire);
     start.whenPressed(toggleVision); //so we can use less buttons
+    //xButton2.whenPressed(setRed);
 
     //intake stuff. intake automagically sets power to 0 after command ends
     leftBumper.whenPressed(intakeIn);
@@ -215,5 +222,9 @@ public class RobotContainer {
 
   public JoystickButton getButtonA1() {
     return aButton; 
+  }
+
+  public Lights getBlinkin() {
+    return blinkin;
   }
 }

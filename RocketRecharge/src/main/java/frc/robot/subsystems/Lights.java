@@ -5,15 +5,27 @@ import edu.wpi.first.wpilibj.Spark;
 public class Lights {
     private Spark blinkin;
 
-    public Lights(int port) {
-        blinkin = new Spark(port);
+    public Lights() {
+        blinkin = new Spark(0);
     }
 
-    public void setRed() {
-        blinkin.set(1);
+    public void setRedLarson() {
+        blinkin.set(-0.25);
     }
 
-    public void setBlue() {
-        blinkin.set(-1);
+    public void setGreen() {
+        blinkin.set(0.73);
+    }
+
+    public void setFire() {
+        blinkin.set(-0.57);
+    }
+
+    public void setGold() {
+        blinkin.set(0.67);
+    }
+
+    public void setPink() {
+        blinkin.set(0.57);
     }
 }

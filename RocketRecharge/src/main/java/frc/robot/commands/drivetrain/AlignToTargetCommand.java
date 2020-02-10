@@ -45,13 +45,19 @@ public class AlignToTargetCommand extends CommandBase {
     if(drivetrain.getVisionType()) { //true is snipa, false is normal
       drivetrain.visionAlignSnipa();
       if(drivetrain.isVisionAligned()) {
-        blinkin.setRed();
+        blinkin.setGreen();
+      }
+      else {
+        blinkin.setRedLarson();
       }
     }
     else {
       drivetrain.visionAlign();
       if(drivetrain.isVisionAligned()) {
-        blinkin.setBlue();
+        blinkin.setGreen();
+      }
+      else {
+        blinkin.setRedLarson();
       }
     }
     //SmartDashboard.putBool(drivetrain.isVisionAligned());
@@ -61,6 +67,7 @@ public class AlignToTargetCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+    blinkin.setRedLarson();
   }
 
   // Returns true when the command should end.

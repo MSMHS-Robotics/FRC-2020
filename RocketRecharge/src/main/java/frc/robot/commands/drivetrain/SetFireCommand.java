@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * Aligns us to the target. Uses drivetrain subsystem
  */
-public class SetRedCommand extends CommandBase {
+public class SetFireCommand extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final Lights blinkin;
 
@@ -22,7 +22,7 @@ public class SetRedCommand extends CommandBase {
    *
    * @param drivetrain The subsystem used by this command.
    */
-  public SetRedCommand(Lights light) {
+  public SetFireCommand(Lights light) {
     blinkin = light;
     //addRequirements(blinkin);
   }
@@ -35,7 +35,7 @@ public class SetRedCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    blinkin.setRed();
+    blinkin.setRedLarson();
   }
 
   // Called once the command ends or is interrupted.

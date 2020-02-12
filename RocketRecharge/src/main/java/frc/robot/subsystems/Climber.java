@@ -20,12 +20,12 @@ public class Climber extends SubsystemBase {
 	Talon climberMotor;
 	Solenoid climberPistons;
 	Object arm;
-	private ShuffleboardTab Climbertab = Shuffleboard.getTab("Climber Tab");
+	private final ShuffleboardTab Climbertab = Shuffleboard.getTab("Climber Tab");
 
-	private NetworkTableEntry CLIMBER_CLIMBER_SPEED = Climbertab.addPersistent("CLIMBER_CLIMBER_SPEED", Constants.CLIMBER_CLIMBER_SPEED).getEntry();
-	private NetworkTableEntry INTAKE_OUTTAKE_SPEED = Climbertab.addPersistent("INTAKE_OUTTAKE_SPEED", Constants.INTAKE_OUTTAKE_SPEED).getEntry();
-	private NetworkTableEntry motorposition = Climbertab.addPersistent("motorposition", Constants.motorPosition).getEntry();
-    private NetworkTableEntry motorUp = Climbertab.addPersistent("motorUp", Constants.motorUp).getEntry();
+	private final NetworkTableEntry CLIMBER_CLIMBER_SPEED = Climbertab.addPersistent("CLIMBER_CLIMBER_SPEED", Constants.CLIMBER_CLIMBER_SPEED).getEntry();
+	private final NetworkTableEntry INTAKE_OUTTAKE_SPEED = Climbertab.addPersistent("INTAKE_OUTTAKE_SPEED", Constants.INTAKE_OUTTAKE_SPEED).getEntry();
+	private final NetworkTableEntry motorposition = Climbertab.addPersistent("motorposition", Constants.motorPosition).getEntry();
+    private final NetworkTableEntry motorUp = Climbertab.addPersistent("motorUp", Constants.motorUp).getEntry();
 
     
 
@@ -51,11 +51,25 @@ public class Climber extends SubsystemBase {
 		climberMotor.set(-Constants.CLIMBER_CLIMBER_SPEED);
 		
 	}
-/*
-	public void ClimberStart() {
-		climberMotor.set(Constants.INTAKE_OUTTAKE_SPEED);
-	}
-*/
+
+	@Override
+	public void periodic() {
+
+		final double TempClimberSpeed = CLIMBER_CLIMBER_SPEED.getDouble(0.5);
+
+		if(TempClimberSpeed != Constants.CLIMBER_CLIMBER_SPEED){
+			Constants.CLIMBER_CLIMBER_SPEED = TempClimberSpeed;
+			CLIMBER_CLIMBER_SPEED.setDouble(Constants.CLIMBER_CLIMBER_SPEED);
+		}
+
+
+		}
+
+			
+	  
+		  
+	
+
 	public boolean stopRaise() {
 		climberMotor.set(0);
 		return forwardLimitSwitch.get();

@@ -29,6 +29,7 @@ import frc.robot.commands.ClimbUpCommand;
 import frc.robot.commands.DeployClimber;
 import frc.robot.commands.intake.*; //a lot easier than importing them one by one
 import frc.robot.commands.RaiseClimber;
+import frc.robot.commands.ShootCommand;
 import frc.robot.commands.UnDeployClimber;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
@@ -111,6 +112,7 @@ public class RobotContainer {
 
   //shooter
   private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad1, 1, false);
+  private final ShootCommand shootTeleop = new ShootCommand(shooter, intake, gamepad1, 1, false);
 
   //Stupid axis stuff
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently
@@ -120,7 +122,7 @@ public class RobotContainer {
     drivetrain);
   private final RunCommand climbUsingTehStick = new RunCommand(() -> climber.climbUsingStick(gamepad2.getRawAxis(5)));
   //this is jank and I have no idea if it will work
-  private final RunCommand shoot = new RunCommand(() -> {if(gamepad1.getRawAxis(3) < 0) {shooterWarmup.execute();} else{shooterWarmup.end(false);}});
+  //private final RunCommand shoot = new RunCommand(() -> {if(gamepad1.getRawAxis(3) < 0) {shooterWarmup.execute();} else{shooterWarmup.end(false);}});
  
   //auto selector stuff
   private TreeMap<String, Command> autos = new TreeMap<String, Command>();
@@ -177,6 +179,8 @@ public class RobotContainer {
 
     //shooter stuff. is jank. i no likey
     
+
+
     //<!-- =======stuff below this comment has not yet been updated======= -->
     //everything should be updated now but need to get a few more stuffs in  
   }
@@ -216,8 +220,20 @@ public class RobotContainer {
     return runDrivetrain;
   }
 
+  public ShootCommand getShootCommand(){
+    return shootTeleop;
+  }
+
+  public WarmupCommand getWarmupCommand(){
+    return shooterWarmup; 
+  }
+
   public Joystick getJoystick1() {
     return gamepad1;
+  }
+
+  public Joystick getJoystick2(){
+    return gamepad2;
   }
 
   public JoystickButton getButtonA1() {

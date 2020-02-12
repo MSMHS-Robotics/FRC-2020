@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
   private NetworkTableEntry CurrentAuto = autoTab.addPersistent("Current Auto", "initializing").getEntry();
   private NetworkTableEntry allAutos = autoTab.addPersistent("All Auto Programs", "intiializing").getEntry();
   private Joystick gamepad1;
+  private Joystick gamepad2;
   private Lights blinkin;
   private Boolean wasPressed = false;
   //private Boolean isSet = false;
@@ -144,7 +145,23 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic(){
+
+  if (m_robotContainer.getJoystick1().getRawAxis(3) < 0.1){
+    m_robotContainer.getShootCommand().schedule();
+  }  
+  else{
+    m_robotContainer.getShootCommand().cancel();
   }
+
+  if (m_robotContainer.getJoystick2().getRawAxis(3) < 0.1){
+    m_robotContainer.getWarmupCommand().schedule();
+  }
+  else{
+    m_robotContainer.getWarmupCommand().cancel();
+
+  }
+  }
+
 
   @Override
   public void testInit() {

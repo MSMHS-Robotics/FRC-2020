@@ -8,6 +8,14 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj2.command.SubsystemBase; //adding shuffleboard commands
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Climber extends SubsystemBase {
 
@@ -22,6 +30,13 @@ public class Climber extends SubsystemBase {
 	private Solenoid climberPistons2;
 	private Boolean isDeployed = false;
 	private PIDController slidePID = new PIDController(0.0001, 0.00001, 0.00001);
+	private final ShuffleboardTab Climbertab = Shuffleboard.getTab("Climber Tab");
+	private Object arm;
+	private final NetworkTableEntry CLIMBER_CLIMBER_SPEED = Climbertab.addPersistent("CLIMBER_CLIMBER_SPEED", Constants.CLIMBER_CLIMBER_SPEED).getEntry();
+	private final NetworkTableEntry INTAKE_OUTTAKE_SPEED = Climbertab.addPersistent("INTAKE_OUTTAKE_SPEED", Constants.INTAKE_OUTTAKE_SPEED).getEntry();
+	private final NetworkTableEntry motorposition = Climbertab.addPersistent("motorposition", Constants.motorPosition).getEntry();
+    private final NetworkTableEntry motorUp = Climbertab.addPersistent("motorUp", Constants.motorUp).getEntry();
+
 	
 	public Climber() {
 		bottomLimitSwitch = new DigitalInput(1);
@@ -65,6 +80,21 @@ public class Climber extends SubsystemBase {
 				climberMotor.set(0);
 			}
 		}
+
+	public Climber() {
+		forwardLimitSwitch = new DigitalInput(1);
+		reverseLimitSwitch = new DigitalInput(2);
+		//need to assign act2ual channel values
+		climberMotor = new Talon(5);
+		climberPistons = new Solenoid(7);
+	}
+
+	public void ClimberDeploy() {
+		climberPistons.set(true);
+	}
+
+	public void raiseClimber() {
+		climberMotor.set(Constants.CLIMBER_CLIMBER_SPEED);
 	}
 
 
@@ -85,6 +115,22 @@ public class Climber extends SubsystemBase {
 	
 	public void stop() {
 		if(climberMotor != null) {climberMotor.set(0);}
+		climberMotor.set(-Constants.CLIMBER_CLIMBER_SPEED);
+	}
+
+	@Override
+	public void periodic() {
+
+		private double TempClimberSpeed = CLIMBER_CLIMBER_SPEED.getDouble(0.5);
+		if(TempClimberSpeed != Constants.CLIMBER_CLIMBER_SPEED){
+			Constants.CLIMBER_CLIMBER_SPEED = TempClimberSpeed;
+			CLIMBER_CLIMBER_SPEED.setDouble(Constants.CLIMBER_CLIMBER_SPEED);
+		}
+	}
+
+	public boolean stopRaise() {
+		climberMotor.set(0);
+		return forwardLimitSwitch.get();
 	}
 }
 

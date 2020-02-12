@@ -100,7 +100,7 @@ public class Drivetrain extends SubsystemBase {
   private final DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
   public double speed;
   private boolean aligned = false;
-  private boolean alignZoom = false;
+  private boolean alignZoom = true;
 
   public Drivetrain() {
     // Sets the error tolerance to 5, and the error derivative tolerance to 10 per
@@ -332,7 +332,7 @@ public class Drivetrain extends SubsystemBase {
       //start loop
       double x_offset = tx.getDouble(0);
       drivetrain.arcadeDrive(0, MathUtil.clamp(-visionPID.calculate(x_offset), Constants.visionPIDconstraints[0], Constants.visionPIDconstraints[1]));
-      if(x_offset < 0.1) {
+      if(x_offset < Constants.visionTolerance[0]) {
         aligned = true;
       }
       else {
@@ -361,7 +361,7 @@ public class Drivetrain extends SubsystemBase {
       //start loop
       double x_offset = tx.getDouble(0);
       drivetrain.arcadeDrive(0, MathUtil.clamp(-visionPID.calculate(x_offset), Constants.visionPIDconstraints[0], Constants.visionPIDconstraints[1]));
-      if(x_offset < Constants.alignAllowedError) {
+      if(x_offset < Constants.visionTolerance[0]) {
         aligned = true;
       }
       else {

@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 //import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Lights;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -32,7 +33,9 @@ public class Robot extends TimedRobot {
   private NetworkTableEntry CurrentAuto = autoTab.addPersistent("Current Auto", "initializing").getEntry();
   private NetworkTableEntry allAutos = autoTab.addPersistent("All Auto Programs", "intiializing").getEntry();
   private Joystick gamepad1;
+  private Lights blinkin;
   private Boolean wasPressed = false;
+  //private Boolean isSet = false;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -43,6 +46,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     gamepad1 = m_robotContainer.getJoystick1();
+    blinkin = m_robotContainer.getBlinkin();
   }
 
   /**
@@ -68,10 +72,12 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     allAutos.setString(m_robotContainer.getNames());
+    blinkin.setFire();
   }
 
   @Override
   public void disabledPeriodic() {
+    //if(!isSet) {blinkin.setRedLarson();isSet=true;} //for lights might work just so we can look cool this is not important
     if(gamepad1.getPOV() == -1) {
       wasPressed = false;
     }
@@ -130,6 +136,7 @@ public class Robot extends TimedRobot {
     
     // Let the driver take over
     m_robotContainer.getDriveCommand().schedule();
+    blinkin.setRedLarson();
   }
 
   /**

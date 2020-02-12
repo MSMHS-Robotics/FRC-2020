@@ -152,11 +152,7 @@ public class RobotContainer {
     //update: TOGGLING DONE! untested though
     aButton.whenPressed(align);
     aButton.whenReleased(runDrivetrain);
-<<<<<<< HEAD
-    //aButton.whenReleased(setFire);
-=======
     aButton.whenPressed(setFire);
->>>>>>> feat/lights
     start.whenPressed(toggleVision); //so we can use less buttons
     //xButton2.whenPressed(setRed);
 
@@ -218,14 +214,7 @@ public class RobotContainer {
     return gamepad1;
   }
 
-<<<<<<< HEAD
-=======
-  public JoystickButton getButtonA1() {
-    return aButton; 
-  }
-
   public Lights getBlinkin() {
     return blinkin;
   }
->>>>>>> feat/lights
 }

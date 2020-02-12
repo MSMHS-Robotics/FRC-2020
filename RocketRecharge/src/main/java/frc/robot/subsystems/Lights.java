@@ -1,8 +1,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Lights {
+public class Lights extends SubsystemBase {
     private Spark blinkin;
 
     public Lights() {
@@ -27,5 +28,9 @@ public class Lights {
 
     public void setPink() {
         blinkin.set(0.57);
+    }
+
+    public void setRainbow() {
+        blinkin.set(-0.45);
     }
 }

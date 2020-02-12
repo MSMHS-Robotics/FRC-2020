@@ -12,25 +12,25 @@ import java.util.TreeMap;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 import frc.robot.autonomous.DriveOffLine;
 import frc.robot.autonomous.DriveOffLineReverse;
 import frc.robot.autonomous.EightBallAuto;
-import frc.robot.commands.drivetrain.AlignToTargetCommand;
-import frc.robot.commands.drivetrain.SetFireCommand;
-import frc.robot.commands.drivetrain.ToggleVisionTypeCommand;
+
+import frc.robot.commands.intake.*; //a lot easier than importing them one by one
+import frc.robot.commands.climber.*;
+import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.WarmupCommand;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.drivetrain.TurnOnHeading;
-import frc.robot.commands.intake.*; //a lot easier than importing them one by one
-import frc.robot.commands.climber.*;
+
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -89,8 +89,8 @@ public class RobotContainer {
   //drivetrain
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
   private final ToggleVisionTypeCommand toggleVision = new ToggleVisionTypeCommand(drivetrain);
-  private final SetFireCommand setFire = new SetFireCommand(blinkin);
-  //private final SetRedCommand setRed = new SetRedCommand(blinkin);
+  private final SetRedHeartbeatCommand setFire = new SetRedHeartbeatCommand(blinkin);
+  private final AlertHumanPlayerCommand setRainbow = new AlertHumanPlayerCommand(blinkin);
   
   //intake + indexer
   private final RunIntakeCommand intakeIn = new RunIntakeCommand(intake, 1);
@@ -154,7 +154,8 @@ public class RobotContainer {
     aButton.whenReleased(runDrivetrain);
     aButton.whenPressed(setFire);
     start.whenPressed(toggleVision); //so we can use less buttons
-    //xButton2.whenPressed(setRed);
+    bButton.whenPressed(setRainbow);
+    bButton.whenReleased(setFire);
 
     //intake stuff. intake automagically sets power to 0 after command ends
     //rightBumper.whenPressed(intakeOut); //don't need this now

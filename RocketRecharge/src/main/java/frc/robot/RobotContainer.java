@@ -90,14 +90,14 @@ public class RobotContainer {
   //intake + indexer
   private final RunIntakeCommand intakeIn = new RunIntakeCommand(intake, 1);
   private final RunIntakeCommand intakeOut = new RunIntakeCommand(intake, -1);
-  private final FeedToShooterCommand feed = new FeedToShooterCommand(intake);
-  private final FeedToShooterReverse feedReverse = new FeedToShooterReverse(intake);
+
+  private final FeedCommand feedForward = new FeedCommand(intake, 1);
+  private final FeedCommand feedReverse = new FeedCommand(intake, -1);
+  private final RunIndexerCommand setIdle = new RunIndexerCommand(intake, 0.5);
+  
   private final PrepShotCommand prepShot = new PrepShotCommand(intake);
-  private final StopFeedToShooterCommand stopFeed = new StopFeedToShooterCommand(intake);
-  private final ExtendIntakeCommand extendIntake = new ExtendIntakeCommand(intake);
+
   private final RetractIntakeCommand retractIntake = new RetractIntakeCommand(intake);
-  private final ManuelTriggerWheel triggerForward = new ManuelTriggerWheel(intake);
-  private final ManuelTriggerWheelReverse triggerBackward = new ManuelTriggerWheelReverse(intake);
   private final AutoIntakeDeployCommand autoDeployIntake = new AutoIntakeDeployCommand(intake);
 
   //auto. maybe delete
@@ -153,13 +153,8 @@ public class RobotContainer {
     //intake stuff. intake automagically sets power to 0 after command ends
     //rightBumper.whenPressed(intakeOut); //don't need this now
     leftBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
-    leftBumper.whenReleased(retractIntake); //retracts, intake motor stops automatically
-    leftBumper.whenReleased(stopFeed); //stops indexer cause no other way
-    
-    //indexer
-    /*xButton.whenPressed(feed);
-    yButton.whenPressed(feedReverse);
-    bButton2.whenPressed(triggerForward);*/
+    leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically
+    leftBumper.whenReleased(setIdle); //to sort the stuff out
 
     //climber
     //this might work don't trust it
@@ -171,7 +166,6 @@ public class RobotContainer {
 
     //shooter stuff. is jank. i no likey
     
-    //<!-- =======stuff below this comment has not yet been updated======= -->
     //everything should be updated now but need to get a few more stuffs in  
   }
 
@@ -214,7 +208,4 @@ public class RobotContainer {
     return gamepad1;
   }
 
-  public JoystickButton getButtonA1() {
-    return aButton; 
-  }
 }

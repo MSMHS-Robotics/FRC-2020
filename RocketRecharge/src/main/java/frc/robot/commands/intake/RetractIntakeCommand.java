@@ -36,7 +36,7 @@ public class RetractIntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      m_subsystem.intakeIn();
+    m_subsystem.intakeRetract();
   }
 
   // Called once the command ends or is interrupted.
@@ -47,7 +47,6 @@ public class RetractIntakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-   // return m_subsystem.isRaised();
-   return false;
+   return m_subsystem.isRaised();
   }
 }

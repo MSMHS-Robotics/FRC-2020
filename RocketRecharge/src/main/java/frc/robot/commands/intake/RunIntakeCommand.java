@@ -17,18 +17,8 @@ public class RunIntakeCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   private double power = 0;
-
-  //===========================================================================================
-  private Intake intake; //add actual parameters for motor values and stuff here
-  //===========================================================================================
-
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-
-
+  private Intake intake;
+  
   public RunIntakeCommand(Intake subsystem, double pow) {
     intake = subsystem;
     power = pow;
@@ -40,17 +30,11 @@ public class RunIntakeCommand extends CommandBase {
   @Override
   public void initialize() {
   }
-
-  //=================================================================
-  //actual work is in next command  
   
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
       intake.runIntake(power);
   }
-
-  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
   // Called once the command ends or is interrupted.
   @Override

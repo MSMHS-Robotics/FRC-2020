@@ -13,22 +13,22 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * An example command that uses an example subsystem.
  */
-public class IndexerForwardCommand extends CommandBase {
-    @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
+public class RunIndexerCommand extends CommandBase {
+  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
 
-    private double power = 0;
+  private double power = 0;
 
-    // ===========================================================================================
-    private Intake intake; // add actual parameters for motor values and stuff here
-    // ===========================================================================================
+  // ===========================================================================================
+  private Intake intake; // add actual parameters for motor values and stuff here
+  // ===========================================================================================
 
-    /**
-     * Creates a new ExampleCommand.
-     *
-     * @param subsystem The subsystem used by this command.
-     */
+  /**
+   * Creates a new ExampleCommand.
+   *
+   * @param subsystem The subsystem used by this command.
+   */
 
-    public IndexerForwardCommand(Intake subsystem, double pow) {
+  public RunIndexerCommand(Intake subsystem, double pow) {
     intake = subsystem;
     power = pow;
     // Use addRequirements() here to declare subsystem dependencies.

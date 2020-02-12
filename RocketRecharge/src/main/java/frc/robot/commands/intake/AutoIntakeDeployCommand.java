@@ -10,7 +10,7 @@ public class AutoIntakeDeployCommand extends SequentialCommandGroup {
         super(
             new ExtendIntakeCommand(intake),
             new RunIntakeCommand(intake, 1),
-            new IndexerForwardCommand(intake, 1)
+            new RunIndexerCommand(intake, 1)
             );
     }
 }

@@ -5,23 +5,24 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.commands.RocketTimedCommand;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class ShootCommand extends CommandBase {
+public class ShootCommand extends RocketTimedCommand {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
     private final Shooter shooter;
     private final Intake intake;
     private final Joystick joystick;
     private int preset;
-    private boolean autoOrTeleop;
+    private double timeout;
+    private boolean isAuto;
 
 
     /**
@@ -29,12 +30,13 @@ public class ShootCommand extends CommandBase {
      *
      * @param shooter The subsystem used by this command.
      */
-    public ShootCommand(Shooter shooter, Intake intake, Joystick joystick, int preset, boolean auto) {
+    public ShootCommand(Shooter shooter, Intake intake, Joystick joystick, int preset, double timeout, boolean auto) {
         this.shooter = shooter;
         this.intake = intake;
         this.joystick = joystick;
         this.preset = preset;
-        autoOrTeleop = auto;
+        this.timeout = timeout;
+        isAuto = auto;
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(shooter, intake);
     }
@@ -42,6 +44,10 @@ public class ShootCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        if (isAuto){
+            super.setTimeout(timeout);
+        }
+       
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -49,7 +55,7 @@ public class ShootCommand extends CommandBase {
     public void execute() {
         int val;
 
-        if (autoOrTeleop) {
+        if (isAuto) {
             val = preset;
         } else {
             val = joystick.getPOV();
@@ -87,6 +93,6 @@ public class ShootCommand extends CommandBase {
     // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-      return false;
+      return super.isTimedOut();
   }
 }

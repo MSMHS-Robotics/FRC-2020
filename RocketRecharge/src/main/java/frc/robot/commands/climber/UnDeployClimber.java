@@ -5,29 +5,27 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.climber;
 
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class ShootAngleWarmupCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Shooter angleAdjust;
-  private double Angle;
-  private boolean isLinedUp;
+public class UnDeployClimber extends CommandBase {
+  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
+  private final Climber climber;
+
   /**
    * Creates a new ExampleCommand.
    *
-   * @param angleadjust The subsystem used by this command.
+   * @param subsystem The subsystem used by this command.
    */
-  public ShootAngleWarmupCommand(Shooter angleadjust,double angle) {
-    angleAdjust = angleadjust;
-    Angle = angle;
+  public UnDeployClimber(Climber subsystem) {
+    climber = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(angleadjust);
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -38,7 +36,7 @@ public class ShootAngleWarmupCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    isLinedUp = angleAdjust.shooterAngle(Angle);
+      climber.ClimberPistonsBackIn();
   }
 
   // Called once the command ends or is interrupted.
@@ -49,6 +47,6 @@ public class ShootAngleWarmupCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return isLinedUp;
+    return false;
   }
 }

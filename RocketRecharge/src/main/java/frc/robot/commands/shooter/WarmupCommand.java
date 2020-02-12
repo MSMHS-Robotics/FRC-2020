@@ -9,7 +9,7 @@
 // is finished return false
 
 
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Joystick;

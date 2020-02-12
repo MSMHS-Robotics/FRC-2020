@@ -72,7 +72,7 @@ public final class Constants {
         visionPID[2] = ksomethingelse;
     }
     public static double intakeMotorSpeed = 0.5;
-    public static final double CLIMBER_CLIMBER_SPEED = 0;
+    public static final double CLIMBER_CLIMBER_SPEED = 0.3;
 	public static final double INTAKE_OUTTAKE_SPEED = 0;
 	public static double motorPosition = 0;//fix later
     public static double motorUp = 10;//fix later

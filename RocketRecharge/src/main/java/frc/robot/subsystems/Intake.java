@@ -50,6 +50,10 @@ public class Intake extends SubsystemBase {
 	if(bigWheelMotor != null) {bigWheelMotor.set(1);}
   }
 
+  public void runIndexer(double pow) {
+	  if(beltMotor != null) {beltMotor.set(pow);}
+  }
+
   public void feedReverse() {
 	if(beltMotor!= null) {beltMotor.set(-1);}
   }
@@ -95,10 +99,16 @@ public class Intake extends SubsystemBase {
   }
   */
 
-  public void toggleIntake() {
-	intakeRaised = !intakeRaised;
-	//if(armPistons1 != null) {armPistons1.set(intakeRaised);}
-	//if(armPistons2 != null) {armPistons2.set(intakeRaised);}
+  public void intakeOut() {
+	intakeRaised = true;
+	//if(armPistons1 != null) {armPistons1.set(true);}
+	//if(armPistons2 != null) {armPistons2.set(true);}
+  }
+
+  public void intakeIn() {
+	intakeRaised = false;
+	//if(armPistons1 != null) {armPistons1.set(false);}
+	//if(armPistons2 != null) {armPistons2.set(false);}
   }
 
   public boolean isRaised() {

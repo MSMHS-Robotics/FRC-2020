@@ -24,11 +24,8 @@ import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.drivetrain.TurnOnHeading;
-import frc.robot.commands.ClimbUpCommand;
-import frc.robot.commands.DeployClimber;
 import frc.robot.commands.intake.*; //a lot easier than importing them one by one
-import frc.robot.commands.RaiseClimber;
-import frc.robot.commands.UnDeployClimber;
+import frc.robot.commands.climber.*;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -83,7 +80,7 @@ public class RobotContainer {
   //climber
   private final RaiseClimber raiseClimber = new RaiseClimber(climber);
   private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
-  private final DeployClimber deployClimber = new DeployClimber(climber);
+  private final DeployClimber deployClimber = new DeployClimber(climber, intake);
   private final UnDeployClimber unDeployClimber = new UnDeployClimber(climber);
 
   //drivetrain
@@ -97,9 +94,11 @@ public class RobotContainer {
   private final FeedToShooterReverse feedReverse = new FeedToShooterReverse(intake);
   private final PrepShotCommand prepShot = new PrepShotCommand(intake);
   private final StopFeedToShooterCommand stopFeed = new StopFeedToShooterCommand(intake);
-  private final ToggleIntakeCommand toggleIntake = new ToggleIntakeCommand(intake);
+  private final ExtendIntakeCommand extendIntake = new ExtendIntakeCommand(intake);
+  private final RetractIntakeCommand retractIntake = new RetractIntakeCommand(intake);
   private final ManuelTriggerWheel triggerForward = new ManuelTriggerWheel(intake);
   private final ManuelTriggerWheelReverse triggerBackward = new ManuelTriggerWheelReverse(intake);
+  private final AutoIntakeDeployCommand autoDeployIntake = new AutoIntakeDeployCommand(intake);
 
   //auto. maybe delete
   private final TurnOnHeading turnOffLine = new TurnOnHeading(drivetrain, 90, -1);
@@ -148,25 +147,27 @@ public class RobotContainer {
     //update: TOGGLING DONE! untested though
     aButton.whenPressed(align);
     aButton.whenReleased(runDrivetrain);
+    //aButton.whenReleased(setFire);
     start.whenPressed(toggleVision); //so we can use less buttons
 
     //intake stuff. intake automagically sets power to 0 after command ends
-    leftBumper.whenPressed(intakeIn);
-    rightBumper.whenPressed(intakeOut);
-    bButton.whenPressed(toggleIntake);
-
+    //rightBumper.whenPressed(intakeOut); //don't need this now
+    leftBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
+    leftBumper.whenReleased(retractIntake); //retracts, intake motor stops automatically
+    leftBumper.whenReleased(stopFeed); //stops indexer cause no other way
+    
     //indexer
-    xButton.whenPressed(feed);
+    /*xButton.whenPressed(feed);
     yButton.whenPressed(feedReverse);
-    bButton2.whenPressed(triggerForward);
+    bButton2.whenPressed(triggerForward);*/
 
     //climber
     //this might work don't trust it
-    leftBumper.whenPressed(climbUsingTehStick);
+    leftBumper.whenPressed(climbUsingTehStick); //should only be used for testing. DON'T TOUCH OTHERWISE!!!
     
     //this part should be good but find a way to make it available only during endgame otherwise trouble. true for all climber features
-    aButton2.whenPressed(deployClimber);
-    yButton2.whenPressed(unDeployClimber);
+    yButton2.whenPressed(deployClimber);
+    xButton2.whenPressed(unDeployClimber);
 
     //shooter stuff. is jank. i no likey
     

@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * An example command that uses an example subsystem.
  */
-public class ToggleIntakeCommand extends CommandBase {
+public class RetractIntakeCommand extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final Intake m_subsystem;
 
@@ -22,7 +22,7 @@ public class ToggleIntakeCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ToggleIntakeCommand(Intake subsystem) {
+  public RetractIntakeCommand(Intake subsystem) {
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -36,7 +36,7 @@ public class ToggleIntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      m_subsystem.toggleIntake();
+      m_subsystem.intakeIn();
   }
 
   // Called once the command ends or is interrupted.

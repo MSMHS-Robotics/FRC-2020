@@ -5,25 +5,25 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.intake;
 
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class UnDeployClimber extends CommandBase {
+public class ExtendIntakeCommand extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-  private final Climber climber;
+  private final Intake m_subsystem;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public UnDeployClimber(Climber subsystem) {
-    climber = subsystem;
+  public ExtendIntakeCommand(Intake subsystem) {
+    m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -36,7 +36,7 @@ public class UnDeployClimber extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      climber.ClimberPistonsBackIn();
+      m_subsystem.intakeOut();
   }
 
   // Called once the command ends or is interrupted.
@@ -47,6 +47,7 @@ public class UnDeployClimber extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+   // return m_subsystem.isRaised();
+   return false;
   }
 }

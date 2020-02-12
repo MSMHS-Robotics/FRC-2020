@@ -5,33 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.intake;
+package frc.robot.commands.climber;
 
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class RunIntakeCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+public class DeployClimber extends CommandBase {
+    @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
+    private final Climber climber;
+    private Intake intake;
 
-  private double power = 0;
-
-  //===========================================================================================
-  private Intake intake; //add actual parameters for motor values and stuff here
-  //===========================================================================================
-
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-
-
-  public RunIntakeCommand(Intake subsystem, double pow) {
-    intake = subsystem;
-    power = pow;
+    /**
+     * Creates a new ExampleCommand.
+     *
+     * @param subsystem The subsystem used by this command.
+     */
+    public DeployClimber(Climber subsystem, Intake intake_) {
+    climber = subsystem;
+    intake = intake_;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -41,21 +36,16 @@ public class RunIntakeCommand extends CommandBase {
   public void initialize() {
   }
 
-  //=================================================================
-  //actual work is in next command  
-  
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      intake.runIntake(power);
+    intake.intakeOut();
+    climber.ClimberDeploy();
   }
-
-  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.runIntake(0);
   }
 
   // Returns true when the command should end.

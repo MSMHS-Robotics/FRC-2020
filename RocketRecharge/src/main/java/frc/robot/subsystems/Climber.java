@@ -30,6 +30,7 @@ public class Climber extends SubsystemBase {
 	private Solenoid climberPistons2;
 	private Boolean isDeployed = false;
 	private PIDController slidePID = new PIDController(0.0001, 0.00001, 0.00001);
+	private PIDController climberPID = new PIDController(0.0001, 0.00001, 0.00001);
 	private ShuffleboardTab Climbertab = Shuffleboard.getTab("Climber Tab");
 	private NetworkTableEntry CLIMBER_CLIMBER_SPEED = Climbertab.addPersistent("CLIMBER_CLIMBER_SPEED", Constants.CLIMBER_CLIMBER_SPEED).getEntry();
 	private NetworkTableEntry INTAKE_OUTTAKE_SPEED = Climbertab.addPersistent("INTAKE_OUTTAKE_SPEED", Constants.INTAKE_OUTTAKE_SPEED).getEntry();
@@ -45,6 +46,7 @@ public class Climber extends SubsystemBase {
 		climberMotor = new WPI_TalonSRX(10);
 		encoder = new AnalogInput(3);
 		slidePID.setSetpoint(4);
+		climberPID.setSetpoint(0.2);
 		//climberPistons1 = new Solenoid(7);
 		//climberPistons2 = new Solenoid (6);
 	}
@@ -73,12 +75,24 @@ public class Climber extends SubsystemBase {
 	public void raiseClimberPID() {
 		if(isDeployed) {
 			if(!topLimitSwitch.get()) {
-				climberMotor.set(slidePID.calculate(encoder.getVoltage()));}
+				if(climberMotor != null) {climberMotor.set(slidePID.calculate(encoder.getVoltage()));}
 			}
 			else {
 				climberMotor.set(0);
 			}
 		}
+	}
+
+	public void climbWithPID() {
+		if(isDeployed) {
+			if(!bottomLimitSwitch.get()) {
+				if(climberMotor != null) {climberMotor.set(climberPID.calculate(encoder.getVoltage()));}
+			}
+			else {
+				climberMotor.set(0);
+			}
+		}
+	}
 
 	public void climbUp() {
 		if(isDeployed) {

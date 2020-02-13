@@ -81,10 +81,9 @@ public class RobotContainer {
   
   //now for some commands
   //climber
-  private final RaiseClimber raiseClimber = new RaiseClimber(climber);
   private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
-  private final DeployClimber deployClimber = new DeployClimber(climber, intake);
   private final UnDeployClimber unDeployClimber = new UnDeployClimber(climber);
+  private final AutoClimbSeqCommand climberDeploy = new AutoClimbSeqCommand(climber, intake);
 
   //drivetrain
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
@@ -165,14 +164,12 @@ public class RobotContainer {
 
     //climber
     //this might work don't trust it
-    leftBumper.whenPressed(climbUsingTehStick); //should only be used for testing. DON'T TOUCH OTHERWISE!!!
-    
-    //this part should be good but find a way to make it available only during endgame otherwise trouble. true for all climber features
-    yButton2.whenPressed(deployClimber);
+    //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes
+    xButton2.whenPressed(climberDeploy);
+    bButton2.whenPressed(climbUp);
     xButton2.whenPressed(unDeployClimber);
 
     //shooter stuff. is jank. i no likey
-    
     //everything should be updated now but need to get a few more stuffs in  
   }
 

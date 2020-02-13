@@ -9,8 +9,8 @@ public class AutoClimbSeqCommand extends SequentialCommandGroup {
     public AutoClimbSeqCommand(Climber climber, Intake intake) {
         super(
             new DeployClimber(climber, intake),
-            new RaiseClimber(climber),
-            new ClimbUpCommand(climber)
+            new RaiseClimber(climber)
+            //new ClimbUpCommand(climber)
             );
     }
 }

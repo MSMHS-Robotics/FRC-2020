@@ -212,6 +212,10 @@ public class RobotContainer {
     return gamepad1;
   }
 
+  public Joystick getJoystick2() {
+    return gamepad2;
+  }
+
   public Lights getBlinkin() {
     return blinkin;
   }

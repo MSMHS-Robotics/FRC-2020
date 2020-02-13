@@ -17,7 +17,7 @@ public class FiveBallAuto extends SequentialCommandGroup {
     public FiveBallAuto(Drivetrain drivetrain, Intake intake, Shooter shooter) {
         super(
             new ResetGyroCommand(drivetrain),
-            new SetDrive(drivetrain, 0, 0.3, 12, 4), //drive us 5 seconds
+            new SetDrive(drivetrain, 0, 0.3, 24, 4), //drive us 5 seconds
             new RunIntakeCommand(intake, .5), //run intake
             new SetDrive(drivetrain, 0, 0, 0, 2), //stop us
             new RunIntakeCommand(intake, 0),//stop intake

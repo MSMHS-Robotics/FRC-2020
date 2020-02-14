@@ -17,20 +17,15 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autonomous.DriveOffLine;
 import frc.robot.autonomous.DriveOffLineReverse;
 import frc.robot.autonomous.EightBallAuto;
+import frc.robot.autonomous.ThreeBallAuto;
 
 import frc.robot.commands.intake.*; //a lot easier than importing them one by one
 import frc.robot.commands.climber.*;
 import frc.robot.commands.drivetrain.*;
-import frc.robot.commands.WarmupCommand;
+import frc.robot.commands.shooter.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.drivetrain.TurnOnHeading;
-import frc.robot.commands.ClimbUpCommand;
-import frc.robot.commands.DeployClimber;
-import frc.robot.commands.intake.*; //a lot easier than importing them one by one
-import frc.robot.commands.RaiseClimber;
-import frc.robot.commands.ShootCommand;
-import frc.robot.commands.UnDeployClimber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
@@ -142,6 +137,7 @@ public class RobotContainer {
     autos.put("Drive Off Line", new DriveOffLine(drivetrain));
     autos.put("Drive Off Line Reverse", new DriveOffLineReverse(drivetrain));
     autos.put("Eight Ball Auto", new EightBallAuto(drivetrain));
+    autos.put("Three Ball Auto", new ThreeBallAuto(drivetrain, intake, shooter));
     autoNames = new ArrayList<>(autos.keySet());
     lengthOfList = autoNames.size();
   }

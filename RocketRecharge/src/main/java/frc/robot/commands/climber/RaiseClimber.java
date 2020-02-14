@@ -14,9 +14,7 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;;
-
-/////HOLD UP I AIN"T DONE WITH EDITING PLEASE DO NOT WORRY!
+import frc.robot.subsystems.Climber;
 
 /**
 
@@ -27,61 +25,32 @@ import frc.robot.subsystems.Climber;;
 public class RaiseClimber extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private Climber climber;
-  /**
-
-   * Creates a new ExampleCommand.
-
-   *
-
-   
-   */
-
+  
   public RaiseClimber(Climber climber_) {
     climber = climber_;
-    // Use addRequirements() here to declare subsystem dependencies.
-
-    //addRequirements(angleadjust);
-
+    addRequirements(climber);
   }
-
-
 
   // Called when the command is initially scheduled.
-
   @Override
-
   public void initialize() {
-
   }
-
-
 
   // Called every time the scheduler runs while the command is scheduled.
-
   @Override
-
   public void execute() {
-    climber.raiseClimber();
+    climber.raiseClimberPID();
   }
-
-
 
   // Called once the command ends or is interrupted.
-
   @Override
-
   public void end(boolean interrupted) {
-    climber.stop();
+    //climber.stop();
   }
 
-
-
   // Returns true when the command should end.
-
   @Override
-
   public boolean isFinished() {
     return false;
   }
-
 }

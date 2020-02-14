@@ -28,7 +28,7 @@ public class DeployClimber extends CommandBase {
     climber = subsystem;
     intake = intake_;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(subsystem, intake);
   }
 
   // Called when the command is initially scheduled.

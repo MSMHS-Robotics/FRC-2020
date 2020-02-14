@@ -166,7 +166,23 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic(){
+
+  if (m_robotContainer.getJoystick1().getRawAxis(3) < 0.1){
+    m_robotContainer.getShootCommand().schedule();
+  }  
+  else{
+    m_robotContainer.getShootCommand().cancel();
   }
+
+  if (m_robotContainer.getJoystick2().getRawAxis(3) < 0.1){
+    m_robotContainer.getWarmupCommand().schedule();
+  }
+  else{
+    m_robotContainer.getWarmupCommand().cancel();
+
+  }
+  }
+
 
   @Override
   public void testInit() {

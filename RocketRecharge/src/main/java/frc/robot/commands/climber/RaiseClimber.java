@@ -25,7 +25,7 @@ import frc.robot.subsystems.Climber;
 public class RaiseClimber extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private Climber climber;
-
+  
   public RaiseClimber(Climber climber_) {
     climber = climber_;
     addRequirements(climber);

@@ -1,7 +1,7 @@
 package frc.robot.autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.ResetGyroCommand;
+import frc.robot.commands.drivetrain.ResetGyroCommand;
 import frc.robot.commands.drivetrain.SetDrive;
 //import frc.robot.commands.drivetrain.TurnOnHeading;
 import frc.robot.subsystems.Drivetrain;

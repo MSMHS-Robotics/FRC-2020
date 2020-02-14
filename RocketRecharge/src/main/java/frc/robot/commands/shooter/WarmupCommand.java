@@ -9,7 +9,7 @@
 // is finished return false
 
 
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Joystick;
@@ -23,7 +23,7 @@ public class WarmupCommand extends CommandBase {
     private final Shooter shooter;
     private final Joystick joystick;
     private int preset;
-    private boolean autoOrTeleop;
+    private boolean isAuto;
 
     /**
      * Creates a new ExampleCommand.
@@ -34,7 +34,7 @@ public class WarmupCommand extends CommandBase {
     this.shooter = shooter;
     this.joystick = joystick;
     this.preset = preset;
-    autoOrTeleop = auto;
+    isAuto = auto;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
   }
@@ -49,7 +49,7 @@ public class WarmupCommand extends CommandBase {
   public void execute() {
       int val;
 
-    if(autoOrTeleop){
+    if(isAuto){
         val = preset;
     }
     else{
@@ -75,7 +75,7 @@ public class WarmupCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      if(!interrupted && !autoOrTeleop){
+      if(!interrupted && !isAuto){
           shooter.stopPlease();
       }
   }

@@ -13,17 +13,24 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * An example command that uses an example subsystem.
  */
-public class ToggleIntakeCommand extends CommandBase {
+public class RunIndexerCommand extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-  private final Intake m_subsystem;
+
+  private double power = 0;
+
+  // ===========================================================================================
+  private Intake intake; // add actual parameters for motor values and stuff here
+  // ===========================================================================================
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ToggleIntakeCommand(Intake subsystem) {
-    m_subsystem = subsystem;
+
+  public RunIndexerCommand(Intake subsystem, double pow) {
+    intake = subsystem;
+    power = pow;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -33,21 +40,26 @@ public class ToggleIntakeCommand extends CommandBase {
   public void initialize() {
   }
 
+  //=================================================================
+  //actual work is in next command  
+  
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      m_subsystem.toggleIntake();
+      intake.runIndexer(power);
   }
+
+  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intake.runIndexer(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-   // return m_subsystem.isRaised();
-   return false;
+    return false;
   }
 }

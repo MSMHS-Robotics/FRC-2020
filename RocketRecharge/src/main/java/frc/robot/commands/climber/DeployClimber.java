@@ -8,6 +8,7 @@
 package frc.robot.commands.climber;
 
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
@@ -16,16 +17,18 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class DeployClimber extends CommandBase {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
     private final Climber climber;
+    private Intake intake;
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param subsystem The subsystem used by this command.
      */
-    public DeployClimber(Climber subsystem) {
+    public DeployClimber(Climber subsystem, Intake intake_) {
     climber = subsystem;
+    intake = intake_;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(subsystem, intake);
   }
 
   // Called when the command is initially scheduled.
@@ -36,7 +39,8 @@ public class DeployClimber extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      climber.ClimberDeploy();
+    intake.intakeExtend();
+    climber.ClimberDeploy();
   }
 
   // Called once the command ends or is interrupted.

@@ -77,9 +77,9 @@ public class ShootCommand extends RocketTimedCommand {
         }
 
         if (shooter.isShooterGood()) {
-            intake.feed();
+            intake.feed(1);
         } else {
-            intake.stop();
+            intake.feed(0);
         }
     }
 
@@ -87,7 +87,7 @@ public class ShootCommand extends RocketTimedCommand {
     @Override
     public void end(boolean interrupted) {
         shooter.stopPlease();
-        intake.stop();
+        intake.feed(0);
     }
 
     // Returns true when the command should end.

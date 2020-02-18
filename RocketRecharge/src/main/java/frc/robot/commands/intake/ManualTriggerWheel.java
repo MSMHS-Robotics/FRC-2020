@@ -13,30 +13,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * An example command that uses an example subsystem.
  */
-public class StopFeedToShooterCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+public class ManualTriggerWheel extends CommandBase {
+  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
 
-
-
-
-
-
-  //===========================================================================================
-  private Intake intake; //add actual parameters for motor values and stuff here
-  //===========================================================================================
-
-
-
-
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-
-
-  public StopFeedToShooterCommand(Intake subsystem) {
+  private Intake intake;
+  private double x;
+  
+  public ManualTriggerWheel(Intake subsystem, double power) {
     intake = subsystem;
+    x = power;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -46,31 +31,16 @@ public class StopFeedToShooterCommand extends CommandBase {
   public void initialize() {
   }
 
-  
-  
-  //=================================================================
-  //actual work is in next command
-  
-  
-  
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      intake.stop();
+      intake.runTrigger(x);
   }
-
-  
-  
-  //[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-
-  
-  
-  
-  
   
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intake.runTrigger(0);
   }
 
   // Returns true when the command should end.

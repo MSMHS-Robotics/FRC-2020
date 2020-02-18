@@ -12,29 +12,25 @@ import java.util.TreeMap;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 import frc.robot.autonomous.DriveOffLine;
 import frc.robot.autonomous.DriveOffLineReverse;
 import frc.robot.autonomous.EightBallAuto;
-import frc.robot.commands.drivetrain.AlignToTargetCommand;
-import frc.robot.commands.drivetrain.SetFireCommand;
-import frc.robot.commands.drivetrain.ToggleVisionTypeCommand;
-import frc.robot.commands.WarmupCommand;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Shooter;
+import frc.robot.autonomous.ThreeBallAuto;
+
+import frc.robot.commands.intake.*; //a lot easier than importing them one by one
+import frc.robot.commands.climber.*;
+import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.shooter.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.drivetrain.TurnOnHeading;
-import frc.robot.commands.ClimbUpCommand;
-import frc.robot.commands.DeployClimber;
-import frc.robot.commands.intake.*; //a lot easier than importing them one by one
-import frc.robot.commands.RaiseClimber;
-import frc.robot.commands.ShootCommand;
-import frc.robot.commands.UnDeployClimber;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -85,34 +81,35 @@ public class RobotContainer {
   
   //now for some commands
   //climber
-  private final RaiseClimber raiseClimber = new RaiseClimber(climber);
   private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
-  private final DeployClimber deployClimber = new DeployClimber(climber);
   private final UnDeployClimber unDeployClimber = new UnDeployClimber(climber);
+  private final AutoClimbSeqCommand climberDeploy = new AutoClimbSeqCommand(climber, intake);
 
   //drivetrain
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
   private final ToggleVisionTypeCommand toggleVision = new ToggleVisionTypeCommand(drivetrain);
-  private final SetFireCommand setFire = new SetFireCommand(blinkin);
-  //private final SetRedCommand setRed = new SetRedCommand(blinkin);
+  private final SetRedHeartbeatCommand setFire = new SetRedHeartbeatCommand(blinkin);
+  private final AlertHumanPlayerCommand setRainbow = new AlertHumanPlayerCommand(blinkin);
   
   //intake + indexer
   private final RunIntakeCommand intakeIn = new RunIntakeCommand(intake, 1);
   private final RunIntakeCommand intakeOut = new RunIntakeCommand(intake, -1);
-  private final FeedToShooterCommand feed = new FeedToShooterCommand(intake);
-  private final FeedToShooterReverse feedReverse = new FeedToShooterReverse(intake);
+
+  private final FeedCommand feedForward = new FeedCommand(intake, 1);
+  private final FeedCommand feedReverse = new FeedCommand(intake, -1);
+  private final RunIndexerCommand setIdle = new RunIndexerCommand(intake, 0.5);
+  
   private final PrepShotCommand prepShot = new PrepShotCommand(intake);
-  private final StopFeedToShooterCommand stopFeed = new StopFeedToShooterCommand(intake);
-  private final ToggleIntakeCommand toggleIntake = new ToggleIntakeCommand(intake);
-  private final ManuelTriggerWheel triggerForward = new ManuelTriggerWheel(intake);
-  private final ManuelTriggerWheelReverse triggerBackward = new ManuelTriggerWheelReverse(intake);
+
+  private final RetractIntakeCommand retractIntake = new RetractIntakeCommand(intake);
+  private final AutoIntakeDeployCommand autoDeployIntake = new AutoIntakeDeployCommand(intake);
 
   //auto. maybe delete
   private final TurnOnHeading turnOffLine = new TurnOnHeading(drivetrain, 90, -1);
 
   //shooter
   private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad1, 1, false);
-  private final ShootCommand shootTeleop = new ShootCommand(shooter, intake, gamepad1, 1, false);
+  private final ShootCommand shootTeleop = new ShootCommand(shooter, intake, gamepad1, 1, 1, false); //this timeout right?
 
   //Stupid axis stuff
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently
@@ -140,6 +137,7 @@ public class RobotContainer {
     autos.put("Drive Off Line", new DriveOffLine(drivetrain));
     autos.put("Drive Off Line Reverse", new DriveOffLineReverse(drivetrain));
     autos.put("Eight Ball Auto", new EightBallAuto(drivetrain));
+    autos.put("Three Ball Auto", new ThreeBallAuto(drivetrain, intake, shooter));
     autoNames = new ArrayList<>(autos.keySet());
     lengthOfList = autoNames.size();
   }
@@ -157,32 +155,21 @@ public class RobotContainer {
     aButton.whenReleased(runDrivetrain);
     aButton.whenPressed(setFire);
     start.whenPressed(toggleVision); //so we can use less buttons
-    //xButton2.whenPressed(setRed);
+    bButton.whenPressed(setRainbow);
+    bButton.whenReleased(setFire);
 
     //intake stuff. intake automagically sets power to 0 after command ends
-    leftBumper.whenPressed(intakeIn);
-    rightBumper.whenPressed(intakeOut);
-    bButton.whenPressed(toggleIntake);
-
-    //indexer
-    xButton.whenPressed(feed);
-    yButton.whenPressed(feedReverse);
-    bButton2.whenPressed(triggerForward);
+    //rightBumper.whenPressed(intakeOut); //don't need this now
+    leftBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
+    leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically
+    leftBumper.whenReleased(setIdle); //to sort the stuff out
 
     //climber
     //this might work don't trust it
-    leftBumper.whenPressed(climbUsingTehStick);
-    
-    //this part should be good but find a way to make it available only during endgame otherwise trouble. true for all climber features
-    aButton2.whenPressed(deployClimber);
-    yButton2.whenPressed(unDeployClimber);
-
-    //shooter stuff. is jank. i no likey
-    
-
-
-    //<!-- =======stuff below this comment has not yet been updated======= -->
-    //everything should be updated now but need to get a few more stuffs in  
+    //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes
+    xButton2.whenPressed(climberDeploy);
+    bButton2.whenPressed(climbUp);
+    xButton2.whenPressed(unDeployClimber);
   }
 
   //stuff for auto selector

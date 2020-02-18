@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -14,7 +15,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-//import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Lights;
 
 /**
@@ -36,6 +36,8 @@ public class Robot extends TimedRobot {
   private Joystick gamepad2;
   private Lights blinkin;
   private Boolean wasPressed = false;
+  private Boolean unplugged1 = false;
+  private Boolean unplugged2 = false;
   //private Boolean isSet = false;
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -47,7 +49,9 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     gamepad1 = m_robotContainer.getJoystick1();
+    gamepad2 = m_robotContainer.getJoystick2();
     blinkin = m_robotContainer.getBlinkin();
+    CameraServer.getInstance().startAutomaticCapture();
   }
 
   /**
@@ -64,6 +68,24 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    if(!unplugged1) {
+      try {
+        gamepad1.getRawAxis(1);
+      }
+      catch(Exception e) {
+        unplugged1 = true;
+        e.printStackTrace();
+      }
+    }
+    if(!unplugged2) {
+      try {
+        gamepad2.getRawAxis(1);
+      }
+      catch(Exception e) {
+        unplugged2 = true;
+        e.printStackTrace();
+      }
+    }
     //SmartDashboard.putBoolean(drivetrain.isVisionAligned());
   }
 

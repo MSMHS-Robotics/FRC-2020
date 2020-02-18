@@ -13,40 +13,33 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * An example command that uses an example subsystem.
  */
-public class FeedToShooterReverse extends CommandBase {
+public class FeedCommand extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
 
-  // ===========================================================================================
-  private Intake intake; // add actual parameters for motor values and stuff here
-  // ===========================================================================================
+  private Intake intake;
+  private double x;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-
-  public FeedToShooterReverse(Intake subsystem) {
+  public FeedCommand(Intake subsystem, double power) {
     intake = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
+    x = power;
     addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-  }  
-  
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      intake.feedReverse();
+    intake.feed(x);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.stop();
+    intake.feed(0);
   }
 
   // Returns true when the command should end.

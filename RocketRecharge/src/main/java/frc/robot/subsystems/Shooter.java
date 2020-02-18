@@ -59,6 +59,7 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry ShooterkFF = tab1.addPersistent("ShooterkFF", Constants.ShooterkFF).getEntry();
   private NetworkTableEntry ShooterkMaxOutput = tab1.addPersistent("ShooterkMaxOutput", Constants.ShooterkMaxOutput).getEntry();
   private NetworkTableEntry ShooterkMinOutput = tab1.addPersistent("ShooterkMinOutput", Constants.ShooterkMinOutput).getEntry();
+  private NetworkTableEntry ShooterRPM = tab1.addPersistent("ShooterRPM", 0).getEntry();
   //RIP MaxRPM you will be missed D:
 
   private NetworkTableEntry AnglekP = tab1.addPersistent("AnglekP", Constants.AnglekP).getEntry();
@@ -82,6 +83,7 @@ public class Shooter extends SubsystemBase {
     shooterMotor = new CANSparkMax(7, MotorType.kBrushless);
     if (shooterMotor != null) {
       shooterMotor.restoreFactoryDefaults();
+      shooterMotor.setInverted(true);
       shooterPID = shooterMotor.getPIDController();
       encoder = shooterMotor.getEncoder();  
     }
@@ -182,7 +184,7 @@ public class Shooter extends SubsystemBase {
     if (encoder == null){
       return false;
     }
-    if(Math.abs(encoder.getVelocity() - RPMSetpoint) < Constants.RPMTolerance && Math.abs(encoder.getPosition() - angleSetpoint) < Constants.AnglekF){
+    if(Math.abs(encoder.getVelocity() - RPMSetpoint) < Constants.RPMTolerance){ //&& Math.abs(encoder.getPosition() - angleSetpoint) < Constants.AnglekF){
       return true;
     }
    return false;
@@ -191,6 +193,7 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    ShooterRPM.setDouble(shooterMotor.getEncoder().getVelocity());
 
     //now for changing the PID values on robot and in Constants.java. this is going to be _very_ long
     double tempSP = ShooterkP.getDouble(Constants.ShooterkP);

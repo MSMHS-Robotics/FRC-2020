@@ -32,47 +32,66 @@ public class Intake extends SubsystemBase {
 	//armPistons1 = new Solenoid(0);
 	//armPistons2 = new Solenoid(1);
 
-	intakeMotor = new WPI_TalonSRX(12); //our motors
-	beltMotor = new WPI_TalonSRX(13);
-	triggerMotor = new WPI_TalonSRX(9); //change?
+	intakeMotor = new WPI_TalonSRX(15); //our motors
+	beltMotor = new WPI_TalonSRX(11);
+	triggerMotor = new WPI_TalonSRX(12); //change?
 
 	lastSensor = new DigitalInput(4); //are we still using sensors?
 	triggerSensor = new DigitalInput(3);
   }
 
   public void runIntake(double power) {
-	if(intakeMotor != null) {intakeMotor.set(power);}
+	if(intakeMotor != null) 
+	{
+		intakeMotor.set(power);
+	}
   }
 
   public void runIndexer(double pow) {
-	  if(beltMotor != null) {beltMotor.set(pow);}
+	  if(beltMotor != null) {
+		  beltMotor.set(pow);
+		}
   }
 
   public void runTrigger(double power) {
-	if(triggerMotor != null) {triggerMotor.set(power);}
+	if(triggerMotor != null) {
+		triggerMotor.set(power);
+	}
   }
   
   public void feed(double power) {
-	if(beltMotor != null) {beltMotor.set(power);}
-	if(triggerMotor != null) {triggerMotor.set(power);}
+	if(beltMotor != null) {
+		beltMotor.set(power *0.5);
+	}
+	if(triggerMotor != null) {
+		triggerMotor.set(-power);
+	}
   }
 
   public boolean prepShot() {
 	if(lastSensor.get()) {
-		if(beltMotor != null) {beltMotor.set(0);}
+		if(beltMotor != null) {
+			beltMotor.set(0);
+		}
 		//pretty sure that works, might take some tuning
 		if(triggerSensor.get()) {
-			if(triggerMotor != null) {triggerMotor.set(1);}
+			if(triggerMotor != null) {
+				triggerMotor.set(1);
+			}
 			shotPrepped.setBoolean(this.prepShot());
 			return true;
 		}
 		else {
-			if(triggerMotor != null) {triggerMotor.set(0);}
+			if(triggerMotor != null) {
+				triggerMotor.set(0);
+			}
 			shotPrepped.setBoolean(this.prepShot());
 		}
 		}
 	else {
-		if(beltMotor != null) {beltMotor.set(1);}
+		if(beltMotor != null) {
+			beltMotor.set(1);
+		}
 		shotPrepped.setBoolean(this.prepShot());
 		return false;
 	}
@@ -81,7 +100,9 @@ public class Intake extends SubsystemBase {
   }
 
   public void setIdle() {
-	  if(beltMotor != null) {beltMotor.set(0.5);}
+	  if(beltMotor != null) {
+		  beltMotor.set(0);
+		}
   }
 
   public void intakeExtend() {
@@ -97,7 +118,8 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean isRaised() {
-	return armPistons1.get() && armPistons2.get();
+	//return armPistons1.get() && armPistons2.get();
+	return true;
   }
 
   @Override

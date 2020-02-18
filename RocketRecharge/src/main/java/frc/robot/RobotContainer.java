@@ -97,7 +97,7 @@ public class RobotContainer {
 
   private final FeedCommand feedForward = new FeedCommand(intake, 1);
   private final FeedCommand feedReverse = new FeedCommand(intake, -1);
-  private final RunIndexerCommand setIdle = new RunIndexerCommand(intake, 0.5);
+  private final RunIndexerCommand setIdle = new RunIndexerCommand(intake, 0);
   
   private final PrepShotCommand prepShot = new PrepShotCommand(intake);
 
@@ -155,8 +155,10 @@ public class RobotContainer {
     aButton.whenReleased(runDrivetrain);
     aButton.whenPressed(setFire);
     start.whenPressed(toggleVision); //so we can use less buttons
-    bButton.whenPressed(setRainbow);
-    bButton.whenReleased(setFire);
+    xButton.whenPressed(setRainbow);
+    xButton.whenReleased(setFire);
+    bButton.whenHeld(new ShootCommand(shooter, intake, gamepad1, -1, -1, false));
+
 
     //intake stuff. intake automagically sets power to 0 after command ends
     //rightBumper.whenPressed(intakeOut); //don't need this now
@@ -167,7 +169,7 @@ public class RobotContainer {
     //climber
     //this might work don't trust it
     //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes
-    xButton2.whenPressed(climberDeploy);
+    yButton2.whenPressed(climberDeploy);
     bButton2.whenPressed(climbUp);
     xButton2.whenPressed(unDeployClimber);
   }

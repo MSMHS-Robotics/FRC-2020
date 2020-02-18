@@ -42,7 +42,7 @@ public final class Constants {
     public static double LayupAngle = 10;
     public static double LayupRPM = 5;
 
-    public static double RPMTolerance = 10;
+    public static double RPMTolerance = 100;
     public static double AngleTolerance = 10;
     public static double[] visionPID = {0.03, 0, 0};
     public static double[] visionPIDconstraints = {-0.5, 0.5};

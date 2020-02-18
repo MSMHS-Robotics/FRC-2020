@@ -1,7 +1,6 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.intake.*;
 import frc.robot.subsystems.Intake;
 
 public class AutoIntakeDeployCommand extends SequentialCommandGroup {
@@ -10,7 +9,8 @@ public class AutoIntakeDeployCommand extends SequentialCommandGroup {
         super(
             new ExtendIntakeCommand(intake),
             new RunIntakeCommand(intake, 1),
-            new RunIndexerCommand(intake, 1)
+            new RunIndexerCommand(intake, 0)
+        
             );
     }
 }

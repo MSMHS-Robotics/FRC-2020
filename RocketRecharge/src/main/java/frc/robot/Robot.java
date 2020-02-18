@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
     gamepad1 = m_robotContainer.getJoystick1();
     gamepad2 = m_robotContainer.getJoystick2();
     blinkin = m_robotContainer.getBlinkin();
-    CameraServer.getInstance().startAutomaticCapture();
+    //CameraServer.getInstance().startAutomaticCapture();
   }
 
   /**
@@ -168,14 +168,14 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic(){
 
-  if (m_robotContainer.getJoystick1().getRawAxis(3) < 0.1){
+  if (m_robotContainer.getJoystick1().getRawAxis(3) > 0.2){
     m_robotContainer.getShootCommand().schedule();
   }  
   else{
     m_robotContainer.getShootCommand().cancel();
   }
 
-  if (m_robotContainer.getJoystick2().getRawAxis(3) < 0.1){
+  if (m_robotContainer.getJoystick2().getRawAxis(3) > 0.2){
     m_robotContainer.getWarmupCommand().schedule();
   }
   else{

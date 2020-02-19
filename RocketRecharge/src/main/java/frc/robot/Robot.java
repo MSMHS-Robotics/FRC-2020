@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -51,7 +50,7 @@ public class Robot extends TimedRobot {
     gamepad1 = m_robotContainer.getJoystick1();
     gamepad2 = m_robotContainer.getJoystick2();
     blinkin = m_robotContainer.getBlinkin();
-    //CameraServer.getInstance().startAutomaticCapture();
+    //CameraServer.getInstance().startAutomaticCapture(); //this is for camera stuff
   }
 
   /**

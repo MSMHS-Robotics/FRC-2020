@@ -109,7 +109,7 @@ public class RobotContainer {
 
   //shooter
   private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad1, 1, false);
-  private final ShootCommand shootTeleop = new ShootCommand(shooter, intake, gamepad1, 1, 1, false); //this timeout right?
+  private final ShootCommand shootTeleop = new ShootCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
 
   //Stupid axis stuff
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently
@@ -157,7 +157,7 @@ public class RobotContainer {
     start.whenPressed(toggleVision); //so we can use less buttons
     xButton.whenPressed(setRainbow);
     xButton.whenReleased(setFire);
-    bButton.whenHeld(new ShootCommand(shooter, intake, gamepad1, -1, -1, false));
+    bButton.whenHeld(new ShootCommand(shooter, intake, gamepad1, -1, -1, false, drivetrain));
 
 
     //intake stuff. intake automagically sets power to 0 after command ends

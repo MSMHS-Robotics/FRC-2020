@@ -7,7 +7,6 @@
 
 package frc.robot.subsystems;
 
-
 import com.kauailabs.navx.frc.AHRS;
 
 import frc.robot.Constants;
@@ -18,8 +17,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpiutil.math.MathUtil;
@@ -77,6 +79,9 @@ public class Drivetrain extends SubsystemBase {
   private NetworkTableEntry leftTickConstant = tab.addPersistent("LTickConstant", Constants.leftTickConstant).getEntry();
   private NetworkTableEntry leftEncoderValue = tab.addPersistent("LeftEncoder", 0).getEntry();
   private NetworkTableEntry rightEncoderValue = tab.addPersistent("RightEncoder", 0).getEntry();
+
+  private NetworkTableEntry resetGyroCommandEntry = tab.add("Reset Gyro", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+  private Boolean needToReset= false;
 
   private final CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
   private final RocketEncoder encoderLeft1 = new RocketEncoder (left1);
@@ -283,6 +288,15 @@ public class Drivetrain extends SubsystemBase {
       encoderLeft3.setPositionConstant(Constants.leftTickConstant);
     }
 
+    if(resetGyroCommandEntry.getBoolean(false)) {
+      needToReset = true;
+    }
+
+    if(needToReset) {
+      this.resetGyro();
+      needToReset = false;
+    }
+
     //dang that is some messy code
 
   }
@@ -314,6 +328,29 @@ public class Drivetrain extends SubsystemBase {
 
   public void visionPIDReset() {
     visionPID.reset();
+  }
+
+  public Double getDist() {
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+    return 70.25 / Math.tan(10 + ty.getDouble(20)); //ooh maths. taken from limelight docs (equation is d = (h2-h1) / tan(a1+a2))
+    //the 70.25 is height of center of the circle (in the hexagon frame) in inches minus how high lens is off the groun (20 inches) (h2 - h1)
+    //10 is angle limelight lens is at (a1)
+    //20 is a random default value to return (a2)
+  }
+
+  public Double getNeededRPM() {
+    double d = this.getDist(); //distance to target
+    double angle = 45; //angle we are shooting at
+    double g = 9.81; //acceleration due to gravity
+    double h = 20; //height above ground we are shooting at
+    //the 60 is to convert RPM into seconds to get m/s for velocity. RPM / 60 * wheel radius = tangential velocity
+    //wheel radius is 2 because we are using the blue 4" wheels
+    //the ball rotates to match the tangential velocity so center of mass rotates to have .5 the velocity. so the * 2 of tangent_v equation cancels the /2 of this so you don't see it in the below actual code equation
+    //units are in inches and degrees and seconds and stuff
+    return 60 * ((1 / Math.cos(angle) * Math.sqrt((0.5 * (d * d) * g) / (d * Math.tan(angle) + h))));
   }
 
   /**

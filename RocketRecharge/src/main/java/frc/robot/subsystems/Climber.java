@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -11,11 +10,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj2.command.SubsystemBase; //adding shuffleboard commands
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Climber extends SubsystemBase {
 
@@ -32,10 +29,7 @@ public class Climber extends SubsystemBase {
 	private PIDController slidePID = new PIDController(0.0001, 0.00001, 0.00001);
 	private PIDController climberPID = new PIDController(0.0001, 0.00001, 0.00001);
 	private ShuffleboardTab Climbertab = Shuffleboard.getTab("Climber Tab");
-	private NetworkTableEntry CLIMBER_CLIMBER_SPEED = Climbertab
-			.addPersistent("CLIMBER_CLIMBER_SPEED", Constants.CLIMBER_CLIMBER_SPEED).getEntry();
-	private NetworkTableEntry INTAKE_OUTTAKE_SPEED = Climbertab
-			.addPersistent("INTAKE_OUTTAKE_SPEED", Constants.INTAKE_OUTTAKE_SPEED).getEntry();
+	private NetworkTableEntry climberMotorSpeed = Climbertab.addPersistent("climberMotorSpeed", Constants.climberMotorSpeed).getEntry();
 	private NetworkTableEntry motorPosition = Climbertab.addPersistent("Motor Position", 0).getEntry();
 	private NetworkTableEntry motorUp = Climbertab.addPersistent("motorUp", Constants.motorUp).getEntry();
 
@@ -75,11 +69,12 @@ public class Climber extends SubsystemBase {
 		}
 	}
 
+	@Deprecated
 	public void raiseClimber() {
 		if (isDeployed) {
 			if (!topLimitSwitch.get()) {
 				if (climberMotor != null) {
-					climberMotor.set(Constants.CLIMBER_CLIMBER_SPEED);
+					climberMotor.set(Constants.climberMotorSpeed);
 				}
 			} else {
 				if (climberMotor != null) {
@@ -102,26 +97,29 @@ public class Climber extends SubsystemBase {
 	}
 
 	public void climbWithPID() {
-		if (isDeployed) {
-			if (!bottomLimitSwitch.get()) {
-				if (climberMotor != null) {
-					climberMotor.set(climberPID.calculate(encoder.getVoltage()));
+		if (isDeployed) { //if pistons are out
+			if (!bottomLimitSwitch.get()) { //and we aren't touching the bottom
+				if (climberMotor != null) { //and motor exists
+					climberMotor.set(climberPID.calculate(encoder.getVoltage())); //pid to it
 				}
-			} else {
-				climberMotor.set(0);
+			} else { //we are touching the bottom
+				if(climberMotor != null) { //motor exists
+					climberMotor.set(0); //stop it
+				}
 			}
 		}
 	}
 
+	@Deprecated
 	public void climbUp() {
-		if (isDeployed) {
-			if (!bottomLimitSwitch.get()) {
-				if (climberMotor != null) {
-					climberMotor.set(-Constants.CLIMBER_CLIMBER_SPEED);
+		if (isDeployed) { //if pistons are out
+			if (!bottomLimitSwitch.get()) { //and we aren't touching the bottom
+				if (climberMotor != null) { //and our motor is plugged in
+					climberMotor.set(-Constants.climberMotorSpeed); //climb
 				}
-			} else {
-				if (climberMotor != null) {
-					climberMotor.set(0.001);
+			} else { //we are touching the bottom
+				if (climberMotor != null) { //motor exists
+					climberMotor.set(0); //stop it
 				}
 			}
 		}
@@ -137,15 +135,15 @@ public class Climber extends SubsystemBase {
 		if (climberMotor != null) {
 			climberMotor.set(0);
 		}
-		climberMotor.set(-Constants.CLIMBER_CLIMBER_SPEED);
+		//climberMotor.set(-Constants.climberMotorSpeed);
 	}
 
 	@Override
 	public void periodic() {
-		double TempClimberSpeed = CLIMBER_CLIMBER_SPEED.getDouble(0.5);
-		if (TempClimberSpeed != Constants.CLIMBER_CLIMBER_SPEED) {
-			Constants.CLIMBER_CLIMBER_SPEED = TempClimberSpeed;
-			CLIMBER_CLIMBER_SPEED.setDouble(Constants.CLIMBER_CLIMBER_SPEED);
+		double TempClimberSpeed = climberMotorSpeed.getDouble(0.5);
+		if (TempClimberSpeed != Constants.climberMotorSpeed) {
+			Constants.climberMotorSpeed = TempClimberSpeed;
+			climberMotorSpeed.setDouble(Constants.climberMotorSpeed);
 		}
 		motorPosition.setDouble(encoder.getVoltage());
 	}

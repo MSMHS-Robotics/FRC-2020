@@ -145,7 +145,7 @@ public class Climber extends SubsystemBase {
 			Constants.climberMotorSpeed = TempClimberSpeed;
 			climberMotorSpeed.setDouble(Constants.climberMotorSpeed);
 		}
-		motorPosition.setDouble(encoder.getVoltage());
+		motorPosition.setDouble((double) encoder.getAccumulatorCount());
 	}
 
 	public void stopRaise() {

@@ -15,8 +15,8 @@ public class ThreeBallAuto extends SequentialCommandGroup {
     public ThreeBallAuto(Drivetrain drivetrain, Intake intake, Shooter shooter) {
         super(
             new ResetGyroCommand(drivetrain),
-            new ShootCommand(shooter, intake, null, 90, 5, true),
-            new SetDrive(drivetrain, 0, 0.3, 12, 4), //drive us 5 seconds
+            new ShootCommand(shooter, intake, null, 90, 10, true),
+            new SetDrive(drivetrain, 0, -0.3, 12, 4), //drive us 5 seconds
             new SetDrive(drivetrain, 0, 0, 0, 10) //stop us
             );
     }

@@ -48,20 +48,20 @@ public class Climber extends SubsystemBase {
 		encoder = new AnalogInput(3);
 		//slidePID.setSetpoint(4);
 		//climberPID.setSetpoint(0.2);
-		climberPistons1 = new Solenoid(0);
-		climberPistons2 = new Solenoid(1);
+		climberPistons1 = new Solenoid(7);
+		climberPistons2 = new Solenoid(6);
 	}
 
 	public void ClimberDeploy() {
-		//if (climberPistons1 != null) {
+		if (climberPistons1 != null) {
 			climberPistons1.set(true);
 			isDeployed = true;
-		//}
-		//if (climberPistons2 != null) {
+		}
+		if (climberPistons2 != null) {
 			climberPistons2.set(false);
 			isDeployed = true;
 		
-		//}
+		}
 	}
 
 	public void ClimberPistonsBackIn() {

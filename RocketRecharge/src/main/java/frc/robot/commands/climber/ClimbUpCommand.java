@@ -20,8 +20,8 @@ public class ClimbUpCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private Climber climber;
 
-  public ClimbUpCommand(Climber climber_) {
-    climber = climber_;
+  public ClimbUpCommand(Climber climber) {
+    this.climber = climber;
     addRequirements(climber);
   }
 

@@ -78,12 +78,14 @@ public class RobotContainer {
   private double rightTrigger = gamepad1.getRawAxis(3);
 
   private JoystickButton start = new JoystickButton(gamepad1, 8);
+  private JoystickButton start2 = new JoystickButton(gamepad2, 8);
   
   //now for some commands
   //climber
   private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
   private final UnDeployClimber unDeployClimber = new UnDeployClimber(climber);
-  private final AutoClimbSeqCommand climberDeploy = new AutoClimbSeqCommand(climber, intake);
+ // private final AutoDeployClimber climberDeploy = new AutoDeployClimber(intake, climber);
+ private final DeployClimber climberDeploy = new DeployClimber(climber);
 
   //drivetrain
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
@@ -157,7 +159,9 @@ public class RobotContainer {
     start.whenPressed(toggleVision); //so we can use less buttons
     xButton.whenPressed(setRainbow);
     xButton.whenReleased(setFire);
-    bButton.whenHeld(new ShootCommand(shooter, intake, gamepad1, -1, -1, false));
+    
+    aButton2.whenPressed(new ResetGyroCommand(drivetrain));
+   
 
 
     //intake stuff. intake automagically sets power to 0 after command ends
@@ -169,9 +173,14 @@ public class RobotContainer {
     //climber
     //this might work don't trust it
     //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes
-    yButton2.whenPressed(climberDeploy);
-    bButton2.whenPressed(climbUp);
-    xButton2.whenPressed(unDeployClimber);
+    xButton2.whenHeld(climberDeploy);
+    yButton2.whenPressed(climbUp);
+    start2.whenPressed(unDeployClimber);
+    
+    //shooter
+    bButton2.whenHeld(new WarmupCommand(shooter, gamepad2, -1, false));
+    bButton.whenHeld(new ShootCommand(shooter, intake, gamepad1, -1, -1, false));
+
   }
 
   //stuff for auto selector
@@ -203,6 +212,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     //this might automagically work. no touchy.
     return autos.get(autoNames.get(curr_auto));
+    //return turnOffLine;
   }
 
   public RunCommand getDriveCommand() {

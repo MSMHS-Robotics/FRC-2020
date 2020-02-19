@@ -59,6 +59,7 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry ShooterkFF = tab1.addPersistent("ShooterkFF", Constants.ShooterkFF).getEntry();
   private NetworkTableEntry ShooterkMaxOutput = tab1.addPersistent("ShooterkMaxOutput", Constants.ShooterkMaxOutput).getEntry();
   private NetworkTableEntry ShooterkMinOutput = tab1.addPersistent("ShooterkMinOutput", Constants.ShooterkMinOutput).getEntry();
+  private NetworkTableEntry RPMTolerance = tab1.addPersistent("RPMTolerance", Constants.RPMTolerance).getEntry();
   private NetworkTableEntry ShooterRPM = tab1.addPersistent("ShooterRPM", 0).getEntry();
   //RIP MaxRPM you will be missed D:
 
@@ -236,6 +237,11 @@ public class Shooter extends SubsystemBase {
     if(Constants.ShooterkMinOutput != tempSMin && shooterPID != null) {
       Constants.ShooterkMaxOutput = tempSMin;
       shooterPID.setOutputRange(Constants.ShooterkMinOutput, Constants.ShooterkMaxOutput);
+    }
+
+    double tempTolerance = RPMTolerance.getDouble(Constants.RPMTolerance);
+    if(Constants.RPMTolerance != tempTolerance){
+      Constants.RPMTolerance = tempTolerance;
     }
 
 

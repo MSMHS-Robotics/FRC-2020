@@ -122,7 +122,7 @@ public class Robot extends TimedRobot {
         m_robotContainer.setAutoNum(tempCurrAuto);
       }
     }
-    m_robotContainer.setAutoNum(tempCurrAuto);
+   
     
     CurrentAuto.setString(m_robotContainer.getName(tempCurrAuto));
   }
@@ -132,7 +132,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-   // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -167,21 +167,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic(){
-
-  if (m_robotContainer.getJoystick1().getRawAxis(3) > 0.2){
-    m_robotContainer.getShootCommand().schedule();
-  }  
-  else{
-    m_robotContainer.getShootCommand().cancel();
-  }
-
-  if (m_robotContainer.getJoystick2().getRawAxis(3) > 0.2){
-    m_robotContainer.getWarmupCommand().schedule();
-  }
-  else{
-    m_robotContainer.getWarmupCommand().cancel();
-
-  }
   }
 
 

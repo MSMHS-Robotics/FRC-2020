@@ -17,11 +17,11 @@ package frc.robot;
  */
 public final class Constants {
     //shooter PID constants
-    public static double ShooterkP = 5e-5;
-    public static double ShooterkI = 1e-6;
-    public static double ShooterkD = 0;
+    public static double ShooterkP = 7e-5;
+    public static double ShooterkI = 5e-7;
+    public static double ShooterkD = 0.001;
     public static double ShooterkIz = 0;
-    public static double ShooterkFF = 0;
+    public static double ShooterkFF = 6e-6;
     public static double ShooterkMaxOutput = 1;
     public static double ShooterkMinOutput = -1;
   
@@ -35,12 +35,12 @@ public final class Constants {
     public static double AnglekF = 0;
 
     //Preset Constants
-    public static double TrenchAngle = 35;
+    public static double TrenchAngle = 3500;
     public static double TrenchRPM = 6;
     public static double TenFootAngle = 45; 
-    public static double TenFootRPM = 10;
+    public static double TenFootRPM = 2600;
     public static double LayupAngle = 10;
-    public static double LayupRPM = 5;
+    public static double LayupRPM = 1000;
 
     public static double RPMTolerance = 100;
     public static double AngleTolerance = 10;

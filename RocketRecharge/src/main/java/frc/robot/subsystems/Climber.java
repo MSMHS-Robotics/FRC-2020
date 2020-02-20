@@ -54,11 +54,11 @@ public class Climber extends SubsystemBase {
 
 	public void ClimberDeploy() {
 		if (climberPistons1 != null) {
-			climberPistons1.set(true);
+			climberPistons1.set(false);
 			isDeployed = true;
 		}
 		if (climberPistons2 != null) {
-			climberPistons2.set(false);
+			climberPistons2.set(true);
 			isDeployed = true;
 		
 		}
@@ -66,11 +66,11 @@ public class Climber extends SubsystemBase {
 
 	public void ClimberPistonsBackIn() {
 		if (climberPistons1 != null) {
-			climberPistons1.set(false);
+			climberPistons1.set(true);
 			isDeployed = false;
 		}
 		if (climberPistons2 != null) {
-			climberPistons2.set(true);
+			climberPistons2.set(false);
 			isDeployed = false;
 		}
 	}

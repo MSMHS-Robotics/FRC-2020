@@ -183,7 +183,7 @@ public class Shooter extends SubsystemBase {
 
   public void layupShot(){
     shooterAngle(Constants.LayupAngle);
-    warmUp(Constants.LayupAngle);
+    warmUp(Constants.LayupRPM);
     RPMSetpoint = Constants.LayupRPM;
     angleSetpoint = Constants.LayupAngle;
   }
@@ -297,7 +297,7 @@ public class Shooter extends SubsystemBase {
 
     double tempLayupAngle = LayupAngle.getDouble(Constants.LayupAngle);
     if(Constants.LayupAngle != tempLayupAngle) {
-      Constants.LayupAngle = tempTrenchAngle;
+      Constants.LayupAngle = tempLayupAngle;
     }
 
     double tempLayupRPM = LayupRPM.getDouble(Constants.LayupRPM);

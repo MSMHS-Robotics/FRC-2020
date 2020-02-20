@@ -43,29 +43,29 @@ public class Climber extends SubsystemBase {
 		encoder = new Encoder(3, 4);
 		//slidePID.setSetpoint(4);
 		//climberPID.setSetpoint(0.2);
-		climberPistons1 = new Solenoid(0);
-		climberPistons2 = new Solenoid(1);
+		climberPistons1 = new Solenoid(7);
+		climberPistons2 = new Solenoid(6);
 	}
 
 	public void ClimberDeploy() {
-		//if (climberPistons1 != null) {
-			climberPistons1.set(true);
+		if (climberPistons1 != null) {
+			climberPistons1.set(false);
 			isDeployed = true;
-		//}
-		//if (climberPistons2 != null) {
-			climberPistons2.set(false);
+		}
+		if (climberPistons2 != null) {
+			climberPistons2.set(true);
 			isDeployed = true;
 		
-		//}
+		}
 	}
 
 	public void ClimberPistonsBackIn() {
-		//if (climberPistons1 != null) {
-			climberPistons1.set(false);
+		if (climberPistons1 != null) {
+			climberPistons1.set(true);
 			isDeployed = false;
-		//}
-		//if (climberPistons2 != null) {
-			climberPistons2.set(true);
+		}
+		if (climberPistons2 != null) {
+			climberPistons2.set(false);
 			isDeployed = false;
 		//}
 	}

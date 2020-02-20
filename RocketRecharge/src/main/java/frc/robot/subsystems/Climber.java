@@ -1,18 +1,15 @@
 package frc.robot.subsystems;
 
-import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj2.command.SubsystemBase; //adding shuffleboard commands
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
 
@@ -20,7 +17,6 @@ public class Climber extends SubsystemBase {
 	// here. Call these from Commands.
 	// public CANSparkMax Climber;
 
-	private DigitalInput bottomLimitSwitch, topLimitSwitch;
 	private Encoder encoder;
 	private WPI_TalonSRX climberMotor;
 	private Solenoid climberPistons1;
@@ -29,14 +25,10 @@ public class Climber extends SubsystemBase {
 	private PIDController slidePID = new PIDController(0.0001, 0.00001, 0.00001);
 	private PIDController climberPID = new PIDController(0.0001, 0.00001, 0.00001);
 	private ShuffleboardTab Climbertab = Shuffleboard.getTab("Climber Tab");
-	private NetworkTableEntry CLIMBER_CLIMBER_SPEED = Climbertab.addPersistent("CLIMBER_CLIMBER_SPEED", Constants.CLIMBER_CLIMBER_SPEED).getEntry();
-	private NetworkTableEntry INTAKE_OUTTAKE_SPEED = Climbertab.addPersistent("INTAKE_OUTTAKE_SPEED", Constants.INTAKE_OUTTAKE_SPEED).getEntry();
+	private NetworkTableEntry climberMotorPwr = Climbertab.addPersistent("Climber Motor Power", Constants.climberMotorPwr).getEntry();
 	private NetworkTableEntry motorPosition = Climbertab.addPersistent("Motor Position", 0).getEntry();
-	private NetworkTableEntry motorUp = Climbertab.addPersistent("motorUp", Constants.motorUp).getEntry();
-
+	
 	public Climber() {
-		bottomLimitSwitch = new DigitalInput(1);
-		topLimitSwitch = new DigitalInput(2);
 		// need to assign actual channel values
 		// !==UPDATE==! --> values assigned now
 		climberMotor = new WPI_TalonSRX(10);
@@ -72,9 +64,9 @@ public class Climber extends SubsystemBase {
 
 	public void raiseClimber() {
 		if (isDeployed) {
-			if (!topLimitSwitch.get()) {
+			if (climberMotor.isFwdLimitSwitchClosed() == 0) {
 				if (climberMotor != null) {
-					climberMotor.set(Constants.CLIMBER_CLIMBER_SPEED);
+					climberMotor.set(Constants.climberMotorPwr);
 				}
 			} else {
 				if (climberMotor != null) {
@@ -86,7 +78,7 @@ public class Climber extends SubsystemBase {
 
 	public void raiseClimberPID() {
 		if (isDeployed) {
-			if (climberMotor.isFwdLimitSwitchClosed() == 0)) {
+			if (climberMotor.isFwdLimitSwitchClosed() == 0) {
 				if (climberMotor != null) {
 					climberMotor.set(slidePID.calculate(encoder.getDistance()));
 				}
@@ -98,7 +90,7 @@ public class Climber extends SubsystemBase {
 	
 	public void climbWithPID() {
 		if (isDeployed) {
-			if (climberMotor.isRvsLimitSwitchClosed() == 0) {
+			if (climberMotor.isRevLimitSwitchClosed() == 0) {
 				if (climberMotor != null) {
 					climberMotor.set(climberPID.calculate(encoder.getDistance()));
 				}
@@ -110,9 +102,9 @@ public class Climber extends SubsystemBase {
 
 	public void climbUp() {
 		if (isDeployed) {
-			if (!bottomLimitSwitch.get()) {
+			if (climberMotor.isRevLimitSwitchClosed() == 0) {
 				if (climberMotor != null) {
-					climberMotor.set(-Constants.CLIMBER_CLIMBER_SPEED);
+					climberMotor.set(-Constants.climberMotorPwr);
 				}
 			} else {
 				if (climberMotor != null) {
@@ -132,7 +124,7 @@ public class Climber extends SubsystemBase {
 		if (climberMotor != null) {
 			climberMotor.set(0);
 		}
-		climberMotor.set(-Constants.CLIMBER_CLIMBER_SPEED);
+		climberMotor.set(-Constants.climberMotorPwr);
 	}
 	
 	public void stopRaise() {
@@ -141,10 +133,10 @@ public class Climber extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		double TempClimberSpeed = CLIMBER_CLIMBER_SPEED.getDouble(0.5);
-		if (TempClimberSpeed != Constants.CLIMBER_CLIMBER_SPEED) {
-			Constants.CLIMBER_CLIMBER_SPEED = TempClimberSpeed;
-			CLIMBER_CLIMBER_SPEED.setDouble(Constants.CLIMBER_CLIMBER_SPEED);
+		double TempClimberSpeed = climberMotorPwr.getDouble(0.5);
+		if (TempClimberSpeed != Constants.climberMotorPwr) {
+			Constants.climberMotorPwr = TempClimberSpeed;
+			climberMotorPwr.setDouble(Constants.climberMotorPwr);
 		}
 		motorPosition.setDouble(encoder.getDistance());
 	}

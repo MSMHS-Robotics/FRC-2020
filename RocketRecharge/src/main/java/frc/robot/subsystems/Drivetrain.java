@@ -79,10 +79,8 @@ public class Drivetrain extends SubsystemBase {
   private NetworkTableEntry leftTickConstant = tab.addPersistent("LTickConstant", Constants.leftTickConstant).getEntry();
   private NetworkTableEntry leftEncoderValue = tab.addPersistent("LeftEncoder", 0).getEntry();
   private NetworkTableEntry rightEncoderValue = tab.addPersistent("RightEncoder", 0).getEntry();
-
   private NetworkTableEntry resetGyroCommandEntry = tab.add("Reset Gyro", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
-  private Boolean needToReset= false;
-
+  
   private final CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
   private final RocketEncoder encoderLeft1 = new RocketEncoder (left1);
   private final CANSparkMax left2 = new CANSparkMax(2, MotorType.kBrushless);
@@ -289,16 +287,10 @@ public class Drivetrain extends SubsystemBase {
     }
 
     if(resetGyroCommandEntry.getBoolean(false)) {
-      needToReset = true;
-    }
-
-    if(needToReset) {
       this.resetGyro();
-      needToReset = false;
     }
 
     //dang that is some messy code
-
   }
   //==================================================================================
   public void headingPIDReset() {
@@ -350,7 +342,8 @@ public class Drivetrain extends SubsystemBase {
     //wheel radius is 2 because we are using the blue 4" wheels
     //the ball rotates to match the tangential velocity so center of mass rotates to have .5 the velocity. so the * 2 of tangent_v equation cancels the /2 of this so you don't see it in the below actual code equation
     //units are in inches and degrees and seconds and stuff
-    return 60 * ((1 / Math.cos(angle) * Math.sqrt((0.5 * (d * d) * g) / (d * Math.tan(angle) + h))));
+    //1.47 is our gear ratio (roughly. In actuallity it is 50/34)
+    return 1.47 * 60 * ((1 / Math.cos(angle) * Math.sqrt((0.5 * (d * d) * g) / (d * Math.tan(angle) + h))));
   }
 
   /**

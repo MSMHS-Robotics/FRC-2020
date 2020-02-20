@@ -32,13 +32,13 @@ public class ShootCommand extends RocketTimedCommand {
      *
      * @param shooter The subsystem used by this command.
      */
-    public ShootCommand(Shooter shooter, Intake intake, Joystick joystick, int preset, double timeout, boolean auto, Drivetrain drivetrain_) {
+    public ShootCommand(Shooter shooter, Intake intake, Joystick joystick, int preset, double timeout, boolean auto, Drivetrain drivetrain) {
         this.shooter = shooter;
         this.intake = intake;
         this.joystick = joystick;
         this.preset = preset;
         this.timeout = timeout;
-        drivetrain = drivetrain_;
+        this.drivetrain = drivetrain;
         isAuto = auto;
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(shooter, intake);

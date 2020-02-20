@@ -41,15 +41,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-  CANSparkMax shooterMotor;
-  CANSparkMax shooterMotor2;
-  WPI_TalonSRX angleMotor;
-  CANPIDController shooterPID;
-  CANPIDController anglePID;
-  CANEncoder encoder;
+  private CANSparkMax shooterMotor;
+  private CANSparkMax shooterMotor2;
+  private WPI_TalonSRX angleMotor;
+  private CANPIDController shooterPID;
+  private CANPIDController anglePID;
+  private CANEncoder encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   private double RPMSetpoint;
   private double angleSetpoint;
+  private Drivetrain drivetrain;
+
 
   private ShuffleboardTab tab1 = Shuffleboard.getTab("Shooter");
   private NetworkTableEntry ShooterkP = tab1.addPersistent("ShooterkP", Constants.ShooterkP).getEntry();
@@ -80,7 +82,8 @@ public class Shooter extends SubsystemBase {
   /**
    * Creates a new ExampleSubsystem.
    */
-  public Shooter() {
+  public Shooter(Drivetrain drivetrain_) {
+    drivetrain = drivetrain_;
     shooterMotor = new CANSparkMax(7, MotorType.kBrushless);
     if (shooterMotor != null) {
       shooterMotor.restoreFactoryDefaults();
@@ -160,10 +163,10 @@ public class Shooter extends SubsystemBase {
     return false;
   }
 
-  public void customShot(double x) {
+  public void limelightShot() {
     shooterAngle(Constants.TrenchAngle); //need to change. this is temp. we don't have an articulating hood yet, so should be fine for now
-    warmUp(x);
-    RPMSetpoint = x;
+    warmUp(drivetrain.getNeededRPM());
+    RPMSetpoint = drivetrain.getNeededRPM();
     angleSetpoint = Constants.TrenchAngle; //also temp. <!-- !!!CHANGE!!! -->
   }
 

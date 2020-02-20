@@ -2,13 +2,10 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -21,7 +18,7 @@ public class Climber extends SubsystemBase {
 	// public CANSparkMax Climber;
 
 	private DigitalInput bottomLimitSwitch, topLimitSwitch;
-	private AnalogInput encoder;
+	private Encoder encoder;
 	private WPI_TalonSRX climberMotor;
 	private Solenoid climberPistons1;
 	private Solenoid climberPistons2;
@@ -39,7 +36,7 @@ public class Climber extends SubsystemBase {
 		// need to assign actual channel values
 		// !==UPDATE==! --> values assigned now
 		climberMotor = new WPI_TalonSRX(10);
-		encoder = new AnalogInput(3);
+		encoder = new Encoder(3, 4);
 		//slidePID.setSetpoint(4);
 		//climberPID.setSetpoint(0.2);
 		climberPistons1 = new Solenoid(0);
@@ -59,14 +56,14 @@ public class Climber extends SubsystemBase {
 	}
 
 	public void ClimberPistonsBackIn() {
-		if (climberPistons1 != null) {
+		//if (climberPistons1 != null) {
 			climberPistons1.set(false);
 			isDeployed = false;
-		}
-		if (climberPistons2 != null) {
+		//}
+		//if (climberPistons2 != null) {
 			climberPistons2.set(true);
 			isDeployed = false;
-		}
+		//}
 	}
 
 	@Deprecated
@@ -86,21 +83,21 @@ public class Climber extends SubsystemBase {
 
 	public void raiseClimberPID() {
 		if (isDeployed) {
-			if (!topLimitSwitch.get()) {
+			if (climberMotor.isFwdLimitSwitchClosed() == 0)) {
 				if (climberMotor != null) {
-					climberMotor.set(slidePID.calculate(encoder.getVoltage()));
+					climberMotor.set(slidePID.calculate(encoder.getDistance()));
 				}
 			} else {
 				climberMotor.set(0);
 			}
 		}
 	}
-
+	
 	public void climbWithPID() {
-		if (isDeployed) { //if pistons are out
-			if (!bottomLimitSwitch.get()) { //and we aren't touching the bottom
-				if (climberMotor != null) { //and motor exists
-					climberMotor.set(climberPID.calculate(encoder.getVoltage())); //pid to it
+		if (isDeployed) { //pistons are out
+			if (climberMotor.isRvsLimitSwitchClosed() == 0) { //we aren't touching the top
+				if (climberMotor != null) { //motor exists
+					climberMotor.set(climberPID.calculate(encoder.getDistance())); //pid to it
 				}
 			} else { //we are touching the bottom
 				if(climberMotor != null) { //motor exists
@@ -137,6 +134,10 @@ public class Climber extends SubsystemBase {
 		}
 		//climberMotor.set(-Constants.climberMotorSpeed);
 	}
+	
+	public void stopRaise() {
+		climberMotor.set(0);
+	}
 
 	@Override
 	public void periodic() {
@@ -145,10 +146,6 @@ public class Climber extends SubsystemBase {
 			Constants.climberMotorSpeed = TempClimberSpeed;
 			climberMotorSpeed.setDouble(Constants.climberMotorSpeed);
 		}
-		motorPosition.setDouble(encoder.getVoltage());
-	}
-
-	public void stopRaise() {
-		climberMotor.set(0);
+		motorPosition.setDouble(encoder.getDistance());
 	}
 }

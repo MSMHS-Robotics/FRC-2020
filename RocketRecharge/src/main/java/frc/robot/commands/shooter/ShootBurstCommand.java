@@ -17,25 +17,28 @@ import frc.robot.commands.RocketTimedCommand;
  */
 public class ShootBurstCommand extends RocketTimedCommand {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-    private final Shooter shooter;
-    private final Intake intake;
-    private final Joystick joystick;
+    private Shooter shooter;
+    private Intake intake;
+    private Joystick joystick;
     private int preset;
+    private int lastval;
     private double timeout;
     private boolean isAuto;
+    private boolean hasShooterBeenGood;
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param shooter The subsystem used by this command.
      */
-    public ShootBurstCommand(Shooter shooter, Intake intake, Joystick joystick, int preset, double timeout,
-            boolean auto) {
+    public ShootBurstCommand(Shooter shooter, Intake intake, Joystick joystick, int preset, double timeout, boolean auto) {
         this.shooter = shooter;
         this.intake = intake;
         this.joystick = joystick;
         this.preset = preset;
         this.timeout = timeout;
+        this.hasShooterBeenGood = false;
+        this.lastval = -1;
         isAuto = auto;
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(shooter, intake);
@@ -44,10 +47,10 @@ public class ShootBurstCommand extends RocketTimedCommand {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        if (isAuto){
+        if (isAuto) {
             super.setTimeout(timeout);
         }
-       
+
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -76,11 +79,14 @@ public class ShootBurstCommand extends RocketTimedCommand {
             break;
         }
 
-        if (shooter.isShooterGood()) {
+        if (shooter.isShooterGood() || (hasShooterBeenGood && lastval == val)) {
+            hasShooterBeenGood = true;
             intake.feed(1);
         } else {
+            hasShooterBeenGood = false;
             intake.feed(0);
         }
+        lastval = val;
     }
 
     // Called once the command ends or is interrupted.
@@ -91,8 +97,8 @@ public class ShootBurstCommand extends RocketTimedCommand {
     }
 
     // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-      return super.isTimedOut();
-  }
+    @Override
+    public boolean isFinished() {
+        return super.isTimedOut();
+    }
 }

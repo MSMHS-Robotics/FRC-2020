@@ -1,21 +1,18 @@
 package frc.robot.subsystems;
 
-import frc.robot.Constants;
+import java.util.Map;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj2.command.SubsystemBase; //adding shuffleboard commands
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
 
@@ -38,6 +35,7 @@ public class Climber extends SubsystemBase {
 			.addPersistent("INTAKE_OUTTAKE_SPEED", Constants.INTAKE_OUTTAKE_SPEED).getEntry();
 	private NetworkTableEntry motorPosition = Climbertab.addPersistent("Motor Position", 0).getEntry();
 	private NetworkTableEntry motorUp = Climbertab.addPersistent("motorUp", Constants.motorUp).getEntry();
+	 private NetworkTableEntry isitDeployed = Climbertab.addPersistent("is it Deployed", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
 
 	public Climber() {
 		bottomLimitSwitch = new DigitalInput(1);
@@ -62,6 +60,7 @@ public class Climber extends SubsystemBase {
 			isDeployed = true;
 		
 		}
+		isitDeployed.setBoolean(true);
 	}
 
 	public void ClimberPistonsBackIn() {
@@ -73,6 +72,7 @@ public class Climber extends SubsystemBase {
 			climberPistons2.set(false);
 			isDeployed = false;
 		}
+		isitDeployed.setBoolean(false);
 	}
 
 	public void raiseClimber() {

@@ -24,6 +24,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.Diagnostics;;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -46,6 +47,7 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain();
   private final Shooter shooter = new Shooter(drivetrain);
   private final Lights blinkin = new Lights();
+  private final Diagnostics diagnostics = new Diagnostics();
   
   //joysticks
   //raw axis 2 and 5 are the Y axis for the left and right joysticks.

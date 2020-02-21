@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Encoder;
+import java.util.Map;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -36,8 +37,9 @@ public class Climber extends SubsystemBase {
 	private NetworkTableEntry climbKp = ClimberTab.addPersistent("climbKp", Constants.climbPID[0]).getEntry();
 	private NetworkTableEntry climbKi = ClimberTab.addPersistent("climbKi", Constants.climbPID[1]).getEntry();
 	private NetworkTableEntry climbKd = ClimberTab.addPersistent("climbKd", Constants.climbPID[2]).getEntry();
-  
-	
+	private NetworkTableEntry motorPosition = Climbertab.addPersistent("Motor Position", 0).getEntry();
+  private NetworkTableEntry isitDeployed = Climbertab.addPersistent("is it Deployed", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
+
 	public Climber() {
 		// need to assign actual channel values
 		// !==UPDATE==! --> values assigned now
@@ -63,8 +65,8 @@ public class Climber extends SubsystemBase {
 		//if (climberPistons2 != null) {
 			climberPistons2.set(true);
 			isDeployed = true;
-		
 		//}
+		isitDeployed.setBoolean(true);
 	}
 
 	public void ClimberPistonsBackIn() {
@@ -76,6 +78,7 @@ public class Climber extends SubsystemBase {
 			climberPistons2.set(false);
 			isDeployed = false;
 		//}
+		isitDeployed.setBoolean(false);
 	}
 
 	@Deprecated

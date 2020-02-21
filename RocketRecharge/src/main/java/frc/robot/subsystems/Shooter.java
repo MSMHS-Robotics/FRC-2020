@@ -82,8 +82,8 @@ public class Shooter extends SubsystemBase {
   /**
    * Creates a new ExampleSubsystem.
    */
-  public Shooter(Drivetrain drivetrain_) {
-    drivetrain = drivetrain_;
+  public Shooter(Drivetrain drivetrain) {
+    this.drivetrain = drivetrain;
     shooterMotor = new CANSparkMax(7, MotorType.kBrushless);
     if (shooterMotor != null) {
       shooterMotor.restoreFactoryDefaults();

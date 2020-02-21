@@ -20,6 +20,7 @@ public class Climber extends SubsystemBase {
 	private WPI_TalonSRX climberMotor;
 	private Solenoid climberPistons1;
 	private Solenoid climberPistons2;
+	private Solenoid lock1;
 	private Boolean isDeployed = false;
 	private PIDController slidePID = new PIDController(0.0001, 0.00001, 0.00001);
 	private PIDController climberPID = new PIDController(0.0001, 0.00001, 0.00001);
@@ -32,30 +33,31 @@ public class Climber extends SubsystemBase {
 		// !==UPDATE==! --> values assigned now
 		climberMotor = new WPI_TalonSRX(10);
 		encoder = new Encoder(3, 4);
-		//slidePID.setSetpoint(4);
-		//climberPID.setSetpoint(0.2);
+		slidePID.setSetpoint(5 * 2480);
+		climberPID.setSetpoint(1000);
 		climberPistons1 = new Solenoid(7);
 		climberPistons2 = new Solenoid(6);
+		lock1 = new Solenoid(1); //right channel?
 	}
 
 	public void ClimberDeploy() {
-		if (climberPistons1 != null) {
+		//if (climberPistons1 != null) {
 			climberPistons1.set(false);
 			isDeployed = true;
-		}
-		if (climberPistons2 != null) {
+		//}
+		//if (climberPistons2 != null) {
 			climberPistons2.set(true);
 			isDeployed = true;
 		
-		}
+		//}
 	}
 
 	public void ClimberPistonsBackIn() {
-		if (climberPistons1 != null) {
+		//if (climberPistons1 != null) {
 			climberPistons1.set(true);
 			isDeployed = false;
-		}
-		if (climberPistons2 != null) {
+		//}
+		//if (climberPistons2 != null) {
 			climberPistons2.set(false);
 			isDeployed = false;
 		//}
@@ -96,6 +98,10 @@ public class Climber extends SubsystemBase {
 				}
 			}
 		}
+	}
+
+	public void lock() {
+		lock1.set(true);
 	}
 
 	@Deprecated

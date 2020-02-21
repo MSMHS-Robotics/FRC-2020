@@ -57,6 +57,6 @@ public class DriveOnHeading extends RocketTimedCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return onHeading || super.isTimedOut();
+    return onHeading && super.isTimedOut();
   }
 }

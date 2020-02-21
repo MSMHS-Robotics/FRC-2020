@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import java.util.ArrayList;
@@ -50,8 +43,8 @@ public class RobotContainer {
   //subsytems
   private final Climber climber = new Climber();
   private final Intake intake = new Intake();
-  private final Shooter shooter = new Shooter();
   private final Drivetrain drivetrain = new Drivetrain();
+  private final Shooter shooter = new Shooter(drivetrain);
   private final Lights blinkin = new Lights();
   
   //joysticks

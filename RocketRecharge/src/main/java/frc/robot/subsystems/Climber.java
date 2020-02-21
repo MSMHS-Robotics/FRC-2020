@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -62,6 +61,7 @@ public class Climber extends SubsystemBase {
 		//}
 	}
 
+	@Deprecated
 	public void raiseClimber() {
 		if (isDeployed) {
 			if (climberMotor.isFwdLimitSwitchClosed() == 0) {
@@ -94,21 +94,20 @@ public class Climber extends SubsystemBase {
 				if (climberMotor != null) {
 					climberMotor.set(climberPID.calculate(encoder.getDistance()));
 				}
-			} else {
-				climberMotor.set(0);
 			}
 		}
 	}
 
+	@Deprecated
 	public void climbUp() {
 		if (isDeployed) {
 			if (climberMotor.isRevLimitSwitchClosed() == 0) {
 				if (climberMotor != null) {
 					climberMotor.set(-Constants.climberMotorPwr);
 				}
-			} else {
-				if (climberMotor != null) {
-					climberMotor.set(0.001);
+			} else { //we are touching the bottom
+				if (climberMotor != null) { //motor exists
+					climberMotor.set(0); //stop it
 				}
 			}
 		}

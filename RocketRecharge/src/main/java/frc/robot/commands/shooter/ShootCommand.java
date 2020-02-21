@@ -75,7 +75,7 @@ public class ShootCommand extends RocketTimedCommand {
             shooter.layupShot();
             break;
         case 270:
-            shooter.customShot(drivetrain.getNeededRPM());
+            shooter.limelightShot();
             break;
         default:
             shooter.tenFootShot(); // maybe change this?

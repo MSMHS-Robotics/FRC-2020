@@ -22,19 +22,26 @@ public class Climber extends SubsystemBase {
 	private Solenoid climberPistons2;
 	private Solenoid lock1;
 	private Boolean isDeployed = false;
-	private PIDController slidePID = new PIDController(0.0001, 0.00001, 0.00001);
-	private PIDController climberPID = new PIDController(0.0001, 0.00001, 0.00001);
-	private ShuffleboardTab Climbertab = Shuffleboard.getTab("Climber Tab");
-	private NetworkTableEntry climberMotorPwr = Climbertab.addPersistent("Climber Motor Power", Constants.climberMotorPwr).getEntry();
-	private NetworkTableEntry motorPosition = Climbertab.addPersistent("Motor Position", 0).getEntry();
+	private PIDController raisePID = new PIDController(0.0001, 0.00001, 0.00001);
+	private PIDController climbPID = new PIDController(0.0001, 0.00001, 0.00001);
+	private ShuffleboardTab ClimberTab = Shuffleboard.getTab("Climber Tab");
+	private NetworkTableEntry climberMotorPwr = ClimberTab.addPersistent("Climber Motor Power", Constants.climberMotorPwr).getEntry();
+	private NetworkTableEntry motorPosition = ClimberTab.addPersistent("Motor Position", 0).getEntry();
+	private NetworkTableEntry raiseKp = ClimberTab.addPersistent("raiseKp", Constants.raisePID[0]).getEntry();
+	private NetworkTableEntry raiseKi = ClimberTab.addPersistent("raiseKi", Constants.raisePID[1]).getEntry();
+	private NetworkTableEntry raiseKd = ClimberTab.addPersistent("raiseKd", Constants.raisePID[2]).getEntry();
+	private NetworkTableEntry climbKp = ClimberTab.addPersistent("climbKp", Constants.climbPID[0]).getEntry();
+	private NetworkTableEntry climbKi = ClimberTab.addPersistent("climbKi", Constants.climbPID[1]).getEntry();
+	private NetworkTableEntry climbKd = ClimberTab.addPersistent("climbKd", Constants.climbPID[2]).getEntry();
+  
 	
 	public Climber() {
 		// need to assign actual channel values
 		// !==UPDATE==! --> values assigned now
 		climberMotor = new WPI_TalonSRX(10);
 		encoder = new Encoder(3, 4);
-		slidePID.setSetpoint(5 * 2480);
-		climberPID.setSetpoint(1000);
+		raisePID.setSetpoint(5 * 2480);
+		climbPID.setSetpoint(1000);
 		climberPistons1 = new Solenoid(7);
 		climberPistons2 = new Solenoid(6);
 		lock1 = new Solenoid(1); //right channel?
@@ -78,11 +85,11 @@ public class Climber extends SubsystemBase {
 		}
 	}
 
-	public void raiseClimberPID() {
+	public void raiseclimbPID() {
 		if (isDeployed) {
 			if (climberMotor.isFwdLimitSwitchClosed() == 0) {
 				if (climberMotor != null) {
-					climberMotor.set(slidePID.calculate(encoder.getDistance()));
+					climberMotor.set(raisePID.calculate(encoder.getDistance()));
 				}
 			} else {
 				climberMotor.set(0);
@@ -94,7 +101,7 @@ public class Climber extends SubsystemBase {
 		if (isDeployed) {
 			if (climberMotor.isRevLimitSwitchClosed() == 0) {
 				if (climberMotor != null) {
-					climberMotor.set(climberPID.calculate(encoder.getDistance()));
+					climberMotor.set(climbPID.calculate(encoder.getDistance()));
 				}
 			}
 		}
@@ -143,6 +150,43 @@ public class Climber extends SubsystemBase {
 			Constants.climberMotorPwr = TempClimberSpeed;
 			climberMotorPwr.setDouble(Constants.climberMotorPwr);
 		}
+
+		double tempRP = raiseKp.getDouble(Constants.raisePID[0]);
+		if (Constants.raisePID[0] != tempRP) {
+			Constants.raisePID[0] = tempRP;
+			raisePID.setP(Constants.raisePID[0]);
+		}
+
+		double tempRI = raiseKi.getDouble(Constants.raisePID[1]);
+		if (Constants.raisePID[1] != tempRI) {
+			Constants.raisePID[1] = tempRI;
+			raisePID.setI(Constants.raisePID[1]);
+		}
+
+		double tempRD = raiseKd.getDouble(Constants.raisePID[2]);
+		if (Constants.raisePID[2] != tempRD) {
+			Constants.raisePID[2] = tempRD;
+			raisePID.setD(Constants.raisePID[2]);
+		}
+
+		double tempCP = climbKp.getDouble(Constants.climbPID[0]);
+		if (Constants.climbPID[0] != tempCP) {
+			Constants.climbPID[0] = tempCP;
+			climbPID.setP(Constants.climbPID[0]);
+		}
+
+		double tempCI = climbKi.getDouble(Constants.climbPID[1]);
+		if (Constants.climbPID[1] != tempCI) {
+			Constants.climbPID[1] = tempCI;
+			climbPID.setI(Constants.climbPID[1]);
+		}
+
+		double tempCD = climbKd.getDouble(Constants.climbPID[2]);
+		if (Constants.climbPID[2] != tempCD) {
+			Constants.climbPID[2] = tempCD;
+			climbPID.setD(Constants.climbPID[2]);
+		}
+
 		motorPosition.setDouble(encoder.getDistance());
 	}
 }

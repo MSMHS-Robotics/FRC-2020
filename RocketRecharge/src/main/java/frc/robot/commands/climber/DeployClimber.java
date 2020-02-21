@@ -1,33 +1,14 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.commands.climber;
 
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-/**
- * An example command that uses an example subsystem.
- */
 public class DeployClimber extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final Climber climber;
-  private Intake intake;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
   public DeployClimber(Climber climber) {
     this.climber = climber;
-
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climber);
   }
 
@@ -50,6 +31,6 @@ public class DeployClimber extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return climber.climberDeployed();
   }
 }

@@ -21,12 +21,15 @@ public class Climber extends SubsystemBase {
 	private Solenoid climberPistons1;
 	private Solenoid climberPistons2;
 	private Solenoid lock1;
+	private Solenoid lock2;
 	private Boolean isDeployed = false;
 	private PIDController raisePID = new PIDController(0.0001, 0.00001, 0.00001);
 	private PIDController climbPID = new PIDController(0.0001, 0.00001, 0.00001);
 	private ShuffleboardTab ClimberTab = Shuffleboard.getTab("Climber Tab");
 	private NetworkTableEntry climberMotorPwr = ClimberTab.addPersistent("Climber Motor Power", Constants.climberMotorPwr).getEntry();
 	private NetworkTableEntry motorPosition = ClimberTab.addPersistent("Motor Position", 0).getEntry();
+	private NetworkTableEntry fwdLimitSwitch = ClimberTab.addPersistent("Forward Limit Switch", 0).getEntry();
+	private NetworkTableEntry revLimitSwitch = ClimberTab.addPersistent("Reverse Limit Switch", 0).getEntry();
 	private NetworkTableEntry raiseKp = ClimberTab.addPersistent("raiseKp", Constants.raisePID[0]).getEntry();
 	private NetworkTableEntry raiseKi = ClimberTab.addPersistent("raiseKi", Constants.raisePID[1]).getEntry();
 	private NetworkTableEntry raiseKd = ClimberTab.addPersistent("raiseKd", Constants.raisePID[2]).getEntry();
@@ -45,6 +48,11 @@ public class Climber extends SubsystemBase {
 		climberPistons1 = new Solenoid(7);
 		climberPistons2 = new Solenoid(6);
 		lock1 = new Solenoid(1); //right channel?
+		lock2 = new Solenoid(2); //right channel?
+	}
+
+	public boolean climberDeployed() {
+		return isDeployed;
 	}
 
 	public void ClimberDeploy() {
@@ -85,7 +93,7 @@ public class Climber extends SubsystemBase {
 		}
 	}
 
-	public void raiseclimbPID() {
+	public void raiseClimberPID() {
 		if (isDeployed) {
 			if (climberMotor.isFwdLimitSwitchClosed() == 0) {
 				if (climberMotor != null) {
@@ -109,6 +117,7 @@ public class Climber extends SubsystemBase {
 
 	public void lock() {
 		lock1.set(true);
+		lock2.set(true);
 	}
 
 	@Deprecated
@@ -118,9 +127,9 @@ public class Climber extends SubsystemBase {
 				if (climberMotor != null) {
 					climberMotor.set(-Constants.climberMotorPwr);
 				}
-			} else { //we are touching the bottom
+			} else { //we are touching the rev
 				if (climberMotor != null) { //motor exists
-					climberMotor.set(0); //stop it
+					climberMotor.set(0); //sfwd it
 				}
 			}
 		}
@@ -132,19 +141,20 @@ public class Climber extends SubsystemBase {
 		}
 	}
 
-	public void stop() {
+	public void climb() {
 		if (climberMotor != null) {
 			climberMotor.set(0);
 		}
 		climberMotor.set(-Constants.climberMotorPwr);
 	}
 	
-	public void stopRaise() {
+	public void climberStop() {
 		climberMotor.set(0);
 	}
 
 	@Override
 	public void periodic() {
+		//off get ready
 		double TempClimberSpeed = climberMotorPwr.getDouble(0.5);
 		if (TempClimberSpeed != Constants.climberMotorPwr) {
 			Constants.climberMotorPwr = TempClimberSpeed;
@@ -186,7 +196,8 @@ public class Climber extends SubsystemBase {
 			Constants.climbPID[2] = tempCD;
 			climbPID.setD(Constants.climbPID[2]);
 		}
-
+		fwdLimitSwitch.setDouble(climberMotor.isFwdLimitSwitchClosed());
+		revLimitSwitch.setDouble(climberMotor.isRevLimitSwitchClosed());
 		motorPosition.setDouble(encoder.getDistance());
 	}
 }

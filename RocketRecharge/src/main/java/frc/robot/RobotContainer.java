@@ -36,7 +36,7 @@ public class RobotContainer {
 
   //subsystems go here:
   //auto commands
-  // private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain, 90, -1);
+  //private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain, 90, -1);
   //private final EightBallAuto eightBallAuto = new EightBallAuto(drivetrain);
   //private final DriveOffLine driveAuto = new DriveOffLine(drivetrain);
   
@@ -77,8 +77,8 @@ public class RobotContainer {
   //climber
   private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
   private final UnDeployClimber unDeployClimber = new UnDeployClimber(climber);
- // private final AutoDeployClimber climberDeploy = new AutoDeployClimber(intake, climber);
- private final DeployClimber climberDeploy = new DeployClimber(climber);
+  // private final AutoDeployClimber climberDeploy = new AutoDeployClimber(intake, climber);
+  private final DeployClimber climberDeploy = new DeployClimber(climber);
 
   //drivetrain
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);

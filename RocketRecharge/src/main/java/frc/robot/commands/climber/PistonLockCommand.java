@@ -3,13 +3,12 @@ package frc.robot.commands.climber;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class UnDeployClimber extends CommandBase {
+public class PistonLockCommand extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final Climber climber;
 
-  public UnDeployClimber(Climber climber) {
+  public PistonLockCommand(Climber climber) {
     this.climber = climber;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climber);
   }
 
@@ -21,7 +20,7 @@ public class UnDeployClimber extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      climber.ClimberPistonsBackIn();
+    climber.lock();
   }
 
   // Called once the command ends or is interrupted.
@@ -32,6 +31,6 @@ public class UnDeployClimber extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !climber.climberDeployed();
+    return true;
   }
 }

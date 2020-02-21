@@ -11,7 +11,6 @@ public class AutoDeployClimber extends SequentialCommandGroup {
         super(
             new ExtendIntakeCommand(intake),
             new DeployClimber(climber)
-           
             );
     }
 }

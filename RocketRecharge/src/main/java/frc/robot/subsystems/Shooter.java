@@ -22,17 +22,17 @@ Zack says hi. The programers are doing a great job. Keep up all the hard work!*/
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 //talon
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
-
 //spark
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.ControlType;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -61,6 +61,7 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry ShooterkMinOutput = tab1.addPersistent("ShooterkMinOutput", Constants.ShooterkMinOutput).getEntry();
   private NetworkTableEntry RPMTolerance = tab1.addPersistent("RPMTolerance", Constants.RPMTolerance).getEntry();
   private NetworkTableEntry ShooterRPM = tab1.addPersistent("ShooterRPM", 0).getEntry();
+  private NetworkTableEntry isShooterGood = tab1.addPersistent("is Shooter Good", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
   //RIP MaxRPM you will be missed D:
 
   private NetworkTableEntry AnglekP = tab1.addPersistent("AnglekP", Constants.AnglekP).getEntry();
@@ -183,12 +184,18 @@ public class Shooter extends SubsystemBase {
 
   public boolean isShooterGood(){
     if (encoder == null){
+      isShooterGood.setBoolean(false);
       return false;
+      
     }
     if(Math.abs(encoder.getVelocity() - RPMSetpoint) < Constants.RPMTolerance){ //&& Math.abs(encoder.getPosition() - angleSetpoint) < Constants.AnglekF){
+      isShooterGood.setBoolean(false);
       return true;
+
     }
-   return false;
+    isShooterGood.setBoolean(false);
+    return false;
+   
   }
 
   @Override

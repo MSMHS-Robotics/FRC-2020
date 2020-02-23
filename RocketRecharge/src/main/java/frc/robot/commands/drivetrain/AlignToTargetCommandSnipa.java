@@ -25,8 +25,8 @@ public class AlignToTargetCommandSnipa extends CommandBase {
    *
    * @param drivetrain The subsystem used by this command.
    */
-  public AlignToTargetCommandSnipa(Drivetrain drivetrain_) {
-    drivetrain = drivetrain_;
+  public AlignToTargetCommandSnipa(Drivetrain drivetrain) {
+    this.drivetrain = drivetrain;
     addRequirements(drivetrain);
   }
 

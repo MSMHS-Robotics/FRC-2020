@@ -76,10 +76,11 @@ public final class Constants {
     public static  double climbSpeed = 0.3;
 	public static double motorPosition = 0;//fix later
     public static double motorUp = 10;//fix later
-    public static double distancesetpoint = 5;
-
+    
     //climberPID
     public static double extendclimbkP = 0.0001;
     public static double extendclimbkI = 0.0001;
     public static double extendclimbkD = 0.0001;
+    public static double distancesetpoint = 5;
+
 }

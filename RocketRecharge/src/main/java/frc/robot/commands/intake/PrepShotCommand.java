@@ -9,10 +9,10 @@ public class PrepShotCommand extends CommandBase {
   private boolean shotPrepped = false;
   private Intake intake;
 
-  public PrepShotCommand(Intake subsystem) {
-    intake = subsystem;
+  public PrepShotCommand(Intake intake) {
+    this.intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.

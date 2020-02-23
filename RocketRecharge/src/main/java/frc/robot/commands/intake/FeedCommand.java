@@ -19,10 +19,10 @@ public class FeedCommand extends CommandBase {
   private Intake intake;
   private double x;
 
-  public FeedCommand(Intake subsystem, double power) {
-    intake = subsystem;
+  public FeedCommand(Intake intake, double power) {
+    this.intake = intake;
     x = power;
-    addRequirements(subsystem);
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.

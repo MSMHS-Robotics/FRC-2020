@@ -22,8 +22,8 @@ public class ResetGyroCommand extends CommandBase {
      *
      * @param subsystem The subsystem used by this command.
      */
-    public ResetGyroCommand(Drivetrain drivetrain_) {
-    drivetrain = drivetrain_;
+    public ResetGyroCommand(Drivetrain drivetrain) {
+    this.drivetrain = drivetrain;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
   }

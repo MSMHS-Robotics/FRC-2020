@@ -26,8 +26,8 @@ public class RaiseClimber extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private Climber climber;
   
-  public RaiseClimber(Climber climber_) {
-    climber = climber_;
+  public RaiseClimber(Climber climber) {
+    this.climber = climber;
     addRequirements(climber);
   }
 

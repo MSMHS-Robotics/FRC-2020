@@ -25,17 +25,21 @@ public class Climber extends SubsystemBase {
 	private WPI_TalonSRX climberMotor;
 	private Solenoid climberPistons1;
 	private Solenoid climberPistons2;
+	private double distanceSetpoint;
 	private Boolean isDeployed = false;
-	private PIDController slidePID = new PIDController(0.0001, 0.00001, 0.00001);
-	private PIDController climberPID = new PIDController(0.0001, 0.00001, 0.00001);
+	private PIDController extendclimbPID = new PIDController(Constants.extendclimbkP, Constants.extendclimbkI, Constants.extendclimbkD);
+	
+	
+	//shuffleboard
 	private ShuffleboardTab Climbertab = Shuffleboard.getTab("Climber Tab");
-	private NetworkTableEntry CLIMBER_CLIMBER_SPEED = Climbertab
-			.addPersistent("CLIMBER_CLIMBER_SPEED", Constants.CLIMBER_CLIMBER_SPEED).getEntry();
-	private NetworkTableEntry INTAKE_OUTTAKE_SPEED = Climbertab
-			.addPersistent("INTAKE_OUTTAKE_SPEED", Constants.INTAKE_OUTTAKE_SPEED).getEntry();
+	private NetworkTableEntry climbSpeed = Climbertab.addPersistent("climbSpeed", Constants.climbSpeed).getEntry();
 	private NetworkTableEntry motorPosition = Climbertab.addPersistent("Motor Position", 0).getEntry();
 	private NetworkTableEntry motorUp = Climbertab.addPersistent("motorUp", Constants.motorUp).getEntry();
-	 private NetworkTableEntry isitDeployed = Climbertab.addPersistent("is it Deployed", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
+	private NetworkTableEntry extendclimbkP = Climbertab.addPersistent("extendclimbkP", Constants.extendclimbkP).getEntry();
+	private NetworkTableEntry extendclimbkI = Climbertab.addPersistent("extendclimbkI", Constants.extendclimbkI).getEntry();
+	private NetworkTableEntry extendclimbkD = Climbertab.addPersistent("extendclimbkD", Constants.extendclimbkD).getEntry();
+	private NetworkTableEntry DistanceSetpoint = Climbertab.addPersistent("DistanceSetpoint", Constants.distancesetpoint).getEntry();
+	private NetworkTableEntry isitDeployed = Climbertab.addPersistent("is it Deployed", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
 
 	public Climber() {
 		bottomLimitSwitch = new DigitalInput(1);
@@ -75,25 +79,11 @@ public class Climber extends SubsystemBase {
 		isitDeployed.setBoolean(false);
 	}
 
-	public void raiseClimber() {
-		if (isDeployed) {
-			if (!topLimitSwitch.get()) {
-				if (climberMotor != null) {
-					climberMotor.set(Constants.CLIMBER_CLIMBER_SPEED);
-				}
-			} else {
-				if (climberMotor != null) {
-					climberMotor.set(-0.01);
-				}
-			}
-		}
-	}
-
 	public void raiseClimberPID() {
 		if (isDeployed) {
 			if (!topLimitSwitch.get()) {
 				if (climberMotor != null) {
-					climberMotor.set(slidePID.calculate(encoder.getVoltage()));
+					climberMotor.set(extendclimbPID.calculate(encoder.getVoltage()));
 				}
 			} else {
 				climberMotor.set(0);
@@ -105,7 +95,7 @@ public class Climber extends SubsystemBase {
 		if (isDeployed) {
 			if (!bottomLimitSwitch.get()) {
 				if (climberMotor != null) {
-					climberMotor.set(climberPID.calculate(encoder.getVoltage()));
+					climberMotor.set(extendclimbPID.calculate(encoder.getVoltage()));
 				}
 			} else {
 				climberMotor.set(0);
@@ -117,7 +107,7 @@ public class Climber extends SubsystemBase {
 		if (isDeployed) {
 			if (!bottomLimitSwitch.get()) {
 				if (climberMotor != null) {
-					climberMotor.set(-Constants.CLIMBER_CLIMBER_SPEED);
+					climberMotor.set(-Constants.climbSpeed);
 				}
 			} else {
 				if (climberMotor != null) {
@@ -137,17 +127,45 @@ public class Climber extends SubsystemBase {
 		if (climberMotor != null) {
 			climberMotor.set(0);
 		}
-		climberMotor.set(-Constants.CLIMBER_CLIMBER_SPEED);
+		climberMotor.set(-Constants.climbSpeed);
 	}
 
 	@Override
 	public void periodic() {
-		double TempClimberSpeed = CLIMBER_CLIMBER_SPEED.getDouble(0.5);
-		if (TempClimberSpeed != Constants.CLIMBER_CLIMBER_SPEED) {
-			Constants.CLIMBER_CLIMBER_SPEED = TempClimberSpeed;
-			CLIMBER_CLIMBER_SPEED.setDouble(Constants.CLIMBER_CLIMBER_SPEED);
+		double TempClimberSpeed = climbSpeed.getDouble(0.5);
+		if (TempClimberSpeed != Constants.climbSpeed) {
+			Constants.climbSpeed = TempClimberSpeed;
+			climbSpeed.setDouble(Constants.climbSpeed);
 		}
 		motorPosition.setDouble(encoder.getVoltage());
+
+		double tempECP = extendclimbkP.getDouble(Constants.extendclimbkP);
+    	if(Constants.extendclimbkP != tempECP && extendclimbPID != null) {
+      		Constants.extendclimbkP = tempECP;
+			extendclimbPID.setP(Constants.extendclimbkP);
+		}
+
+		double tempECI = extendclimbkI.getDouble(Constants.extendclimbkI);
+    	if(Constants.extendclimbkI != tempECI && extendclimbPID != null) {
+      		Constants.extendclimbkI = tempECI;
+			extendclimbPID.setI(Constants.extendclimbkI);
+		}
+
+		double tempECD = extendclimbkD.getDouble(Constants.extendclimbkD);
+    	if(Constants.extendclimbkD != tempECD && extendclimbPID != null) {
+      		Constants.extendclimbkD = tempECD;
+			extendclimbPID.setD(Constants.extendclimbkD);
+		} 
+		
+		double tempDistanceSetpoint = DistanceSetpoint.getDouble(Constants.distancesetpoint);
+    	if(Constants.distancesetpoint != tempDistanceSetpoint && extendclimbPID != null) {
+      		Constants.distancesetpoint= tempDistanceSetpoint;
+			extendclimbPID.setSetpoint(Constants.distancesetpoint);
+		} 
+
+
+    }
+
 	}
 
 	public void stopRaise() {

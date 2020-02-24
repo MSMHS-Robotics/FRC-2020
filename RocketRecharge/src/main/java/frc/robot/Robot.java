@@ -132,7 +132,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+
     autonomousCommand = robotContainer.getAutonomousCommand();
+
+    blinkin.setRainbow();
 
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {

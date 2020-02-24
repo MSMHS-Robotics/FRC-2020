@@ -316,9 +316,25 @@ public class Drivetrain extends SubsystemBase {
   public void tankDrive(final double leftStick, final double rightStick) {
     // don't mess with this, drivetrain is a member of a different class, this
     // function is not recursive - Daniel's last message to creation
+    
+    //deadband stuff
+    if(leftPow > Constants.highDeadband) {
+      leftPow = 1;
+    }
+    if(rightPow > Constants.highDeadband) {
+      rightPow = 1;
+    }
+    if(leftPow < Constants.lowDeadband) {
+      leftPow = 0;
+    }
+    if(rightPow < Constants.lowDeadband) {
+      rightPow = 0;
+    }
+
+    //scale inputs
     leftPow = Math.pow(-leftStick, 3);
     rightPow = Math.pow(-rightStick, 3);
-    drivetrain.tankDrive(leftPow * 0.5, rightPow * 0.5);
+    drivetrain.tankDrive(leftPow * 0.5, rightPow * 0.5); //actually drive
   }
 
   public void visionPIDReset() {

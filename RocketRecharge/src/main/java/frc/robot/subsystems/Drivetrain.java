@@ -8,10 +8,9 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANEncoder;
 
 //CANSparkMax
-
-//import com.revrobotics.CANEncoder;
 //import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 //import com.revrobotics.ControlType;
@@ -21,7 +20,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
-//import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -30,12 +28,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants;
-import frc.robot.devices.RocketEncoder;
 
 public class Drivetrain extends SubsystemBase {
   //private ShuffleboardTab tab = Shuffleboard.getTab("drivetrain");
@@ -83,17 +78,17 @@ public class Drivetrain extends SubsystemBase {
   private Boolean needToReset= false;
 
   private final CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
-  private final RocketEncoder encoderLeft1 = new RocketEncoder (left1);
+  private final CANEncoder encoderLeft1 = new CANEncoder(left1);
   private final CANSparkMax left2 = new CANSparkMax(2, MotorType.kBrushless);
-  private final RocketEncoder  encoderLeft2 = new RocketEncoder(left2);
+  private final CANEncoder  encoderLeft2 = new CANEncoder(left2);
   private final CANSparkMax left3 = new CANSparkMax(3, MotorType.kBrushless);
-  private final RocketEncoder  encoderLeft3 = new RocketEncoder (left3);
+  private final CANEncoder  encoderLeft3 = new CANEncoder (left3);
   private final CANSparkMax right1 = new CANSparkMax(4, MotorType.kBrushless);
-  private final RocketEncoder encoderRight1 = new RocketEncoder (right1);
+  private final CANEncoder encoderRight1 = new CANEncoder (right1);
   private final CANSparkMax right2 = new CANSparkMax(5, MotorType.kBrushless);
-  private final RocketEncoder  encoderRight2 = new RocketEncoder (right2);
+  private final CANEncoder  encoderRight2 = new CANEncoder (right2);
   private final CANSparkMax right3 = new CANSparkMax(6, MotorType.kBrushless);
-  private final RocketEncoder encoderRight3 = new RocketEncoder(right3);
+  private final CANEncoder encoderRight3 = new CANEncoder(right3);
   
   private double leftPow = 0;
   private double rightPow = 0;
@@ -120,20 +115,20 @@ public class Drivetrain extends SubsystemBase {
     // Enables continuous input on a range from -180 to 180
     //drivingPID.enableContinuousInput(-180, 180);
 
-    encoderLeft1.setPositionConstant(1);//change this later
-    encoderLeft2.setPositionConstant(1);//change this later
-    encoderLeft3.setPositionConstant(1);//change this later
-    encoderRight1.setPositionConstant(1);//change this later
-    encoderRight2.setPositionConstant(1);//change this later
-    encoderRight3.setPositionConstant(1);//change this later
+    /*encoderLeft1.setPositionConversionFactor(1);//change this later
+    encoderLeft2.setPositionConversionFactor(1);//change this later
+    encoderLeft3.setPositionConversionFactor(1);//change this later
+    encoderRight1.setPositionConversionFactor(1);//change this later
+    encoderRight2.setPositionConversionFactor(1);//change this later
+    encoderRight3.setPositionConversionFactor(1);//change this later*/
     
     //reset for shuffleboard
-    encoderLeft1.reset();
-    encoderLeft2.reset();
-    encoderLeft3.reset();
-    encoderRight1.reset();
-    encoderRight2.reset();
-    encoderRight3.reset();
+    encoderLeft1.setPosition(0);
+    encoderLeft2.setPosition(0);
+    encoderLeft3.setPosition(0);
+    encoderRight1.setPosition(0);
+    encoderRight2.setPosition(0);
+    encoderRight3.setPosition(0);
 
     try {
       /***********************************************************************
@@ -275,17 +270,17 @@ public class Drivetrain extends SubsystemBase {
     double tempRTickConstant = rightTickConstant.getDouble(Constants.rightTickConstant);
     if(Constants.rightTickConstant != tempRTickConstant) {
       Constants.rightTickConstant = tempRTickConstant;
-      encoderRight1.setPositionConstant(Constants.rightTickConstant);
-      encoderRight2.setPositionConstant(Constants.rightTickConstant);
-      encoderRight3.setPositionConstant(Constants.rightTickConstant);
+      encoderRight1.setPositionConversionFactor(Constants.rightTickConstant);
+      encoderRight2.setPositionConversionFactor(Constants.rightTickConstant);
+      encoderRight3.setPositionConversionFactor(Constants.rightTickConstant);
     }
 
     double tempLTickConstant = leftTickConstant.getDouble(Constants.leftTickConstant);
     if(Constants.leftTickConstant != tempLTickConstant) {
       Constants.leftTickConstant = tempLTickConstant;
-      encoderLeft1.setPositionConstant(Constants.leftTickConstant);
-      encoderLeft2.setPositionConstant(Constants.leftTickConstant);
-      encoderLeft3.setPositionConstant(Constants.leftTickConstant);
+      encoderLeft1.setPositionConversionFactor(Constants.leftTickConstant);
+      encoderLeft2.setPositionConversionFactor(Constants.leftTickConstant);
+      encoderLeft3.setPositionConversionFactor(Constants.leftTickConstant);
     }
 
     if(resetGyroCommandEntry.getBoolean(false)) {
@@ -473,6 +468,13 @@ public class Drivetrain extends SubsystemBase {
     ahrs.reset();
     return true;
   }
+
+  //would this help? Maybe make smaller?
+  /*
+  private NetworkTableEntry addP(String name, double defaultValue) {
+    return tab.addPersistent(name, defaultValue).getEntry();
+  }
+  */
 
 }
 

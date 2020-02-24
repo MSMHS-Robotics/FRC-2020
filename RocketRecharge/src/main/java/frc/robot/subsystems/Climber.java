@@ -7,7 +7,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -139,7 +138,7 @@ public class Climber extends SubsystemBase {
 	public boolean climbUp() {
 		if (isDeployed) {
 			if (climberMotor != null) {
-				climberMotor.set(ControlMode.PercentOutput,Constants.climbSpeed);
+				climberMotor.set(ControlMode.PercentOutput, Constants.climbSpeed);
 			}
 		}
 		return !bottomLimitSwitch.get();

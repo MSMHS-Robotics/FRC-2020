@@ -101,6 +101,7 @@ public class RobotContainer {
   private final RunIntakeCommand intakeIn = new RunIntakeCommand(intake, 1);
   private final RunIntakeCommand intakeOut = new RunIntakeCommand(intake, -1);
 
+  private final RunIndexerCommand unjam = new RunIndexerCommand(intake, -1);
   private final FeedCommand feedForward = new FeedCommand(intake, 1);
   private final FeedCommand feedReverse = new FeedCommand(intake, -1);
   private final RunIndexerCommand setIdle = new RunIndexerCommand(intake, 0);
@@ -174,12 +175,14 @@ public class RobotContainer {
     leftBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
     leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically
     leftBumper.whenReleased(setIdle); //to sort the stuff out
+    yButton2.whenPressed(unjam); //run indexer backwards
+
 
     //climber
     //this might work don't trust it
     //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes
     xButton2.whenHeld(climberDeploy);
-    yButton2.whenPressed(autoClimb);
+    //yButton2.whenPressed(autoClimb);
     rightBumper2.whenPressed(raiseClimber);
     start2.whenPressed(unDeployClimber);
     

@@ -33,7 +33,7 @@ public class GodTierAuto extends SequentialCommandGroup {
             new SetDrive(drivetrain, -90, .5, 36, 2),//drive towards goal
             new SetDrive(drivetrain, -90, 0, 0, .1),//stop
             new TurnOnHeading(drivetrain, -180, 2),//turn to face goal
-            new ShootCommand(shooter, intake, null, 90, 5, true),//shoot 5 power cells
+            new ShootCommand(shooter, intake, null, 90, 5, true, drivetrain),//shoot 5 power cells
             new TurnOnHeading(drivetrain, -90, 2),//turn right to -90
             new SetDrive(drivetrain, -90, .4, 60, 5),//drive toward alliance trench
             new SetDrive(drivetrain, -90, 0, 0, .1),//stop
@@ -46,7 +46,7 @@ public class GodTierAuto extends SequentialCommandGroup {
             new SetDrive(drivetrain, 0, -.4, 144, 10),//drive backwards toward goal
             new SetDrive(drivetrain, 0, 0, 0, .1),//stop
             new TurnOnHeading(drivetrain, 135, 1.5),//turn to face goal
-            new ShootCommand(shooter, intake, null, 0, 5, true)//shoot 5 remaining power cells
+            new ShootCommand(shooter, intake, null, 0, 5, true, drivetrain)//shoot 5 remaining power cells
         );
     }
 }

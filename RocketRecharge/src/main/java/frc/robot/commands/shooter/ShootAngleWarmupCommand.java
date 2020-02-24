@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  */
 public class ShootAngleWarmupCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Shooter angleAdjust;
+  private final Shooter shooter;
   private double Angle;
   private boolean isLinedUp;
   /**
@@ -23,11 +23,11 @@ public class ShootAngleWarmupCommand extends CommandBase {
    *
    * @param angleadjust The subsystem used by this command.
    */
-  public ShootAngleWarmupCommand(Shooter angleadjust,double angle) {
-    angleAdjust = angleadjust;
+  public ShootAngleWarmupCommand(Shooter shooter,double angle) {
+     this.shooter= shooter;
     Angle = angle;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(angleadjust);
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -38,7 +38,7 @@ public class ShootAngleWarmupCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    isLinedUp = angleAdjust.shooterAngle(Angle);
+    isLinedUp = shooter.shooterAngle(Angle);
   }
 
   // Called once the command ends or is interrupted.

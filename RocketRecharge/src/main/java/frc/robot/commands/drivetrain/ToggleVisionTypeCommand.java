@@ -22,8 +22,8 @@ public class ToggleVisionTypeCommand extends CommandBase {
    *
    * @param drivetrain The subsystem used by this command.
    */
-  public ToggleVisionTypeCommand(Drivetrain drivetrain_) {
-    drivetrain = drivetrain_;
+  public ToggleVisionTypeCommand(Drivetrain drivetrain) {
+    this.drivetrain = drivetrain;
     addRequirements(drivetrain);
   }
 

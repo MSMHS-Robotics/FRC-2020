@@ -24,9 +24,9 @@ import frc.robot.subsystems.Lights;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
+  private Command autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  private RobotContainer robotContainer;
 
   private int tempCurrAuto = 0;
   private ShuffleboardTab autoTab = Shuffleboard.getTab("Auto Tab");
@@ -47,10 +47,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-    gamepad1 = m_robotContainer.getJoystick1();
-    gamepad2 = m_robotContainer.getJoystick2();
-    blinkin = m_robotContainer.getBlinkin();
+    robotContainer = new RobotContainer();
+    gamepad1 = robotContainer.getJoystick1();
+    gamepad2 = robotContainer.getJoystick2();
+    blinkin = robotContainer.getBlinkin();
     //CameraServer.getInstance().startAutomaticCapture();
   }
 
@@ -94,7 +94,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    allAutos.setString(m_robotContainer.getNames());
+    allAutos.setString(robotContainer.getNames());
     blinkin.setFire();
   }
 
@@ -108,23 +108,23 @@ public class Robot extends TimedRobot {
       
       //180 is up and 0 is down
       if(gamepad1.getPOV() == 180) {
-        if(tempCurrAuto < m_robotContainer.getLength() - 1) {
+        if(tempCurrAuto < robotContainer.getLength() - 1) {
           tempCurrAuto += 1;
           wasPressed = true;
         }
-        m_robotContainer.setAutoNum(tempCurrAuto);
+        robotContainer.setAutoNum(tempCurrAuto);
       }
       else if(gamepad1.getPOV() == 0) {
         if(tempCurrAuto > 0) {
           tempCurrAuto -= 1;
           wasPressed = true;
         }
-        m_robotContainer.setAutoNum(tempCurrAuto);
+        robotContainer.setAutoNum(tempCurrAuto);
       }
     }
    
     
-    CurrentAuto.setString(m_robotContainer.getName(tempCurrAuto));
+    CurrentAuto.setString(robotContainer.getName(tempCurrAuto));
   }
 
   /**
@@ -132,12 +132,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+    autonomousCommand = robotContainer.getAutonomousCommand();
+
     blinkin.setRainbow();
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+    if (autonomousCommand != null) {
+      autonomousCommand.schedule();
     }
   }
 
@@ -154,12 +156,12 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (autonomousCommand != null) {
+      autonomousCommand.cancel();
     }
     
     // Let the driver take over
-    m_robotContainer.getDriveCommand().schedule();
+    robotContainer.getDriveCommand().schedule();
     blinkin.setRedLarson();
   }
 

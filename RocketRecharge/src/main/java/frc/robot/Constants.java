@@ -71,8 +71,16 @@ public final class Constants {
         visionPID[1] = ksomething;
         visionPID[2] = ksomethingelse;
     }
-    public static  double CLIMBER_CLIMBER_SPEED = 0.3;
-	public static  double INTAKE_OUTTAKE_SPEED = 0.3;
+
+    //climber (may need to look at this)
+    public static  double climbSpeed = 0.3;
 	public static double motorPosition = 0;//fix later
     public static double motorUp = 10;//fix later
+    
+    //climberPID
+    public static double extendclimbkP = 0.0001;
+    public static double extendclimbkI = 0.0001;
+    public static double extendclimbkD = 0.0001;
+    public static double distancesetpoint = 5;
+
 }

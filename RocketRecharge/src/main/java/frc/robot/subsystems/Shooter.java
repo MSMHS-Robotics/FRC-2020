@@ -98,6 +98,7 @@ public class Shooter extends SubsystemBase {
       shooterMotor2.follow(shooterMotor, true);
     }
 
+    //keep this here for now
     angleMotor = new WPI_TalonSRX(15);
 
     if (shooterPID != null){
@@ -307,24 +308,3 @@ public class Shooter extends SubsystemBase {
 
   }
 }
-
-/*command list for shooter
-
-Warm up:
-- connect with shooter subsystem
-- speed up motor
-- apply the current RPM to the shooter
-ENDS WHEN- button is released
-WHEN INTERUPTED- do nothing
-
-Adjust power per position:
--connect with shooter subsystem
-- read the current RPM of the motor
-- have a preset shooter command that the shooter motor can stick with
-   - detect vision alinement
-   - run warmup
-- once ready, then shoot
-
-:-D
-
-*/

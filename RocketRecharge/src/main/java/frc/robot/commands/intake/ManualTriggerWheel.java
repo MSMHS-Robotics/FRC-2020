@@ -19,11 +19,11 @@ public class ManualTriggerWheel extends CommandBase {
   private Intake intake;
   private double x;
   
-  public ManualTriggerWheel(Intake subsystem, double power) {
-    intake = subsystem;
+  public ManualTriggerWheel(Intake intake, double power) {
+    this.intake = intake;
     x = power;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.

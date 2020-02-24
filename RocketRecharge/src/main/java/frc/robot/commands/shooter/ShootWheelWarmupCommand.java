@@ -23,11 +23,11 @@ public class ShootWheelWarmupCommand extends CommandBase {
    *
    * @param shoot The subsystem used by this command.
    */
-  public ShootWheelWarmupCommand(Shooter shoot, double rpm) {
-    shooter = shoot;
+  public ShootWheelWarmupCommand(Shooter shooter, double rpm) {
+    this.shooter = shooter;
     RPM = rpm;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shoot);
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.

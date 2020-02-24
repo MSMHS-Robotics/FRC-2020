@@ -4,6 +4,8 @@ import java.util.Map;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -26,6 +28,7 @@ public class Climber extends SubsystemBase {
 	private WPI_TalonSRX climberMotor;
 	private Solenoid climberPistons1;
 	private Solenoid climberPistons2;
+	private Solenoid Latch1, Latch2;
 	private double distanceSetpoint;
 	private Boolean isDeployed = false;
 	private PIDController extendclimbPID = new PIDController(Constants.extendclimbkP, Constants.extendclimbkI,
@@ -53,10 +56,15 @@ public class Climber extends SubsystemBase {
 		// need to assign actual channel values
 		// !==UPDATE==! --> values assigned now
 		climberMotor = new WPI_TalonSRX(10);
+		climberMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 		// slidePID.setSetpoint(4);
 		// climberPID.setSetpoint(0.2);
+		Latch1 = new Solenoid(4);
+		Latch2 = new Solenoid(5);
 		climberPistons1 = new Solenoid(7);
 		climberPistons2 = new Solenoid(6);
+
+		ClimberUnlatch();
 
 		if (climberMotor != null) {
 			climberMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
@@ -90,6 +98,24 @@ public class Climber extends SubsystemBase {
 		isitDeployed.setBoolean(true);
 	}
 
+	public void ClimberLatch(){
+		if (Latch1 != null){
+			Latch1.set(true);
+		}
+		if (Latch2 != null){
+			Latch2.set(false);
+		}
+	}
+
+	public void ClimberUnlatch(){
+		if (Latch1 != null){
+			Latch1.set(false);
+		}
+		if (Latch2 != null){
+			Latch2.set(true);
+		}
+	}
+
 	public void ClimberPistonsBackIn() {
 		if (climberPistons1 != null) {
 			climberPistons1.set(true);
@@ -113,7 +139,7 @@ public class Climber extends SubsystemBase {
 	public boolean climbUp() {
 		if (isDeployed) {
 			if (climberMotor != null) {
-				climberMotor.set(ControlMode.PercentOutput,-Constants.climbSpeed);
+				climberMotor.set(ControlMode.PercentOutput,Constants.climbSpeed);
 			}
 		}
 		return !bottomLimitSwitch.get();
@@ -121,7 +147,7 @@ public class Climber extends SubsystemBase {
 
 	public void climbUsingStick(double x) {
 		if (climberMotor != null) {
-			climberMotor.set(ControlMode.PercntOutput, x);
+			climberMotor.set(ControlMode.PercentOutput, x);
 		}
 	}
 
@@ -139,37 +165,29 @@ public class Climber extends SubsystemBase {
 			Constants.climbSpeed = TempClimberSpeed;
 			climbSpeed.setDouble(Constants.climbSpeed);
 		}
-		motorPosition.setDouble(encoder.getVoltage());
+		motorPosition.setDouble(climberMotor.getSelectedSensorPosition());
 
 		double tempECP = extendclimbkP.getDouble(Constants.extendclimbkP);
-		if (Constants.extendclimbkP != tempECP && extendclimbPID != null) {
+		if (Constants.extendclimbkP != tempECP && climberMotor != null) {
 			Constants.extendclimbkP = tempECP;
-			extendclimbPID.setP(Constants.extendclimbkP);
+			climberMotor.config_kP(Constants.kPIDLoopIdx, Constants.extendclimbkP, Constants.kTimeoutMs);
 		}
 
 		double tempECI = extendclimbkI.getDouble(Constants.extendclimbkI);
-		if (Constants.extendclimbkI != tempECI && extendclimbPID != null) {
+		if (Constants.extendclimbkI != tempECI && climberMotor != null) {
 			Constants.extendclimbkI = tempECI;
-			extendclimbPID.setI(Constants.extendclimbkI);
+			climberMotor.config_kI(Constants.kPIDLoopIdx, Constants.extendclimbkI, Constants.kTimeoutMs);
 		}
 
 		double tempECD = extendclimbkD.getDouble(Constants.extendclimbkD);
-		if (Constants.extendclimbkD != tempECD && extendclimbPID != null) {
+		if (Constants.extendclimbkD != tempECD && climberMotor != null) {
 			Constants.extendclimbkD = tempECD;
-			extendclimbPID.setD(Constants.extendclimbkD);
+			climberMotor.config_kD(Constants.kPIDLoopIdx, Constants.extendclimbkD, Constants.kTimeoutMs);
 		}
 
 		double tempDistanceSetpoint = DistanceSetpoint.getDouble(Constants.distancesetpoint);
 		if (Constants.distancesetpoint != tempDistanceSetpoint && extendclimbPID != null) {
 			Constants.distancesetpoint = tempDistanceSetpoint;
-			extendclimbPID.setSetpoint(Constants.distancesetpoint);
 		}
-
 	}
-
-	}
-
-	public void stopRaise() {
-		climberMotor.set(0);
-	}
-}
+}		

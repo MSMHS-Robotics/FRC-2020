@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Diagnostics extends SubsystemBase {
 
     
-    private PowerDistributionPanel PDP = new PowerDistributionPanel(0);
+   // private PowerDistributionPanel PDP = new PowerDistributionPanel(0);
 
     public Diagnostics(){
         
@@ -15,7 +15,7 @@ public class Diagnostics extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putData(PDP);
+        //SmartDashboard.putData(PDP);
         //channelZeroCurrent.getDouble();
     }
 }

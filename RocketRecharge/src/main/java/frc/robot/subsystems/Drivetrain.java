@@ -9,28 +9,6 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import frc.robot.Constants;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.DriverStation;
-//import edu.wpi.first.wpilibj.Joystick;
-//import edu.wpi.first.wpilibj.PIDOutput;
-
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpiutil.math.MathUtil;
-import frc.robot.devices.RocketEncoder;
-
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-
 //CANSparkMax
 
 //import com.revrobotics.CANEncoder;
@@ -38,6 +16,26 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import com.revrobotics.CANSparkMax;
 //import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+//import edu.wpi.first.wpilibj.Joystick;
+//import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
+import frc.robot.Constants;
+import frc.robot.devices.RocketEncoder;
 
 public class Drivetrain extends SubsystemBase {
   //private ShuffleboardTab tab = Shuffleboard.getTab("drivetrain");
@@ -79,6 +77,7 @@ public class Drivetrain extends SubsystemBase {
   private NetworkTableEntry leftTickConstant = tab.addPersistent("LTickConstant", Constants.leftTickConstant).getEntry();
   private NetworkTableEntry leftEncoderValue = tab.addPersistent("LeftEncoder", 0).getEntry();
   private NetworkTableEntry rightEncoderValue = tab.addPersistent("RightEncoder", 0).getEntry();
+  private NetworkTableEntry encoderaverage = tab.addPersistent("encoderaverage", 0).getEntry();
 
   private NetworkTableEntry resetGyroCommandEntry = tab.add("Reset Gyro", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
   private Boolean needToReset= false;
@@ -161,6 +160,7 @@ public class Drivetrain extends SubsystemBase {
     
     leftEncoderValue.setDouble(leftEncoderAverage());
     rightEncoderValue.setDouble(rightEncoderAverage());
+    encoderaverage.setDouble(encoderAverage());
 
    // Constants.headingIntegrator[0] = hIntegratorMin.getDouble(Constants.headingIntegrator[0]);
     //Constants.headingIntegrator[1] = hIntegratorMax.getDouble(Constants.headingIntegrator[1]);
@@ -311,12 +311,12 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void encoderReset(){
-    encoderLeft1.reset();
-    encoderLeft2.reset();
-    encoderLeft3.reset();
-    encoderRight1.reset();
-    encoderRight2.reset();
-    encoderRight3.reset();
+    encoderLeft1.setPosition(0);
+    encoderLeft2.setPosition(0);
+    encoderLeft3.setPosition(0);
+    encoderRight1.setPosition(0);
+    encoderRight2.setPosition(0);
+    encoderRight3.setPosition(0);
   }
   public void tankDrive(final double leftStick, final double rightStick) {
     // don't mess with this, drivetrain is a member of a different class, this

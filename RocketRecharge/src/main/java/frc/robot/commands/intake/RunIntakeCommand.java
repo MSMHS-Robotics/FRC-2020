@@ -19,11 +19,11 @@ public class RunIntakeCommand extends CommandBase {
   private double power = 0;
   private Intake intake;
   
-  public RunIntakeCommand(Intake subsystem, double pow) {
-    intake = subsystem;
+  public RunIntakeCommand(Intake intake, double pow) {
+    this.intake = intake;
     power = pow;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.

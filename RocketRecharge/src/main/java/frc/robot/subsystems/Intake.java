@@ -1,15 +1,15 @@
 package frc.robot.subsystems;
 
+import java.util.Map; //need for boolean box widget on ShuffleBoard
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX; //hardware components
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Solenoid;
 
 import edu.wpi.first.networktables.NetworkTableEntry; //shuffleboard
-import java.util.Map; //need for boolean box widget on ShuffleBoard
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   private WPI_TalonSRX intakeMotor;

@@ -28,11 +28,11 @@ public class RunIndexerCommand extends CommandBase {
    * @param subsystem The subsystem used by this command.
    */
 
-  public RunIndexerCommand(Intake subsystem, double pow) {
-    intake = subsystem;
+  public RunIndexerCommand(Intake intake, double pow) {
+    this.intake = intake;
     power = pow;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.

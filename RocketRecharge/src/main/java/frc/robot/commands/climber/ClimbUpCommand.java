@@ -19,9 +19,11 @@ import frc.robot.subsystems.Climber;;
 public class ClimbUpCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private Climber climber;
+  private boolean isClimbed;
 
   public ClimbUpCommand(Climber climber) {
     this.climber = climber;
+    
     addRequirements(climber);
   }
 
@@ -33,7 +35,7 @@ public class ClimbUpCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.climbWithPID();
+    isClimbed = climber.climbUp();
     //climber.climbUsingStick(x); this is for testing purposes
   }
 
@@ -45,6 +47,6 @@ public class ClimbUpCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return isClimbed;
   }
 }

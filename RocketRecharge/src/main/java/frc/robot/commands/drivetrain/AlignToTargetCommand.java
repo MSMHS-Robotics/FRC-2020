@@ -27,8 +27,8 @@ public class AlignToTargetCommand extends CommandBase {
    *
    * @param drivetrain The subsystem used by this command.
    */
-  public AlignToTargetCommand(Drivetrain drivetrain_, Lights x) {
-    drivetrain = drivetrain_;
+  public AlignToTargetCommand(Drivetrain drivetrain, Lights x) {
+    this.drivetrain = drivetrain;
     blinkin = x;
     addRequirements(drivetrain);
   }

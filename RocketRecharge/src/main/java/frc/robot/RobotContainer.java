@@ -31,6 +31,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.Diagnostics;;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -53,6 +54,7 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Lights blinkin = new Lights();
+  private final Diagnostics diagnostics = new Diagnostics();
   
   //joysticks
   //raw axis 2 and 5 are the Y axis for the left and right joysticks.
@@ -82,6 +84,8 @@ public class RobotContainer {
   
   //now for some commands
   //climber
+  private final RaiseClimber raiseClimber = new RaiseClimber(climber);
+  private final AutoClimb autoClimb = new AutoClimb(climber);
   private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
   private final UnDeployClimber unDeployClimber = new UnDeployClimber(climber);
  // private final AutoDeployClimber climberDeploy = new AutoDeployClimber(intake, climber);
@@ -111,7 +115,8 @@ public class RobotContainer {
 
   //shooter
   private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad1, 1, false);
-  private final ShootCommand shootTeleop = new ShootCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
+  private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false); //this timeout right?
+
 
   //Stupid axis stuff
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently
@@ -174,12 +179,13 @@ public class RobotContainer {
     //this might work don't trust it
     //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes
     xButton2.whenHeld(climberDeploy);
-    yButton2.whenPressed(climbUp);
+    yButton2.whenPressed(autoClimb);
+    rightBumper2.whenPressed(raiseClimber);
     start2.whenPressed(unDeployClimber);
     
     //shooter
     bButton2.whenHeld(new WarmupCommand(shooter, gamepad2, -1, false));
-    bButton.whenHeld(new ShootCommand(shooter, intake, gamepad1, -1, -1, false, drivetrain));
+    bButton.whenHeld(new ShootBurstCommand(shooter, intake, gamepad1, -1, -1, false));
 
   }
 
@@ -219,7 +225,7 @@ public class RobotContainer {
     return runDrivetrain;
   }
 
-  public ShootCommand getShootCommand(){
+  public ShootBurstCommand getShootCommand(){
     return shootTeleop;
   }
 

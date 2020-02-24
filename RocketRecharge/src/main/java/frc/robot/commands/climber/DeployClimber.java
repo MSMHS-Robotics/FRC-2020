@@ -8,7 +8,7 @@
 package frc.robot.commands.climber;
 
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Intake;
+//import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class DeployClimber extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final Climber climber;
-  private Intake intake;
+  //private Intake intake;
 
   /**
    * Creates a new ExampleCommand.

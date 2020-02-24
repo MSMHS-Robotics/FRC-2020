@@ -10,8 +10,8 @@ public class AutoDeployClimber extends SequentialCommandGroup {
     public AutoDeployClimber(Intake intake, Climber climber) {
         super(
             new ExtendIntakeCommand(intake),
-            new DeployClimber(climber)
-           
+            new DeployClimber(climber),
+            new RaiseClimber(climber)
             );
     }
 }

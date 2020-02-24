@@ -345,7 +345,7 @@ public class Drivetrain extends SubsystemBase {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+    ledsOn();
     return 70.25 / Math.tan(10 + ty.getDouble(20)); //ooh maths. taken from limelight docs (equation is d = (h2-h1) / tan(a1+a2))
     //the 70.25 is height of center of the circle (in the hexagon frame) in inches minus how high lens is off the groun (20 inches) (h2 - h1)
     //10 is angle limelight lens is at (a1)
@@ -364,6 +364,14 @@ public class Drivetrain extends SubsystemBase {
     return 60 * ((1 / Math.cos(angle) * Math.sqrt((0.5 * (d * d) * g) / (d * Math.tan(angle) + h))));
   }
 
+  public void ledsOff() {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+  }
+
+  public void ledsOn() {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+  }
+
   /**
    * Aligns us with the vision target. 
    * This function is called in the AlignToTargetCommand.java. 
@@ -373,7 +381,7 @@ public class Drivetrain extends SubsystemBase {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tv = table.getEntry("tv");
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+    ledsOn();
     if(tv.getDouble(0) == 1) {
       NetworkTableEntry tx = table.getEntry("tx");
   
@@ -402,7 +410,7 @@ public class Drivetrain extends SubsystemBase {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tv = table.getEntry("tv");
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+    ledsOn();
     if(tv.getDouble(0) == 1) {
       NetworkTableEntry tx = table.getEntry("tx");
   

@@ -173,14 +173,14 @@ public class RobotContainer {
     //intake stuff. intake automagically sets power to 0 after command ends
     //rightBumper.whenPressed(intakeOut); //don't need this now
     leftBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
-    leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically
+    //leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically //no longer wanted
     leftBumper.whenReleased(setIdle); //to sort the stuff out
     yButton2.whenPressed(unjam); //run indexer backwards
 
 
     //climber
     //this might work don't trust it
-    //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes
+    //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes. I think unneeded now.
     xButton2.whenHeld(climberDeploy);
     //yButton2.whenPressed(autoClimb);
     rightBumper2.whenPressed(raiseClimber);

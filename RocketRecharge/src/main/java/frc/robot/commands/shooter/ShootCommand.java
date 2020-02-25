@@ -26,13 +26,13 @@ public class ShootCommand extends RocketTimedCommand {
     private double timeout;
     private boolean isAuto;
 
-
     /**
      * Creates a new ExampleCommand.
      *
      * @param shooter The subsystem used by this command.
      */
-    public ShootCommand(Shooter shooter, Intake intake, Joystick joystick, int preset, double timeout, boolean auto, Drivetrain drivetrain_) {
+    public ShootCommand(Shooter shooter, Intake intake, Joystick joystick, int preset, double timeout, boolean auto,
+            Drivetrain drivetrain_) {
         this.shooter = shooter;
         this.intake = intake;
         this.joystick = joystick;
@@ -47,10 +47,10 @@ public class ShootCommand extends RocketTimedCommand {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        if (isAuto){
+        if (isAuto) {
             super.setTimeout(timeout);
         }
-       
+
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -97,8 +97,8 @@ public class ShootCommand extends RocketTimedCommand {
     }
 
     // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-      return super.isTimedOut();
-  }
+    @Override
+    public boolean isFinished() {
+        return super.isTimedOut();
+    }
 }

@@ -8,6 +8,7 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.commands.RocketTimedCommand;
@@ -20,22 +21,24 @@ public class ShootCommand extends RocketTimedCommand {
     private final Shooter shooter;
     private final Intake intake;
     private final Joystick joystick;
+    private final Drivetrain drivetrain;
     private int preset;
     private double timeout;
     private boolean isAuto;
-
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param shooter The subsystem used by this command.
      */
-    public ShootCommand(Shooter shooter, Intake intake, Joystick joystick, int preset, double timeout, boolean auto) {
+    public ShootCommand(Shooter shooter, Intake intake, Joystick joystick, int preset, double timeout, boolean auto,
+            Drivetrain drivetrain_) {
         this.shooter = shooter;
         this.intake = intake;
         this.joystick = joystick;
         this.preset = preset;
         this.timeout = timeout;
+        drivetrain = drivetrain_;
         isAuto = auto;
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(shooter, intake);
@@ -44,10 +47,10 @@ public class ShootCommand extends RocketTimedCommand {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        if (isAuto){
+        if (isAuto) {
             super.setTimeout(timeout);
         }
-       
+
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -71,6 +74,9 @@ public class ShootCommand extends RocketTimedCommand {
         case 180:
             shooter.layupShot();
             break;
+        case 270:
+            shooter.customShot(drivetrain.getNeededRPM());
+            break;
         default:
             shooter.tenFootShot(); // maybe change this?
             break;
@@ -91,8 +97,8 @@ public class ShootCommand extends RocketTimedCommand {
     }
 
     // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-      return super.isTimedOut();
-  }
+    @Override
+    public boolean isFinished() {
+        return super.isTimedOut();
+    }
 }

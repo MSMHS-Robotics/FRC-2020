@@ -25,6 +25,4 @@ public class RocketEncoder extends CANEncoder {
     public void setPositionConstant(double kPosition){
         this.kPosition = kPosition;
     }
-
-
 }

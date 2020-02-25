@@ -106,6 +106,7 @@ public class RobotContainer {
   private final RunIntakeCommand intakeIn = new RunIntakeCommand(intake, 1);
   private final RunIntakeCommand intakeOut = new RunIntakeCommand(intake, -1);
 
+  private final RunIndexerCommand unjam = new RunIndexerCommand(intake, -1);
   private final FeedCommand feedForward = new FeedCommand(intake, 1);
   private final FeedCommand feedReverse = new FeedCommand(intake, -1);
   private final RunIndexerCommand setIdle = new RunIndexerCommand(intake, 0);
@@ -169,7 +170,7 @@ public class RobotContainer {
     start.whenPressed(toggleVision); //so we can use less buttons
     xButton.whenPressed(setRainbow);
     xButton.whenReleased(setFire);
-    
+    bButton.whenHeld(new ShootCommand(shooter, intake, gamepad1, -1, -1, false, drivetrain));
     aButton2.whenPressed(new ResetGyroCommand(drivetrain));
    
 
@@ -177,12 +178,14 @@ public class RobotContainer {
     //intake stuff. intake automagically sets power to 0 after command ends
     //rightBumper.whenPressed(intakeOut); //don't need this now
     leftBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
-    leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically
+    //leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically //no longer wanted
     leftBumper.whenReleased(setIdle); //to sort the stuff out
+    yButton2.whenPressed(unjam); //run indexer backwards
+
 
     //climber
     //this might work don't trust it
-    //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes
+    //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes. I think unneeded now.
     xButton2.whenHeld(climberDeploy);
     yButton2.whenPressed(climbtoggle);
     //rightBumper2.whenPressed(raiseClimber);

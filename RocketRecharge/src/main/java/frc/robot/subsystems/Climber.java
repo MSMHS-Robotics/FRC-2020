@@ -8,8 +8,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -25,7 +25,7 @@ public class Climber extends SubsystemBase {
 	// public CANSparkMax Climber;
 
 	private DigitalInput bottomLimitSwitch, topLimitSwitch;
-	private AnalogInput encoder;
+	private Encoder encoder;
 	private WPI_TalonSRX climberMotor;
 	private Solenoid climberPistons1;
 	private Solenoid climberPistons2;
@@ -173,6 +173,10 @@ public class Climber extends SubsystemBase {
 		if (climberMotor != null) {
 			climberMotor.set(0);
 		}
+	}
+	
+	public void stopRaise() {
+		climberMotor.set(0);
 	}
 
 	@Override

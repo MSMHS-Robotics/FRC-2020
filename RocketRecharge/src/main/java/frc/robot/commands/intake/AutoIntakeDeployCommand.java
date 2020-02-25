@@ -10,7 +10,6 @@ public class AutoIntakeDeployCommand extends SequentialCommandGroup {
             new ExtendIntakeCommand(intake),
             new RunIntakeCommand(intake, 1),
             new RunIndexerCommand(intake, 0)
-        
             );
     }
 }

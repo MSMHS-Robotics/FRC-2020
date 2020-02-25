@@ -23,8 +23,8 @@ public class ShootAngleWarmupCommand extends CommandBase {
    *
    * @param angleadjust The subsystem used by this command.
    */
-  public ShootAngleWarmupCommand(Shooter shooter,double angle) {
-     this.shooter= shooter;
+  public ShootAngleWarmupCommand(Shooter shooter, double angle) {
+    this.shooter= shooter;
     Angle = angle;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);

@@ -7,12 +7,10 @@
 
 package frc.robot.subsystems;
 
-
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANEncoder;
 
 //CANSparkMax
-
-//import com.revrobotics.CANEncoder;
 //import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 //import com.revrobotics.ControlType;
@@ -22,18 +20,17 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
-//import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants;
-import frc.robot.devices.RocketEncoder;
 
 public class Drivetrain extends SubsystemBase {
   //private ShuffleboardTab tab = Shuffleboard.getTab("drivetrain");
@@ -77,18 +74,20 @@ public class Drivetrain extends SubsystemBase {
   private NetworkTableEntry rightEncoderValue = tab.addPersistent("RightEncoder", 0).getEntry();
   private NetworkTableEntry encoderaverage = tab.addPersistent("encoderaverage", 0).getEntry();
 
+  private NetworkTableEntry resetGyroCommandEntry = tab.add("Reset Gyro", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+  
   private final CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
-  private final RocketEncoder encoderLeft1 = new RocketEncoder (left1);
+  private final CANEncoder encoderLeft1 = new CANEncoder(left1);
   private final CANSparkMax left2 = new CANSparkMax(2, MotorType.kBrushless);
-  private final RocketEncoder  encoderLeft2 = new RocketEncoder(left2);
+  private final CANEncoder  encoderLeft2 = new CANEncoder(left2);
   private final CANSparkMax left3 = new CANSparkMax(3, MotorType.kBrushless);
-  private final RocketEncoder  encoderLeft3 = new RocketEncoder (left3);
+  private final CANEncoder  encoderLeft3 = new CANEncoder (left3);
   private final CANSparkMax right1 = new CANSparkMax(4, MotorType.kBrushless);
-  private final RocketEncoder encoderRight1 = new RocketEncoder (right1);
+  private final CANEncoder encoderRight1 = new CANEncoder (right1);
   private final CANSparkMax right2 = new CANSparkMax(5, MotorType.kBrushless);
-  private final RocketEncoder  encoderRight2 = new RocketEncoder (right2);
+  private final CANEncoder  encoderRight2 = new CANEncoder (right2);
   private final CANSparkMax right3 = new CANSparkMax(6, MotorType.kBrushless);
-  private final RocketEncoder encoderRight3 = new RocketEncoder(right3);
+  private final CANEncoder encoderRight3 = new CANEncoder(right3);
   
   private double leftPow = 0;
   private double rightPow = 0;
@@ -115,20 +114,20 @@ public class Drivetrain extends SubsystemBase {
     // Enables continuous input on a range from -180 to 180
     //drivingPID.enableContinuousInput(-180, 180);
 
-    encoderLeft1.setPositionConstant(1);//change this later
-    encoderLeft2.setPositionConstant(1);//change this later
-    encoderLeft3.setPositionConstant(1);//change this later
-    encoderRight1.setPositionConstant(1);//change this later
-    encoderRight2.setPositionConstant(1);//change this later
-    encoderRight3.setPositionConstant(1);//change this later
+    encoderLeft1.setPositionConversionFactor(1);
+    encoderLeft2.setPositionConversionFactor(1);
+    encoderLeft3.setPositionConversionFactor(1);
+    encoderRight1.setPositionConversionFactor(1);
+    encoderRight2.setPositionConversionFactor(1);
+    encoderRight3.setPositionConversionFactor(1);
     
     //reset for shuffleboard
-    encoderLeft1.reset();
-    encoderLeft2.reset();
-    encoderLeft3.reset();
-    encoderRight1.reset();
-    encoderRight2.reset();
-    encoderRight3.reset();
+    encoderLeft1.setPosition(0);
+    encoderLeft2.setPosition(0);
+    encoderLeft3.setPosition(0);
+    encoderRight1.setPosition(0);
+    encoderRight2.setPosition(0);
+    encoderRight3.setPosition(0);
 
     try {
       /***********************************************************************
@@ -270,17 +269,21 @@ public class Drivetrain extends SubsystemBase {
     double tempRTickConstant = rightTickConstant.getDouble(Constants.rightTickConstant);
     if(Constants.rightTickConstant != tempRTickConstant) {
       Constants.rightTickConstant = tempRTickConstant;
-      encoderRight1.setPositionConstant(Constants.rightTickConstant);
-      encoderRight2.setPositionConstant(Constants.rightTickConstant);
-      encoderRight3.setPositionConstant(Constants.rightTickConstant);
+      encoderRight1.setPositionConversionFactor(Constants.rightTickConstant);
+      encoderRight2.setPositionConversionFactor(Constants.rightTickConstant);
+      encoderRight3.setPositionConversionFactor(Constants.rightTickConstant);
     }
 
     double tempLTickConstant = leftTickConstant.getDouble(Constants.leftTickConstant);
     if(Constants.leftTickConstant != tempLTickConstant) {
       Constants.leftTickConstant = tempLTickConstant;
-      encoderLeft1.setPositionConstant(Constants.leftTickConstant);
-      encoderLeft2.setPositionConstant(Constants.leftTickConstant);
-      encoderLeft3.setPositionConstant(Constants.leftTickConstant);
+      encoderLeft1.setPositionConversionFactor(Constants.leftTickConstant);
+      encoderLeft2.setPositionConversionFactor(Constants.leftTickConstant);
+      encoderLeft3.setPositionConversionFactor(Constants.leftTickConstant);
+    }
+
+    if(resetGyroCommandEntry.getBoolean(false)) { 
+      this.resetGyro();
     }
 
     //dang that is some messy code
@@ -307,13 +310,60 @@ public class Drivetrain extends SubsystemBase {
   public void tankDrive(final double leftStick, final double rightStick) {
     // don't mess with this, drivetrain is a member of a different class, this
     // function is not recursive - Daniel's last message to creation
+    
+    //deadband stuff
+    if(leftPow > Constants.highDeadband) {
+      leftPow = 1;
+    }
+    if(rightPow > Constants.highDeadband) {
+      rightPow = 1;
+    }
+    if(leftPow < Constants.lowDeadband) {
+      leftPow = 0;
+    }
+    if(rightPow < Constants.lowDeadband) {
+      rightPow = 0;
+    }
+
+    //scale inputs
     leftPow = Math.pow(-leftStick, 3);
     rightPow = Math.pow(-rightStick, 3);
-    drivetrain.tankDrive(leftPow * 0.5, rightPow * 0.5);
+    drivetrain.tankDrive(leftPow * 0.5, rightPow * 0.5); //actually drive
   }
 
   public void visionPIDReset() {
     visionPID.reset();
+  }
+
+  public Double getDist() {
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+    ledsOn();
+    return 70.25 / Math.tan(10 + ty.getDouble(20)); //ooh maths. taken from limelight docs (equation is d = (h2-h1) / tan(a1+a2))
+    //the 70.25 is height of center of the circle (in the hexagon frame) in inches minus how high lens is off the groun (20 inches) (h2 - h1)
+    //10 is angle limelight lens is at (a1)
+    //20 is a random default value to return (a2)
+  }
+
+  public Double getNeededRPM() {
+    double d = this.getDist(); //distance to target
+    double angle = 45; //angle we are shooting at
+    double g = 9.81; //acceleration due to gravity
+    double h = 20; //height above ground we are shooting at
+    //the 60 is to convert RPM into seconds to get m/s for velocity. RPM / 60 * wheel radius = tangential velocity
+    //wheel radius is 2 because we are using the blue 4" wheels
+    //the ball rotates to match the tangential velocity so center of mass rotates to have .5 the velocity. so the * 2 of tangent_v equation cancels the /2 of this so you don't see it in the below actual code equation
+    //units are in inches and degrees and seconds and stuff
+    return 60 * ((1 / Math.cos(angle) * Math.sqrt((0.5 * (d * d) * g) / (d * Math.tan(angle) + h))));
+  }
+
+  public void ledsOff() {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+  }
+
+  public void ledsOn() {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
   }
 
   /**
@@ -325,7 +375,7 @@ public class Drivetrain extends SubsystemBase {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tv = table.getEntry("tv");
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+    ledsOn();
     if(tv.getDouble(0) == 1) {
       NetworkTableEntry tx = table.getEntry("tx");
   
@@ -354,7 +404,7 @@ public class Drivetrain extends SubsystemBase {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tv = table.getEntry("tv");
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+    ledsOn();
     if(tv.getDouble(0) == 1) {
       NetworkTableEntry tx = table.getEntry("tx");
   
@@ -436,6 +486,13 @@ public class Drivetrain extends SubsystemBase {
     ahrs.reset();
     return true;
   }
+
+  //would this help? Maybe make smaller?
+  /*
+  private NetworkTableEntry addP(String name, double defaultValue) {
+    return tab.addPersistent(name, defaultValue).getEntry();
+  }
+  */
 
 }
 

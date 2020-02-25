@@ -162,6 +162,13 @@ public class Shooter extends SubsystemBase {
     return false;
   }
 
+  public void customShot(double x) {
+    shooterAngle(Constants.TrenchAngle); //need to change. this is temp. we don't have an articulating hood yet, so should be fine for now
+    warmUp(x);
+    RPMSetpoint = x;
+    angleSetpoint = Constants.TrenchAngle; //also temp. <!-- !!!CHANGE!!! -->
+  }
+
   public void trenchShot(){
     shooterAngle(Constants.TrenchAngle);
     warmUp(Constants.TrenchRPM);

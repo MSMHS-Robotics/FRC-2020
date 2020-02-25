@@ -75,8 +75,7 @@ public class Drivetrain extends SubsystemBase {
   private NetworkTableEntry encoderaverage = tab.addPersistent("encoderaverage", 0).getEntry();
 
   private NetworkTableEntry resetGyroCommandEntry = tab.add("Reset Gyro", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
-  private Boolean needToReset= false;
-
+  
   private final CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
   private final CANEncoder encoderLeft1 = new CANEncoder(left1);
   private final CANSparkMax left2 = new CANSparkMax(2, MotorType.kBrushless);
@@ -115,12 +114,12 @@ public class Drivetrain extends SubsystemBase {
     // Enables continuous input on a range from -180 to 180
     //drivingPID.enableContinuousInput(-180, 180);
 
-    /*encoderLeft1.setPositionConversionFactor(1);//change this later
-    encoderLeft2.setPositionConversionFactor(1);//change this later
-    encoderLeft3.setPositionConversionFactor(1);//change this later
-    encoderRight1.setPositionConversionFactor(1);//change this later
-    encoderRight2.setPositionConversionFactor(1);//change this later
-    encoderRight3.setPositionConversionFactor(1);//change this later*/
+    encoderLeft1.setPositionConversionFactor(1);
+    encoderLeft2.setPositionConversionFactor(1);
+    encoderLeft3.setPositionConversionFactor(1);
+    encoderRight1.setPositionConversionFactor(1);
+    encoderRight2.setPositionConversionFactor(1);
+    encoderRight3.setPositionConversionFactor(1);
     
     //reset for shuffleboard
     encoderLeft1.setPosition(0);
@@ -283,13 +282,8 @@ public class Drivetrain extends SubsystemBase {
       encoderLeft3.setPositionConversionFactor(Constants.leftTickConstant);
     }
 
-    if(resetGyroCommandEntry.getBoolean(false)) {
-      needToReset = true;
-    }
-
-    if(needToReset) {
+    if(resetGyroCommandEntry.getBoolean(false)) { 
       this.resetGyro();
-      needToReset = false;
     }
 
     //dang that is some messy code

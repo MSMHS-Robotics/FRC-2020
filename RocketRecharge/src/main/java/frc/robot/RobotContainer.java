@@ -79,6 +79,8 @@ public class RobotContainer {
   
   private double rightTrigger = gamepad1.getRawAxis(3);
 
+  private JoystickButton back2 = new JoystickButton(gamepad2, 7);
+
   private JoystickButton start = new JoystickButton(gamepad1, 8);
   private JoystickButton start2 = new JoystickButton(gamepad2, 8);
   
@@ -90,6 +92,7 @@ public class RobotContainer {
   private final UnDeployClimber unDeployClimber = new UnDeployClimber(climber);
  // private final AutoDeployClimber climberDeploy = new AutoDeployClimber(intake, climber);
  private final DeployClimber climberDeploy = new DeployClimber(climber);
+ private final UnlatchCommand unlatchCommand = new UnlatchCommand(climber);
 
   //drivetrain
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
@@ -185,7 +188,8 @@ public class RobotContainer {
     //yButton2.whenPressed(autoClimb);
     rightBumper2.whenPressed(raiseClimber);
     start2.whenPressed(unDeployClimber);
-    
+    back2.whenPressed(unlatchCommand);
+
     //shooter
     bButton2.whenHeld(new WarmupCommand(shooter, gamepad2, -1, false));
     bButton.whenHeld(new ShootBurstCommand(shooter, intake, gamepad1, -1, -1, false));

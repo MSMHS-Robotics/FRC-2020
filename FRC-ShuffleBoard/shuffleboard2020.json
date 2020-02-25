@@ -685,9 +685,9 @@
               "_title": "INTAKE_OUTTAKE_SPEED"
             }
           },
-          "9,0": {
+          "3,4": {
             "size": [
-              3,
+              4,
               1
             ],
             "content": {
@@ -710,9 +710,9 @@
             }
 
           },
-          "3,0": {
+          "3,3": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -721,9 +721,9 @@
               "_title": "extendclimbkD"
             }
           },
-          "4,0": {
+          "5,3": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -732,9 +732,9 @@
               "_title": "extendclimbkI"
             }
           },
-          "5,0": {
+          "7,3": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -743,9 +743,9 @@
               "_title": "extendclimbkP"
             }
           },
-          "6,0": {
+          "9,3": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -754,9 +754,9 @@
               "_title": "climbSpeed"
             }
           },
-          "10,1": {
+          "9,1": {
             "size": [
-              3,
+              2,
               1
             ],
             "content": {
@@ -764,7 +764,17 @@
               "_source0": "network_table:///Shuffleboard/Climber Tab/DistanceSetpoint",
               "_title": "DistanceSetpoint"
             }
-
+          },
+          "3,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Climber Tab/ExtendError",
+              "_title": "ExtendError"
+            }
           }
         }
       }

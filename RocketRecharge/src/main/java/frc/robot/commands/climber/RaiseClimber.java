@@ -51,6 +51,6 @@ public class RaiseClimber extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return Math.abs(climber.GetExtendError()) <100;
   }
 }

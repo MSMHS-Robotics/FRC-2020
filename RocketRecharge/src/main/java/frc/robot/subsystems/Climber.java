@@ -46,6 +46,7 @@ public class Climber extends SubsystemBase {
 			.getEntry();
 	private NetworkTableEntry DistanceSetpoint = Climbertab
 			.addPersistent("DistanceSetpoint", Constants.distancesetpoint).getEntry();
+	private NetworkTableEntry ExtendError = Climbertab.addPersistent("ExtendError", 0).getEntry();
 	private NetworkTableEntry isitDeployed = Climbertab.addPersistent("is it Deployed", false).withWidget("Boolean Box")
 			.withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
 
@@ -55,7 +56,10 @@ public class Climber extends SubsystemBase {
 		// need to assign actual channel values
 		// !==UPDATE==! --> values assigned now
 		climberMotor = new WPI_TalonSRX(10);
-		climberMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+		climberMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,Constants.kPIDLoopIdx,Constants.kTimeoutMs);
+		climberMotor.setSelectedSensorPosition(0);
+		climberMotor.setSensorPhase(true);
+		climberMotor.setInverted(true);
 		// slidePID.setSetpoint(4);
 		// climberPID.setSetpoint(0.2);
 		Latch1 = new Solenoid(4);
@@ -72,8 +76,8 @@ public class Climber extends SubsystemBase {
 		if (climberMotor != null) {
 			climberMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
 			climberMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
-			climberMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
-			climberMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+			climberMotor.configPeakOutputForward(0.5, Constants.kTimeoutMs);
+			climberMotor.configPeakOutputReverse(-0.5, Constants.kTimeoutMs);
 		}
 
 		// Config the Velocity closed loop gains in slot0
@@ -81,17 +85,18 @@ public class Climber extends SubsystemBase {
 			climberMotor.config_kP(Constants.kPIDLoopIdx, Constants.extendclimbkP, Constants.kTimeoutMs);
 			climberMotor.config_kI(Constants.kPIDLoopIdx, Constants.extendclimbkI, Constants.kTimeoutMs);
 			climberMotor.config_kD(Constants.kPIDLoopIdx, Constants.extendclimbkD, Constants.kTimeoutMs);
+			climberMotor.config_kF(Constants.kPIDLoopIdx, 0, Constants.kTimeoutMs);
 		}
 	}
 
 	public void ClimberDeploy() {
 		if (climberPistons1 != null) {
 			climberPistons1.set(false);
-			isDeployed = true;
+			
 		}
 		if (climberPistons2 != null) {
 			climberPistons2.set(true);
-			isDeployed = true;
+			
 
 		}
 		isitDeployed.setBoolean(true);
@@ -115,6 +120,10 @@ public class Climber extends SubsystemBase {
 		}
 	}
 
+	public double GetExtendError(){
+		return  climberMotor.getClosedLoopError();
+	}
+
 	public void ClimberPistonsBackIn() {
 		if (climberPistons1 != null) {
 			climberPistons1.set(true);
@@ -128,19 +137,19 @@ public class Climber extends SubsystemBase {
 	}
 
 	public void raiseClimberPID() {
-		if (isDeployed) {
+		//if (isDeployed) {
 			if (climberMotor != null) {
 				climberMotor.set(ControlMode.Position, Constants.distancesetpoint);
 			}
-		}
+		//}
 	}
 
 	public boolean climbUp() {
-		if (isDeployed) {
+		//if (isDeployed) {
 			if (climberMotor != null) {
-				climberMotor.set(ControlMode.PercentOutput, Constants.climbSpeed);
+				climberMotor.set(ControlMode.PercentOutput,-Constants.climbSpeed);
 			}
-		}
+		//}
 		return !bottomLimitSwitch.get();
 	}
 
@@ -154,7 +163,6 @@ public class Climber extends SubsystemBase {
 		if (climberMotor != null) {
 			climberMotor.set(0);
 		}
-		climberMotor.set(ControlMode.PercentOutput, -Constants.climbSpeed);
 	}
 	
 	public void stopRaise() {
@@ -163,6 +171,15 @@ public class Climber extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+
+		ExtendError.setDouble(GetExtendError());
+
+		isDeployed = !climberPistons1.get() && climberPistons2.get();
+
+		if (!bottomLimitSwitch.get()){
+			climberMotor.setSelectedSensorPosition(0);
+		}
+
 		double TempClimberSpeed = climbSpeed.getDouble(0.5);
 		if (TempClimberSpeed != Constants.climbSpeed) {
 			Constants.climbSpeed = TempClimberSpeed;
@@ -189,7 +206,7 @@ public class Climber extends SubsystemBase {
 		}
 
 		double tempDistanceSetpoint = DistanceSetpoint.getDouble(Constants.distancesetpoint);
-		if (Constants.distancesetpoint != tempDistanceSetpoint && extendclimbPID != null) {
+		if (Constants.distancesetpoint != tempDistanceSetpoint) {
 			Constants.distancesetpoint = tempDistanceSetpoint;
 		}
 	}

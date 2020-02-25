@@ -343,9 +343,11 @@
               "_title": "LeftEncoder"
             }
           },
+
           "14,0": {
             "size": [
               1,
+
               1
             ],
             "content": {
@@ -706,6 +708,7 @@
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
+
           },
           "3,3": {
             "size": [

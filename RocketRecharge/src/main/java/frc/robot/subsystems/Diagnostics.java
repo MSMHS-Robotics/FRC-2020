@@ -7,7 +7,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Diagnostics extends SubsystemBase {
 
     
-   // private PowerDistributionPanel PDP = new PowerDistributionPanel(0);
+
+    //private PowerDistributionPanel PDP = new PowerDistributionPanel(0);
 
     public Diagnostics(){
         

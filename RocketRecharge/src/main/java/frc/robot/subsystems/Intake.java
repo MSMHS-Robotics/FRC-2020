@@ -19,6 +19,12 @@ public class Intake extends SubsystemBase {
   private Solenoid armPistons2;
   private DigitalInput lastSensor;
   private DigitalInput triggerSensor;
+  private DigitalInput detector1;
+  private DigitalInput detector2;
+  private DigitalInput detector3;
+  private DigitalInput detector4;
+  private DigitalInput detector5;
+  private DigitalInput[] detectors;
 
   private ShuffleboardTab Intaketab = Shuffleboard.getTab("Intake Tab");
   private NetworkTableEntry intakePosition = Intaketab.addPersistent("Intake Position", false).getEntry();
@@ -33,8 +39,15 @@ public class Intake extends SubsystemBase {
 		beltMotor = new WPI_TalonSRX(11);
 		triggerMotor = new WPI_TalonSRX(12); // change?
 
-		lastSensor = new DigitalInput(4); // are we still using sensors?
-		triggerSensor = new DigitalInput(3);
+		lastSensor = new DigitalInput(0); // are we still using sensors?
+		triggerSensor = new DigitalInput(1);
+
+		detector1 = new DigitalInput(4);
+		detector2 = new DigitalInput(5);
+		detector3 = new DigitalInput(6);
+		detector4 = new DigitalInput(7);
+		detector5 = new DigitalInput(8);
+		detectors = new DigitalInput[]{detector1, detector2, detector3, detector4, detector5};
 	}
 
 	public void runIntake(double power) {
@@ -117,6 +130,15 @@ public class Intake extends SubsystemBase {
 
   public boolean isRaised() {
 	return armPistons1.get() && armPistons2.get();
+  }
+
+  public boolean hasBall() {
+	for(int x = 0; x < detectors.length; x++) {
+		if(detectors[x].get()) {
+			return true;
+		}
+	}
+	return false;
   }
 
   @Override

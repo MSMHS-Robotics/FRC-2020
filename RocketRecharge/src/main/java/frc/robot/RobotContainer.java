@@ -120,7 +120,8 @@ public class RobotContainer {
   private final TurnOnHeading turnOffLine = new TurnOnHeading(drivetrain, 90, -1);
 
   //shooter
-  private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad1, 1, false);
+  private final ShooterStopCommand stopShooter = new ShooterStopCommand(shooter);
+  private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad2, 1, false);
   private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
 
 
@@ -170,8 +171,7 @@ public class RobotContainer {
     start.whenPressed(toggleVision); //so we can use less buttons
     xButton.whenPressed(setRainbow);
     xButton.whenReleased(setFire);
-    bButton.whenHeld(new ShootCommand(shooter, intake, gamepad1, -1, -1, false, drivetrain));
-    aButton2.whenPressed(new ResetGyroCommand(drivetrain));
+    //aButton2.whenPressed(new ResetGyroCommand(drivetrain));
    
 
 
@@ -193,8 +193,9 @@ public class RobotContainer {
     back2.whenPressed(unlatchCommand);
 
     //shooter
-    bButton2.whenHeld(new WarmupCommand(shooter, gamepad2, -1, false));
-    bButton.whenHeld(new ShootBurstCommand(shooter, intake, gamepad1, -1, -1, false, drivetrain));
+    bButton2.whenHeld(shooterWarmup);
+    bButton2.whenReleased(stopShooter);
+    bButton.whenHeld(shootTeleop);
 
   }
 

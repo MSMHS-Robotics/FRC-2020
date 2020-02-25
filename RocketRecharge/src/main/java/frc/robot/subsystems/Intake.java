@@ -132,14 +132,14 @@ public class Intake extends SubsystemBase {
 	return armPistons1.get() && armPistons2.get();
   }
 
-  public boolean hasBall() {
+  /*public boolean hasBall() {
 	for(int x = 0; x < detectors.length; x++) {
 		if(detectors[x].get()) {
 			return true;
 		}
 	}
 	return false;
-  }
+  }*/
 
   @Override
 	public void periodic() {

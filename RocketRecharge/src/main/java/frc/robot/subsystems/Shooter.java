@@ -68,6 +68,7 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry neededRPM = tab1.addPersistent("Vision Needed RPM", 0).getEntry();
   private NetworkTableEntry isShooterGood = tab1.addPersistent("is Shooter Good", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
   private NetworkTableEntry isShooting = tab1.addPersistent("Shooter is Shooting", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
+  private Boolean shootingFlag;
   //RIP MaxRPM you will be missed D:
 
   private NetworkTableEntry AnglekP = tab1.addPersistent("AnglekP", Constants.AnglekP).getEntry();
@@ -88,6 +89,7 @@ public class Shooter extends SubsystemBase {
    * Creates a new ExampleSubsystem.
    */
   public Shooter() {
+    shootingFlag = false;
     shooterMotor = new CANSparkMax(7, MotorType.kBrushless);
     if (shooterMotor != null) {
       shooterMotor.restoreFactoryDefaults();
@@ -175,7 +177,12 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setShootingFlag(Boolean stillShooting) {
-    isShooting.setBoolean(stillShooting);
+    shootingFlag = stillShooting;
+    isShooting.setBoolean(shootingFlag);
+  }
+
+  public boolean shooting() {
+    return shootingFlag;
   }
 
   public void customShot(double rpm) {

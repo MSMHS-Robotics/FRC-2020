@@ -27,8 +27,7 @@ public final class Constants {
   
 
     //angle PID Constants
-    public static final int kTimeoutMs = 30;
-    public static final int kPIDLoopIdx = 0;
+   
     public static double AnglekP = 0.15;
     public static double AnglekI = 0.0;
     public static double AnglekD = 1.0;
@@ -81,6 +80,8 @@ public final class Constants {
     public static double extendclimbkP = 0.0001;
     public static double extendclimbkI = 0.0001;
     public static double extendclimbkD = 0.0001;
-    public static double distancesetpoint = 5;
+    public static double distancesetpoint = 5000;
+    public static final int kTimeoutMs = 30;
+    public static final int kPIDLoopIdx = 0;
 
 }

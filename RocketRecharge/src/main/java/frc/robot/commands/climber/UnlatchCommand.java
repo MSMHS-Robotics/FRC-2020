@@ -20,7 +20,7 @@ public class UnlatchCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.ClimberLatch();
+    climber.ClimberUnlatch();
     //climber.climbUsingStick(x); this is for testing purposes
   }
 

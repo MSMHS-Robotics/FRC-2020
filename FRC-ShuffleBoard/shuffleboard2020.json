@@ -343,17 +343,27 @@
               "_title": "LeftEncoder"
             }
           },
-
           "14,0": {
             "size": [
               1,
-
               1
             ],
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///Shuffleboard/Drivetrain Tab/encoderaverage",
               "_title": "encoderaverage"
+            }
+          "4,2": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Drivetrain Tab/Reset Gyro",
+              "_title": "Reset Gyro",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
             }
           }
         }
@@ -708,7 +718,6 @@
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
-
           },
           "3,3": {
             "size": [

@@ -90,7 +90,7 @@ public class RobotContainer {
   private final RaiseClimber raiseClimber = new RaiseClimber(climber);
   private final AutoClimb autoClimb = new AutoClimb(climber);
   private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
-  private final ConditionalCommand climbtoggle = new ConditionalCommand(autoClimb, raiseClimber, climber.isRaised());
+  //private final ConditionalCommand climbtoggle = new ConditionalCommand(autoClimb, raiseClimber, climber.isRaised());
   private final UnDeployClimber unDeployClimber = new UnDeployClimber(climber);
  // private final AutoDeployClimber climberDeploy = new AutoDeployClimber(intake, climber);
  private final DeployClimber climberDeploy = new DeployClimber(climber);
@@ -180,15 +180,15 @@ public class RobotContainer {
     leftBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
     //leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically //no longer wanted
     leftBumper.whenReleased(setIdle); //to sort the stuff out
-    yButton2.whenPressed(unjam); //run indexer backwards
+    //yButton2.whenPressed(unjam); //run indexer backwards
 
 
     //climber
     //this might work don't trust it
     //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes. I think unneeded now.
     xButton2.whenHeld(climberDeploy);
-    yButton2.whenPressed(climbtoggle);
-    //rightBumper2.whenPressed(raiseClimber);
+    yButton2.whenPressed(autoClimb);
+    rightBumper2.whenPressed(raiseClimber);
     start2.whenPressed(unDeployClimber);
     back2.whenPressed(unlatchCommand);
 

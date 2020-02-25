@@ -79,8 +79,8 @@ public class Climber extends SubsystemBase {
 		if (climberMotor != null) {
 			climberMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
 			climberMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
-			climberMotor.configPeakOutputForward(0.5, Constants.kTimeoutMs);
-			climberMotor.configPeakOutputReverse(-0.5, Constants.kTimeoutMs);
+			climberMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
+			climberMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 		}
 
 		// Config the Velocity closed loop gains in slot0
@@ -102,7 +102,6 @@ public class Climber extends SubsystemBase {
 			
 
 		}
-		isitDeployed.setBoolean(true);
 	}
 
 	public void ClimberLatch(){
@@ -124,37 +123,35 @@ public class Climber extends SubsystemBase {
 	}
 
 	public double GetExtendError(){
-		return  climberMotor.getClosedLoopError();
+		return  climberMotor.getSelectedSensorPosition()-Constants.distancesetpoint;
 	}
 
 	public void ClimberPistonsBackIn() {
 		if (climberPistons1 != null) {
 			climberPistons1.set(true);
-			isDeployed = false;
 		}
 		if (climberPistons2 != null) {
 			climberPistons2.set(false);
-			isDeployed = false;
 		}
-		isitDeployed.setBoolean(false);
+		
 	}
 
 	public void raiseClimberPID() {
-		if (isDeployed) {
+		//if (isDeployed) {
 			if (climberMotor != null) {
 				climberMotor.set(ControlMode.Position, Constants.distancesetpoint);
 				isRaised = true;
 			}
-		}
+		//}
 	}
 
 	public boolean climbUp() {
-		if (isDeployed) {
+		//if (isDeployed) {
 			if (climberMotor != null) {
 				climberMotor.set(ControlMode.PercentOutput,-Constants.climbSpeed);
 				isRaised = false;
 			}
-		}
+		//}
 		return !bottomLimitSwitch.get();
 	}
 
@@ -185,6 +182,7 @@ public class Climber extends SubsystemBase {
 		ExtendError.setDouble(GetExtendError());
 
 		isDeployed = !climberPistons1.get() && climberPistons2.get();
+		isitDeployed.setBoolean(isDeployed);
 
 		if (!bottomLimitSwitch.get()){
 			climberMotor.setSelectedSensorPosition(0);

@@ -140,21 +140,21 @@ public class Climber extends SubsystemBase {
 	}
 
 	public void raiseClimberPID() {
-		//if (isDeployed) {
+		if (isDeployed) {
 			if (climberMotor != null) {
 				climberMotor.set(ControlMode.Position, Constants.distancesetpoint);
 				isRaised = true;
 			}
-		//}
+		}
 	}
 
 	public boolean climbUp() {
-		//if (isDeployed) {
+		if (isDeployed) {
 			if (climberMotor != null) {
 				climberMotor.set(ControlMode.PercentOutput,-Constants.climbSpeed);
 				isRaised = false;
 			}
-		//}
+		}
 		return !bottomLimitSwitch.get();
 	}
 

@@ -109,7 +109,7 @@ public class RobotContainer {
   private final RunIndexerCommand unjam = new RunIndexerCommand(intake, -1);
   private final FeedCommand feedForward = new FeedCommand(intake, 1);
   private final FeedCommand feedReverse = new FeedCommand(intake, -1);
-  private final RunIndexerCommand setIdle = new RunIndexerCommand(intake, 0);
+  private final RunIntakeCommand setIdle = new RunIntakeCommand(intake, 0);
   
   private final PrepShotCommand prepShot = new PrepShotCommand(intake);
 

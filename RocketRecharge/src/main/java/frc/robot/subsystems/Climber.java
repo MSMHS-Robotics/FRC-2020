@@ -1,11 +1,11 @@
 package frc.robot.subsystems;
 
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -30,7 +31,8 @@ public class Climber extends SubsystemBase {
 	private Solenoid climberPistons2;
 	private Solenoid Latch1, Latch2;
 	private double distanceSetpoint;
-	private Boolean isDeployed = false;
+	private boolean isDeployed = false;
+	private boolean isRaised = false;
 	private PIDController extendclimbPID = new PIDController(Constants.extendclimbkP, Constants.extendclimbkI,
 			Constants.extendclimbkD);
 
@@ -141,6 +143,7 @@ public class Climber extends SubsystemBase {
 		//if (isDeployed) {
 			if (climberMotor != null) {
 				climberMotor.set(ControlMode.Position, Constants.distancesetpoint);
+				isRaised = true;
 			}
 		//}
 	}
@@ -149,9 +152,15 @@ public class Climber extends SubsystemBase {
 		//if (isDeployed) {
 			if (climberMotor != null) {
 				climberMotor.set(ControlMode.PercentOutput,-Constants.climbSpeed);
+				isRaised = false;
 			}
 		//}
 		return !bottomLimitSwitch.get();
+	}
+
+	public BooleanSupplier isRaised(){
+		BooleanSupplier bSupplier = () -> isRaised;
+		return bSupplier;
 	}
 
 	public void climbUsingStick(double x) {

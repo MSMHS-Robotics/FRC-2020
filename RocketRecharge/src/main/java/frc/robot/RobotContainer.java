@@ -24,6 +24,7 @@ import frc.robot.commands.climber.*;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.shooter.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.drivetrain.TurnOnHeading;
 import frc.robot.subsystems.Drivetrain;
@@ -89,6 +90,7 @@ public class RobotContainer {
   private final RaiseClimber raiseClimber = new RaiseClimber(climber);
   private final AutoClimb autoClimb = new AutoClimb(climber);
   private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
+  private final ConditionalCommand climbtoggle = new ConditionalCommand(autoClimb, raiseClimber, climber.isRaised());
   private final UnDeployClimber unDeployClimber = new UnDeployClimber(climber);
  // private final AutoDeployClimber climberDeploy = new AutoDeployClimber(intake, climber);
  private final DeployClimber climberDeploy = new DeployClimber(climber);
@@ -182,8 +184,8 @@ public class RobotContainer {
     //this might work don't trust it
     //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes
     xButton2.whenHeld(climberDeploy);
-    yButton2.whenPressed(autoClimb);
-    rightBumper2.whenPressed(raiseClimber);
+    yButton2.whenPressed(climbtoggle);
+    //rightBumper2.whenPressed(raiseClimber);
     start2.whenPressed(unDeployClimber);
     back2.whenPressed(unlatchCommand);
 

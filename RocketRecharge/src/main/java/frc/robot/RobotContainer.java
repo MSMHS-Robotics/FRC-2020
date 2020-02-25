@@ -194,7 +194,7 @@ public class RobotContainer {
 
     //shooter
     bButton2.whenHeld(shooterWarmup);
-    bButton2.whenReleased(stopShooter);
+    //bButton2.whenReleased(stopShooter);
     bButton.whenHeld(shootTeleop);
 
   }

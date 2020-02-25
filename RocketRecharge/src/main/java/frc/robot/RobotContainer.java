@@ -121,7 +121,7 @@ public class RobotContainer {
 
   //shooter
   private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad1, 1, false);
-  private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false); //this timeout right?
+  private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
 
 
   //Stupid axis stuff
@@ -194,7 +194,7 @@ public class RobotContainer {
 
     //shooter
     bButton2.whenHeld(new WarmupCommand(shooter, gamepad2, -1, false));
-    bButton.whenHeld(new ShootBurstCommand(shooter, intake, gamepad1, -1, -1, false));
+    bButton.whenHeld(new ShootBurstCommand(shooter, intake, gamepad1, -1, -1, false, drivetrain));
 
   }
 

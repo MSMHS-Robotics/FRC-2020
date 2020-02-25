@@ -19,6 +19,10 @@ Zack says hi. The programers are doing a great job. Keep up all the hard work!*/
  We may or may not remove the angle motor stuff depending on what we are doing
  
  Also justin is a nerd*/
+/*
+  Daniel says hi as well. And that the limelight is bright. -Daniel
+*/
+//Daniel wrote the above comment on 2/25/20 while avoiding work. mostly avoiding work.
 
 package frc.robot.subsystems;
 
@@ -61,7 +65,9 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry ShooterkMinOutput = tab1.addPersistent("ShooterkMinOutput", Constants.ShooterkMinOutput).getEntry();
   private NetworkTableEntry RPMTolerance = tab1.addPersistent("RPMTolerance", Constants.RPMTolerance).getEntry();
   private NetworkTableEntry ShooterRPM = tab1.addPersistent("ShooterRPM", 0).getEntry();
+  private NetworkTableEntry neededRPM = tab1.addPersistent("Vision Needed RPM", 0).getEntry();
   private NetworkTableEntry isShooterGood = tab1.addPersistent("is Shooter Good", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
+  private NetworkTableEntry isShooting = tab1.addPersistent("Shooter is Shooting", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
   //RIP MaxRPM you will be missed D:
 
   private NetworkTableEntry AnglekP = tab1.addPersistent("AnglekP", Constants.AnglekP).getEntry();
@@ -111,8 +117,6 @@ public class Shooter extends SubsystemBase {
     }
     // set PID coefficients
     
-
-    
     //angle motor config
     if (angleMotor != null){
       angleMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
@@ -154,19 +158,32 @@ public class Shooter extends SubsystemBase {
   }
   
 
-  public boolean stopPlease(){
-    if (shooterMotor != null){
+  public boolean stopPlease() {
+    if (shooterMotor != null) {
       shooterMotor.setVoltage(0);
       return true;
     }
     return false;
   }
 
-  public void customShot(double x) {
+  public boolean stopPercent() {
+    if(shooterMotor != null) {
+      shooterMotor.set(0);
+      return true;
+    }
+    return false;
+  }
+
+  public void setShootingFlag(Boolean stillShooting) {
+    isShooting.setBoolean(stillShooting);
+  }
+
+  public void customShot(double rpm) {
     shooterAngle(Constants.TrenchAngle); //need to change. this is temp. we don't have an articulating hood yet, so should be fine for now
-    warmUp(x);
-    RPMSetpoint = x;
+    warmUp(rpm);
+    RPMSetpoint = rpm;
     angleSetpoint = Constants.TrenchAngle; //also temp. <!-- !!!CHANGE!!! -->
+    neededRPM.setDouble(rpm);
   }
 
   public void trenchShot(){
@@ -194,16 +211,15 @@ public class Shooter extends SubsystemBase {
     if (encoder == null){
       isShooterGood.setBoolean(false);
       return false;
-      
     }
+
     if(Math.abs(encoder.getVelocity() - RPMSetpoint) < Constants.RPMTolerance){ //&& Math.abs(encoder.getPosition() - angleSetpoint) < Constants.AnglekF){
       isShooterGood.setBoolean(false);
       return true;
-
     }
+
     isShooterGood.setBoolean(false);
-    return false;
-   
+    return false;   
   }
 
   @Override

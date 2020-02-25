@@ -25,23 +25,23 @@ public class ShootCommand extends RocketTimedCommand {
     private int preset;
     private double timeout;
     private boolean isAuto;
-
+    
     /**
      * Creates a new ExampleCommand.
      *
      * @param shooter The subsystem used by this command.
      */
     public ShootCommand(Shooter shooter, Intake intake, Joystick joystick, int preset, double timeout, boolean auto,
-            Drivetrain drivetrain_) {
+            Drivetrain drivetrain) {
         this.shooter = shooter;
         this.intake = intake;
         this.joystick = joystick;
         this.preset = preset;
         this.timeout = timeout;
-        drivetrain = drivetrain_;
+        this.drivetrain = drivetrain;
         isAuto = auto;
         // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(shooter, intake);
+        addRequirements(shooter, intake, drivetrain);
     }
 
     // Called when the command is initially scheduled.
@@ -63,6 +63,8 @@ public class ShootCommand extends RocketTimedCommand {
         } else {
             val = joystick.getPOV();
         }
+
+        shooter.setShootingFlag(true);
 
         switch (val) {
         case 0:
@@ -93,6 +95,7 @@ public class ShootCommand extends RocketTimedCommand {
     @Override
     public void end(boolean interrupted) {
         shooter.stopPlease();
+        shooter.setShootingFlag(false);
         intake.feed(0);
     }
 

@@ -1,35 +1,17 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.commands.drivetrain;
 
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Lights;
-//import edu.wpi.first.networktables.NetworkTable;
-//import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-/**
- * Aligns us to the target. Uses drivetrain subsystem
- */
 public class AlignToTargetCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Drivetrain drivetrain;
   private final Lights blinkin;
 
-  /**
-   * Creates a new AlignToTargetCommand.
-   *
-   * @param drivetrain The subsystem used by this command.
-   */
-  public AlignToTargetCommand(Drivetrain drivetrain, Lights x) {
+  public AlignToTargetCommand(Drivetrain drivetrain, Lights blinkin) {
     this.drivetrain = drivetrain;
-    blinkin = x;
+    this.blinkin = blinkin;
     addRequirements(drivetrain);
   }
 
@@ -60,7 +42,6 @@ public class AlignToTargetCommand extends CommandBase {
         blinkin.setRedLarson();
       }
     }
-    //SmartDashboard.putBool(drivetrain.isVisionAligned());
   }
 
   // Called once the command ends or is interrupted.
@@ -73,6 +54,6 @@ public class AlignToTargetCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return drivetrain.isVisionAligned();
   }
 }

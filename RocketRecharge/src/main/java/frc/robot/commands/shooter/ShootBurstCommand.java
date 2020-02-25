@@ -8,6 +8,7 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.commands.RocketTimedCommand;
@@ -20,6 +21,7 @@ public class ShootBurstCommand extends RocketTimedCommand {
     private Shooter shooter;
     private Intake intake;
     private Joystick joystick;
+    private final Drivetrain drivetrain;
     private int preset;
     private int lastval;
     private double timeout;
@@ -31,7 +33,7 @@ public class ShootBurstCommand extends RocketTimedCommand {
      *
      * @param shooter The subsystem used by this command.
      */
-    public ShootBurstCommand(Shooter shooter, Intake intake, Joystick joystick, int preset, double timeout, boolean auto) {
+    public ShootBurstCommand(Shooter shooter, Intake intake, Joystick joystick, int preset, double timeout, boolean auto, Drivetrain drivetrain) {
         this.shooter = shooter;
         this.intake = intake;
         this.joystick = joystick;
@@ -39,9 +41,10 @@ public class ShootBurstCommand extends RocketTimedCommand {
         this.timeout = timeout;
         this.hasShooterBeenGood = false;
         this.lastval = -1;
+        this.drivetrain = drivetrain;
         isAuto = auto;
         // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(shooter, intake);
+        addRequirements(shooter, intake, drivetrain);
     }
 
     // Called when the command is initially scheduled.
@@ -74,6 +77,8 @@ public class ShootBurstCommand extends RocketTimedCommand {
         case 180:
             shooter.layupShot();
             break;
+        case 270:
+            shooter.customShot(drivetrain.getNeededRPM());
         default:
             shooter.tenFootShot(); // maybe change this?
             break;

@@ -90,7 +90,7 @@ public class RobotContainer {
   private final RaiseClimber raiseClimber = new RaiseClimber(climber);
   private final AutoClimb autoClimb = new AutoClimb(climber);
   private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
-  //private final ConditionalCommand climbtoggle = new ConditionalCommand(autoClimb, raiseClimber, climber.isRaised());
+  private final ConditionalCommand climbtoggle = new ConditionalCommand(autoClimb, raiseClimber, climber.isRaised());
   private final UnDeployClimber unDeployClimber = new UnDeployClimber(climber);
  // private final AutoDeployClimber climberDeploy = new AutoDeployClimber(intake, climber);
  private final DeployClimber climberDeploy = new DeployClimber(climber);
@@ -170,9 +170,8 @@ public class RobotContainer {
     start.whenPressed(toggleVision); //so we can use less buttons
     xButton.whenPressed(setRainbow);
     xButton.whenReleased(setFire);
-    bButton.whenHeld(new ShootCommand(shooter, intake, gamepad1, -1, -1, false, drivetrain));
     aButton2.whenPressed(new ResetGyroCommand(drivetrain));
-   
+  
 
 
     //intake stuff. intake automagically sets power to 0 after command ends
@@ -187,8 +186,8 @@ public class RobotContainer {
     //this might work don't trust it
     //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes. I think unneeded now.
     xButton2.whenHeld(climberDeploy);
-    yButton2.whenPressed(autoClimb);
-    rightBumper2.whenPressed(raiseClimber);
+    yButton2.whenPressed(climbtoggle);
+    //rightBumper2.whenPressed(raiseClimber);
     start2.whenPressed(unDeployClimber);
     back2.whenPressed(unlatchCommand);
 

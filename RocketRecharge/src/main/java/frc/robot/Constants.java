@@ -24,6 +24,11 @@ public final class Constants {
     public static double ShooterkFF = 6e-6;
     public static double ShooterkMaxOutput = 1;
     public static double ShooterkMinOutput = -1;
+
+    //shooter PID division
+    public static double ShooterkPdivide = 1;
+    public static double ShooterkIdivide = 1;
+    public static double ShooterkDdivide = 1;
   
 
     //angle PID Constants

@@ -53,8 +53,11 @@ public class Shooter extends SubsystemBase {
 
   private ShuffleboardTab tab1 = Shuffleboard.getTab("Shooter");
   private NetworkTableEntry ShooterkP = tab1.addPersistent("ShooterkP", Constants.ShooterkP).getEntry();
+  private NetworkTableEntry kPdivide = tab1.addPersistent("kPdivide", Constants.ShooterkPdivide).getEntry();
   private NetworkTableEntry ShooterkI = tab1.addPersistent("ShooterkI", Constants.ShooterkI).getEntry();
+  private NetworkTableEntry kIdivide = tab1.addPersistent("kIdivide", Constants.ShooterkIdivide).getEntry();
   private NetworkTableEntry ShooterkD = tab1.addPersistent("ShooterkD", Constants.ShooterkD).getEntry();
+  private NetworkTableEntry kDdivide = tab1.addPersistent("kDdivide", Constants.ShooterkDdivide).getEntry();
   private NetworkTableEntry ShooterkIz = tab1.addPersistent("ShooterkIz", Constants.ShooterkIz).getEntry();
   private NetworkTableEntry ShooterkFF = tab1.addPersistent("ShooterkFF", Constants.ShooterkFF).getEntry();
   private NetworkTableEntry ShooterkMaxOutput = tab1.addPersistent("ShooterkMaxOutput", Constants.ShooterkMaxOutput).getEntry();
@@ -215,19 +218,37 @@ public class Shooter extends SubsystemBase {
     double tempSP = ShooterkP.getDouble(Constants.ShooterkP);
     if(Constants.ShooterkP != tempSP && shooterPID != null) {
       Constants.ShooterkP = tempSP;
-      shooterPID.setP(Constants.ShooterkP);
+      shooterPID.setP(Constants.ShooterkP/Constants.ShooterkPdivide);
+    }
+
+    double tempSPdivide = kPdivide.getDouble(Constants.ShooterkPdivide);
+    if(Constants.ShooterkPdivide != tempSPdivide && shooterPID != null) {
+      Constants.ShooterkPdivide = tempSPdivide;
+      shooterPID.setP(Constants.ShooterkP/Constants.ShooterkPdivide);
     }
 
     double tempSI = ShooterkI.getDouble(Constants.ShooterkI);
     if(Constants.ShooterkI != tempSI && shooterPID != null) {
       Constants.ShooterkI = tempSI;
-      shooterPID.setI(Constants.ShooterkI);
+      shooterPID.setI(Constants.ShooterkI/Constants.ShooterkIdivide);
+    }
+
+    double tempSIdivide = kIdivide.getDouble(Constants.ShooterkIdivide);
+    if(Constants.ShooterkIdivide != tempSIdivide && shooterPID != null) {
+      Constants.ShooterkIdivide = tempSIdivide;
+      shooterPID.setI(Constants.ShooterkI/Constants.ShooterkIdivide);
     }
 
     double tempSD = ShooterkD.getDouble(Constants.ShooterkD);
     if(Constants.ShooterkD != tempSD && shooterPID != null) {
       Constants.ShooterkD = tempSD;
-      shooterPID.setD(Constants.ShooterkD);
+      shooterPID.setD(Constants.ShooterkD/Constants.ShooterkDdivide);
+    }
+
+    double tempSDdivide = kDdivide.getDouble(Constants.ShooterkDdivide);
+    if(Constants.ShooterkDdivide != tempSDdivide && shooterPID != null) {
+      Constants.ShooterkDdivide = tempSDdivide;
+      shooterPID.setD(Constants.ShooterkD/Constants.ShooterkDdivide);
     }
 
     double tempSIz = ShooterkIz.getDouble(Constants.ShooterkIz);
@@ -259,8 +280,6 @@ public class Shooter extends SubsystemBase {
       Constants.RPMTolerance = tempTolerance;
     }
 
-
-    
     //angle motor
 
     double tempAkp = AnglekP.getDouble(Constants.AnglekP);

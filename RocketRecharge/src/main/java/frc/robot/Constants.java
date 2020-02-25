@@ -82,7 +82,7 @@ public final class Constants {
     public static double extendclimbkP = 0.0001;
     public static double extendclimbkI = 0.0001;
     public static double extendclimbkD = 0.0001;
-    public static double distancesetpoint = 5000;
+    public static double distancesetpoint = 12000;
     public static final int kTimeoutMs = 30;
     public static final int kPIDLoopIdx = 0;
 

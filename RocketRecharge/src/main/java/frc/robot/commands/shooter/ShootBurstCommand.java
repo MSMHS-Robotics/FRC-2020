@@ -69,13 +69,13 @@ public class ShootBurstCommand extends RocketTimedCommand {
 
         switch (val) {
         case 0:
-            shooter.trenchShot();
+            shooter.layupShot();
             break;
         case 90:
             shooter.tenFootShot();
             break;
         case 180:
-            shooter.layupShot();
+            shooter.trenchShot();
             break;
         case 270:
             shooter.customShot(drivetrain.getNeededRPM());

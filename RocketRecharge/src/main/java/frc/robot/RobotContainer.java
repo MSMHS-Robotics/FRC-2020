@@ -117,11 +117,11 @@ public class RobotContainer {
   private final AutoIntakeDeployCommand autoDeployIntake = new AutoIntakeDeployCommand(intake);
 
   //auto. maybe delete
-  private final TurnOnHeading turnOffLine = new TurnOnHeading(drivetrain, 90, -1);
+  //private final TurnOnHeading turnOffLine = new TurnOnHeading(drivetrain, 90, -1);
 
   //shooter
   private final ShooterStopCommand stopShooter = new ShooterStopCommand(shooter);
-  private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad2, 1, false);
+  private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad2, 1, false, drivetrain);
   private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
 
 
@@ -167,21 +167,17 @@ public class RobotContainer {
     //update: TOGGLING DONE! untested though
     aButton.whenPressed(align);
     aButton.whenReleased(runDrivetrain);
-    aButton.whenPressed(setFire);
+    aButton.whenReleased(setFire);
     start.whenPressed(toggleVision); //so we can use less buttons
-    xButton.whenPressed(setRainbow);
-    xButton.whenReleased(setFire);
-
     //aButton2.whenPressed(new ResetGyroCommand(drivetrain));
    
-
-
-
     //intake stuff. intake automagically sets power to 0 after command ends
     //rightBumper.whenPressed(intakeOut); //don't need this now
-    leftBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
+    rightBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
+    yButton.whenPressed(retractIntake);
+    leftBumper.whenHeld(intakeOut);
     //leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically //no longer wanted
-    leftBumper.whenReleased(setIdle); //to sort the stuff out
+    //leftBumper.whenReleased(setIdle); //to sort the stuff out
     //yButton2.whenPressed(unjam); //run indexer backwards
 
 

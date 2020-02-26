@@ -32,8 +32,8 @@ public class Intake extends SubsystemBase {
 
   	public Intake() {
 		// uncomment once pneumatics attatched
-		armPistons1 = new Solenoid(0);
-		armPistons2 = new Solenoid(1);
+		armPistons1 = new Solenoid(2);
+		armPistons2 = new Solenoid(3);
 
 		intakeMotor = new WPI_TalonSRX(15); // our motors
 		beltMotor = new WPI_TalonSRX(11);
@@ -117,7 +117,7 @@ public class Intake extends SubsystemBase {
 			armPistons1.set(true);
 		}
 		if (armPistons2 != null) {
-			armPistons2.set(true);
+			armPistons2.set(false);
 		}
 	}
 
@@ -125,7 +125,9 @@ public class Intake extends SubsystemBase {
 		if (armPistons1 != null) {
 			armPistons1.set(false);
 		}
-	if(armPistons2 != null) {armPistons2.set(false);}
+		if(armPistons2 != null) {
+			armPistons2.set(true);
+		}
   }
 
   public boolean isRaised() {

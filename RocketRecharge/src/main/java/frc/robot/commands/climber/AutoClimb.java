@@ -10,7 +10,9 @@ public class AutoClimb extends SequentialCommandGroup {
         super(
             new ClimbUpCommand(climber),
             new WaitCommand(.5),
-            new LatchCommand(climber)
+            new LatchCommand(climber),
+            new WaitCommand(.5),
+            new ClimberStopPlease(climber)
             );
     }
 }

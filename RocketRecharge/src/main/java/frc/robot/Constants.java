@@ -24,6 +24,11 @@ public final class Constants {
     public static double ShooterkFF = 6e-6;
     public static double ShooterkMaxOutput = 1;
     public static double ShooterkMinOutput = -1;
+
+    //shooter PID division
+    public static double ShooterkPdivide = 1;
+    public static double ShooterkIdivide = 1;
+    public static double ShooterkDdivide = 1;
   
 
     //angle PID Constants
@@ -82,7 +87,7 @@ public final class Constants {
     public static double extendclimbkP = 0.0001;
     public static double extendclimbkI = 0.0001;
     public static double extendclimbkD = 0.0001;
-    public static double distancesetpoint = 5000;
+    public static double distancesetpoint = 12000;
     public static final int kTimeoutMs = 30;
     public static final int kPIDLoopIdx = 0;
 

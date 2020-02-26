@@ -109,7 +109,7 @@ public class RobotContainer {
   private final RunIndexerCommand unjam = new RunIndexerCommand(intake, -1);
   private final FeedCommand feedForward = new FeedCommand(intake, 1);
   private final FeedCommand feedReverse = new FeedCommand(intake, -1);
-  private final RunIndexerCommand setIdle = new RunIndexerCommand(intake, 0);
+  private final RunIntakeCommand setIdle = new RunIntakeCommand(intake, 0);
   
   private final PrepShotCommand prepShot = new PrepShotCommand(intake);
 
@@ -171,8 +171,10 @@ public class RobotContainer {
     start.whenPressed(toggleVision); //so we can use less buttons
     xButton.whenPressed(setRainbow);
     xButton.whenReleased(setFire);
+
     //aButton2.whenPressed(new ResetGyroCommand(drivetrain));
    
+
 
 
     //intake stuff. intake automagically sets power to 0 after command ends
@@ -180,7 +182,7 @@ public class RobotContainer {
     leftBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
     //leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically //no longer wanted
     leftBumper.whenReleased(setIdle); //to sort the stuff out
-    yButton2.whenPressed(unjam); //run indexer backwards
+    //yButton2.whenPressed(unjam); //run indexer backwards
 
 
     //climber

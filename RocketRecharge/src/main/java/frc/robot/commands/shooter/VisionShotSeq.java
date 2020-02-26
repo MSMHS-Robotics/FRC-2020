@@ -12,7 +12,7 @@ public class VisionShotSeq extends SequentialCommandGroup {
     public VisionShotSeq(Drivetrain drivetrain, Lights blinkin, Joystick joystick, Shooter shooter, Intake intake) {
         super(
             new AlignToTargetCommand(drivetrain, blinkin),
-            new WarmupCommand(shooter, joystick, -1, false),
+            new WarmupCommand(shooter, joystick, -1, false, drivetrain),
             new ShootBurstVisionCommand(shooter, intake, joystick, -1, -1, false, drivetrain)
             );
     }

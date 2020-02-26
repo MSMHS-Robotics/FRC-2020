@@ -55,9 +55,9 @@ public class Robot extends TimedRobot {
     gamepad1 = robotContainer.getJoystick1();
     gamepad2 = robotContainer.getJoystick2();
     blinkin = robotContainer.getBlinkin();
-    camera1 = new UsbCamera("Driver1", 0);
-    climberCamera = new UsbCamera("ClimberCamera", 1);
-    camera1.setExposureAuto();
+    camera1 = new UsbCamera("Driver1", 1);
+    //climberCamera = new UsbCamera("ClimberCamera", 1);
+    //camera1.setExposureAuto();
     camera1.setFPS(10);
     camera1.setResolution(600, 500);
     /*climberCamera.setExposureAuto();

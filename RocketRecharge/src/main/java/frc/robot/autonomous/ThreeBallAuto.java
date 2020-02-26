@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.drivetrain.DriveOnHeading;
 import frc.robot.commands.drivetrain.ResetGyroCommand;
-import frc.robot.commands.drivetrain.SetDrive;
 import frc.robot.commands.intake.AutoIntakeDeployCommand;
 import frc.robot.commands.shooter.ShootBurstCommand;
 //import frc.robot.commands.shooter.ShootAngleWarmupCommand;
@@ -20,7 +19,7 @@ public class ThreeBallAuto extends SequentialCommandGroup {
         super(
             new ResetGyroCommand(drivetrain),
             new AutoIntakeDeployCommand(intake),
-            new WarmupCommand(shooter, null, 90, true),
+            new WarmupCommand(shooter, null, 90, true, drivetrain),
             new WaitCommand(1),
             new ShootBurstCommand(shooter, intake, null, 90, 3, true, drivetrain),
             new DriveOnHeading(drivetrain, 0, -.3, 2)

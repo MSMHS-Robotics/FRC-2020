@@ -18,6 +18,7 @@ import frc.robot.autonomous.DriveOffLine;
 import frc.robot.autonomous.DriveOffLineReverse;
 import frc.robot.autonomous.EightBallAuto;
 import frc.robot.autonomous.ThreeBallAuto;
+import frc.robot.autonomous.DelayedThreeBallAuto;
 
 import frc.robot.commands.intake.*; //a lot easier than importing them one by one
 import frc.robot.commands.climber.*;
@@ -149,10 +150,11 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     //auto selector stuff
+    autos.put("Three Ball Auto", new ThreeBallAuto(drivetrain, intake, shooter));
+    autos.put("Delay Three Ball Auto", new DelayedThreeBallAuto(drivetrain, intake, shooter));
     autos.put("Drive Off Line", new DriveOffLine(drivetrain));
     autos.put("Drive Off Line Reverse", new DriveOffLineReverse(drivetrain));
     autos.put("Eight Ball Auto", new EightBallAuto(drivetrain));
-    autos.put("Three Ball Auto", new ThreeBallAuto(drivetrain, intake, shooter));
     autoNames = new ArrayList<>(autos.keySet());
     lengthOfList = autoNames.size();
   }
@@ -197,7 +199,7 @@ public class RobotContainer {
 
     //shooter
     bButton2.whileHeld(shooterWarmup);
-    bButton2.whenReleased(stopShooter);
+    //bButton2.whenReleased(stopShooter);
     bButton.whenHeld(shootTeleop);
 
   }

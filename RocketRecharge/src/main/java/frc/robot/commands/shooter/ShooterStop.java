@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * An example command that uses an example subsystem.
  */
-public class WarmupCommand extends CommandBase {
+public class ShooterStop extends CommandBase {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
     private final Shooter shooter;
     private final Joystick joystick;
@@ -30,11 +30,8 @@ public class WarmupCommand extends CommandBase {
      *
      * @param shooter The subsystem used by this command.
      */
-    public WarmupCommand(Shooter shooter, Joystick joystick, int preset, boolean auto) {
+    public ShooterStop(Shooter shooter) {
     this.shooter = shooter;
-    this.joystick = joystick;
-    this.preset = preset;
-    isAuto = auto;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
   }
@@ -47,42 +44,17 @@ public class WarmupCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      int val;
-
-    if(isAuto){
-        val = preset;
-    }
-    else{
-        val = joystick.getPOV();
-    }
-
-    switch(val){
-        case 0:
-            shooter.trenchShot();
-            break;
-        case 90:
-            shooter.tenFootShot();
-            break;
-        case 180:
-            shooter.layupShot();
-            break;
-        default:
-            shooter.tenFootShot(); //maybe change this?
-            break;
-    }
+      shooter.stopPlease();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      if(!shooter.shooting() && !isAuto) {
-        shooter.stopPlease();
-      }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return shooter.isShooterGood() && isAuto;
+    return true;
   }
 }

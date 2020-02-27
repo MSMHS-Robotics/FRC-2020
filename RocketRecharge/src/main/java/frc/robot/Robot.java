@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Joystick;
@@ -18,9 +19,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Lights;
 
 /**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the TimedRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the build.gradle file in the
  * project.
  */
 public class Robot extends TimedRobot {
@@ -38,7 +40,9 @@ public class Robot extends TimedRobot {
   private Boolean wasPressed = false;
   private Boolean unplugged1 = false;
   private Boolean unplugged2 = false;
-  //private Boolean isSet = false;
+  private UsbCamera camera1;
+  private UsbCamera climberCamera;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -51,7 +55,16 @@ public class Robot extends TimedRobot {
     gamepad1 = robotContainer.getJoystick1();
     gamepad2 = robotContainer.getJoystick2();
     blinkin = robotContainer.getBlinkin();
-    //CameraServer.getInstance().startAutomaticCapture();
+    camera1 = new UsbCamera("Driver1", 1);
+    //climberCamera = new UsbCamera("ClimberCamera", 1);
+    //camera1.setExposureAuto();
+    camera1.setFPS(10);
+    camera1.setResolution(600, 500);
+    /*climberCamera.setExposureAuto();
+    climberCamera.setFPS(5);
+    climberCamera.setResolution(300, 300);
+    climberCamera.setFPS(0);*/
+    CameraServer.getInstance().startAutomaticCapture();
   }
 
   /**

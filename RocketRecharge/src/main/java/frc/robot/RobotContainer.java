@@ -18,6 +18,7 @@ import frc.robot.autonomous.DriveOffLine;
 import frc.robot.autonomous.DriveOffLineReverse;
 import frc.robot.autonomous.EightBallAuto;
 import frc.robot.autonomous.ThreeBallAuto;
+import frc.robot.autonomous.DelayedThreeBallAuto;
 
 import frc.robot.commands.intake.*; //a lot easier than importing them one by one
 import frc.robot.commands.climber.*;
@@ -103,8 +104,9 @@ public class RobotContainer {
   private final AlertHumanPlayerCommand setRainbow = new AlertHumanPlayerCommand(blinkin);
   
   //intake + indexer
-  private final RunIntakeCommand intakeIn = new RunIntakeCommand(intake, 1);
-  private final RunIntakeCommand intakeOut = new RunIntakeCommand(intake, -1);
+  private final RunIntakeCommand intakeIn = new RunIntakeCommand(intake, -1);
+  private final RunIntakeCommand intakeOut = new RunIntakeCommand(intake, 1);
+  private final RunIntakeCommand stopIntake = new RunIntakeCommand(intake, 0);
 
   private final RunIndexerCommand unjam = new RunIndexerCommand(intake, -1);
   private final FeedCommand feedForward = new FeedCommand(intake, 1);
@@ -120,6 +122,7 @@ public class RobotContainer {
   //private final TurnOnHeading turnOffLine = new TurnOnHeading(drivetrain, 90, -1);
 
   //shooter
+  //private final ShooterStop stopShooter = new ShooterStop(shooter);
   private final ShooterStopCommand stopShooter = new ShooterStopCommand(shooter);
   private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad2, 1, false, drivetrain);
   private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
@@ -148,10 +151,11 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     //auto selector stuff
+    autos.put("Three Ball Auto", new ThreeBallAuto(drivetrain, intake, shooter));
+    autos.put("Delay Three Ball Auto", new DelayedThreeBallAuto(drivetrain, intake, shooter));
     autos.put("Drive Off Line", new DriveOffLine(drivetrain));
     autos.put("Drive Off Line Reverse", new DriveOffLineReverse(drivetrain));
     autos.put("Eight Ball Auto", new EightBallAuto(drivetrain));
-    autos.put("Three Ball Auto", new ThreeBallAuto(drivetrain, intake, shooter));
     autoNames = new ArrayList<>(autos.keySet());
     lengthOfList = autoNames.size();
   }
@@ -180,7 +184,7 @@ public class RobotContainer {
     //leftBumper.whenReleased(setIdle); //to sort the stuff out
     //yButton2.whenPressed(unjam); //run indexer backwards
 
-
+    //======== stuff below this line is not up-to-date bindings wise  ======== exception is the bButton.whenHeld(shootTeleop); ========
     //climber
     //this might work don't trust it
     //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes. I think unneeded now.
@@ -191,7 +195,7 @@ public class RobotContainer {
     back2.whenPressed(unlatchCommand);
 
     //shooter
-    bButton2.whenHeld(shooterWarmup);
+    bButton2.whileHeld(shooterWarmup);
     //bButton2.whenReleased(stopShooter);
     bButton.whenHeld(shootTeleop);
 

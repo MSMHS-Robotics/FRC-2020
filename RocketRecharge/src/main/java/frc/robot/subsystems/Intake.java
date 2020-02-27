@@ -32,8 +32,8 @@ public class Intake extends SubsystemBase {
 
   	public Intake() {
 		// uncomment once pneumatics attatched
-		armPistons1 = new Solenoid(2);
-		armPistons2 = new Solenoid(3);
+		armPistons1 = new Solenoid(0);
+		armPistons2 = new Solenoid(1);
 
 		intakeMotor = new WPI_TalonSRX(15); // our motors
 		beltMotor = new WPI_TalonSRX(11);

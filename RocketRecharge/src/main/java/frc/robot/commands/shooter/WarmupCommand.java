@@ -8,9 +8,9 @@
 // interupted keep going
 // is finished return false
 
-
 package frc.robot.commands.shooter;
 
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -24,19 +24,21 @@ public class WarmupCommand extends CommandBase {
     private final Joystick joystick;
     private int preset;
     private boolean isAuto;
+    private Drivetrain drivetrain;
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param shooter The subsystem used by this command.
      */
-    public WarmupCommand(Shooter shooter, Joystick joystick, int preset, boolean auto) {
+    public WarmupCommand(Shooter shooter, Joystick joystick, int preset, boolean auto, Drivetrain drivetrain) {
     this.shooter = shooter;
     this.joystick = joystick;
     this.preset = preset;
     isAuto = auto;
+    this.drivetrain = drivetrain;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter);
+    addRequirements(shooter, drivetrain);
   }
 
   // Called when the command is initially scheduled.
@@ -58,14 +60,16 @@ public class WarmupCommand extends CommandBase {
 
     switch(val){
         case 0:
-            shooter.trenchShot();
+            shooter.layupShot();
             break;
         case 90:
             shooter.tenFootShot();
             break;
         case 180:
-            shooter.layupShot();
+            shooter.trenchShot();
             break;
+        case 270:
+            shooter.customShot(drivetrain.getNeededRPM());
         default:
             shooter.tenFootShot(); //maybe change this?
             break;

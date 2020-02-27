@@ -173,13 +173,16 @@ public class RobotContainer {
     aButton.whenReleased(runDrivetrain);
     aButton.whenReleased(setFire);
     start.whenPressed(toggleVision); //so we can use less buttons
-    
+    //aButton2.whenPressed(new ResetGyroCommand(drivetrain));
+   
     //intake stuff. intake automagically sets power to 0 after command ends
+    //rightBumper.whenPressed(intakeOut); //don't need this now
     rightBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
-    rightBumper.whenReleased(stopIntake);
     yButton.whenPressed(retractIntake);
     leftBumper.whenHeld(intakeOut);
-    leftBumper.whenReleased(stopIntake);
+    //leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically //no longer wanted
+    //leftBumper.whenReleased(setIdle); //to sort the stuff out
+    //yButton2.whenPressed(unjam); //run indexer backwards
 
     //======== stuff below this line is not up-to-date bindings wise  ======== exception is the bButton.whenHeld(shootTeleop); ========
     //climber

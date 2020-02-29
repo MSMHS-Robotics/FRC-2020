@@ -42,17 +42,108 @@
           },
           "4,1": {
             "size": [
-              2,
-              2
+              3,
+              3
             ],
             "content": {
               "_type": "Gyro",
               "_source0": "network_table:///LiveWindow/Ungrouped/navX-Sensor",
-              "_title": "LiveWindow/Ungrouped/navX-Sensor",
+              "_title": "Nav-X",
               "Visuals/Major tick spacing": 45.0,
               "Visuals/Starting angle": 180.0,
               "Visuals/Show tick mark ring": true,
               "Visuals/Counter clockwise": false
+            }
+          },
+          "7,0": {
+            "size": [
+              6,
+              6
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FF0000FF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "HALF",
+              "compression": 47.0,
+              "fps": 10,
+              "imageWidth": 400,
+              "imageHeight": 300
+            }
+          },
+          "1,3": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Auto Tab/Current Auto",
+              "_title": "/Shuffleboard/Auto Tab/Current Auto"
+            }
+          },
+          "0,4": {
+            "size": [
+              7,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Auto Tab/All Auto Programs",
+              "_title": "/Shuffleboard/Auto Tab/All Auto Programs"
+            }
+          },
+          "0,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///Shuffleboard/Drivetrain Tab/Reset Gyro",
+              "_title": "press twice"
+            }
+          },
+          "1,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Climber Tab/is it Deployed",
+              "_title": "/Shuffleboard/Climber Tab/is it Deployed",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "0,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/Intake Position",
+              "_title": "/Shuffleboard/Intake Tab/Intake Position",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "2,5": {
+            "size": [
+              5,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Shooter/is Shooter Good",
+              "_title": "/Shuffleboard/Shooter/is Shooter Good",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
             }
           }
         }
@@ -360,11 +451,9 @@
               2
             ],
             "content": {
-              "_type": "Boolean Box",
+              "_type": "Toggle Button",
               "_source0": "network_table:///Shuffleboard/Drivetrain Tab/Reset Gyro",
-              "_title": "Reset Gyro",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
+              "_title": "Reset Gyro"
             }
           }
         }
@@ -524,6 +613,63 @@
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
+          },
+          "2,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/kIdivide",
+              "_title": "kIdivide"
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/kDdivide",
+              "_title": "kDdivide"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/kPdivide",
+              "_title": "kPdivide"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/Vision Needed RPM",
+              "_title": "Vision Needed RPM"
+            }
+          },
+          "10,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Shooter/Shooter is Shooting",
+              "_title": "Shooter is Shooting",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -628,7 +774,7 @@
               "_title": "Current Auto"
             }
           },
-          "4,0": {
+          "0,0": {
             "size": [
               5,
               2
@@ -637,6 +783,32 @@
               "_type": "Text View",
               "_source0": "network_table:///Shuffleboard/Auto Tab/All Auto Programs",
               "_title": "All Auto Programs"
+            }
+          },
+          "5,0": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Gyro",
+              "_source0": "network_table:///LiveWindow/Ungrouped/navX-Sensor",
+              "_title": "/LiveWindow/Ungrouped/navX-Sensor",
+              "Visuals/Major tick spacing": 45.0,
+              "Visuals/Starting angle": 180.0,
+              "Visuals/Show tick mark ring": true,
+              "Visuals/Counter clockwise": false
+            }
+          },
+          "8,0": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///Shuffleboard/Drivetrain Tab/Reset Gyro",
+              "_title": "reset gyro (click twice)"
             }
           }
         }
@@ -788,223 +960,12 @@
           }
         }
       }
-    },
-    {
-      "title": "PowerDistributionPanel[0]",
-      "autoPopulate": true,
-      "autoPopulatePrefix": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/",
-      "widgetPane": {
-        "gridSize": 68.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {
-          "1,1": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan0",
-              "_title": "Chan0"
-            }
-          },
-          "3,1": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan1",
-              "_title": "Chan1"
-            }
-          },
-          "5,1": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan2",
-              "_title": "Chan2"
-            }
-          },
-          "7,1": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan3",
-              "_title": "Chan3"
-            }
-          },
-          "9,1": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan4",
-              "_title": "Chan4"
-            }
-          },
-          "11,1": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan5",
-              "_title": "Chan5"
-            }
-          },
-          "1,2": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan6",
-              "_title": "Chan6"
-            }
-          },
-          "3,2": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan7",
-              "_title": "Chan7"
-            }
-          },
-          "5,2": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan8",
-              "_title": "Chan8"
-            }
-          },
-          "7,2": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan9",
-              "_title": "Chan9"
-            }
-          },
-          "9,2": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan10",
-              "_title": "Chan10"
-            }
-          },
-          "11,2": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan11",
-              "_title": "Chan11"
-            }
-          },
-          "1,3": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan12",
-              "_title": "Chan12"
-            }
-          },
-          "3,3": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan13",
-              "_title": "Chan13"
-            }
-          },
-          "5,3": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan14",
-              "_title": "Chan14"
-            }
-          },
-          "7,3": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Chan15",
-              "_title": "Chan15"
-            }
-          },
-          "9,3": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/Voltage",
-              "_title": "Voltage"
-            }
-          },
-          "11,3": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///LiveWindow/Ungrouped/PowerDistributionPanel[0]/TotalCurrent",
-              "_title": "TotalCurrent"
-            }
-          }
-        }
-      }
     }
   ],
   "windowGeometry": {
-    "x": -7.333333492279053,
-    "y": -7.333333492279053,
-    "width": 1294.6666259765625,
-    "height": 694.6666870117188
+    "x": -11.0,
+    "y": -11.0,
+    "width": 1942.0,
+    "height": 1042.0
   }
 }

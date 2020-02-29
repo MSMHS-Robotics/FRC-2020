@@ -19,6 +19,7 @@ import frc.robot.autonomous.DriveOffLineReverse;
 import frc.robot.autonomous.EightBallAuto;
 import frc.robot.autonomous.ThreeBallAuto;
 import frc.robot.autonomous.DelayedThreeBallAuto;
+import frc.robot.autonomous.UnchargedThreeBallAuto;
 
 import frc.robot.commands.intake.*; //a lot easier than importing them one by one
 import frc.robot.commands.climber.*;
@@ -151,9 +152,10 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     //auto selector stuff
+    autos.put("Drive Off Line", new DriveOffLine(drivetrain));
     autos.put("Three Ball Auto", new ThreeBallAuto(drivetrain, intake, shooter));
     autos.put("Delay Three Ball Auto", new DelayedThreeBallAuto(drivetrain, intake, shooter));
-    autos.put("Drive Off Line", new DriveOffLine(drivetrain));
+    autos.put("Uncharged Three Ball Auto", new UnchargedThreeBallAuto(drivetrain, intake, shooter));
     autos.put("Drive Off Line Reverse", new DriveOffLineReverse(drivetrain));
     autos.put("Eight Ball Auto", new EightBallAuto(drivetrain));
     autoNames = new ArrayList<>(autos.keySet());
@@ -178,6 +180,7 @@ public class RobotContainer {
     //intake stuff. intake automagically sets power to 0 after command ends
     //rightBumper.whenPressed(intakeOut); //don't need this now
     rightBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
+    rightBumper.whenReleased(stopIntake);
     yButton.whenPressed(retractIntake);
     leftBumper.whenHeld(intakeOut);
     //leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically //no longer wanted
@@ -198,6 +201,7 @@ public class RobotContainer {
     bButton2.whileHeld(shooterWarmup);
     //bButton2.whenReleased(stopShooter);
     bButton.whenHeld(shootTeleop);
+    bButton.whenReleased(runDrivetrain);
 
   }
 

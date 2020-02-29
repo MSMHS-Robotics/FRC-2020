@@ -19,7 +19,7 @@ import frc.robot.autonomous.DriveOffLineReverse;
 import frc.robot.autonomous.EightBallAuto;
 import frc.robot.autonomous.ThreeBallAuto;
 import frc.robot.autonomous.DelayedThreeBallAuto;
-import frc.robot.autonomous.UnchargedThreeBallAuto;;
+import frc.robot.autonomous.UnchargedThreeBallAuto;
 
 import frc.robot.commands.intake.*; //a lot easier than importing them one by one
 import frc.robot.commands.climber.*;

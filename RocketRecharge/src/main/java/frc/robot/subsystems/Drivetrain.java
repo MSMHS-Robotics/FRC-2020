@@ -101,6 +101,7 @@ public class Drivetrain extends SubsystemBase {
   private boolean alignZoom = true;
 
   public Drivetrain() {
+    ledsOff();
     // Sets the error tolerance to 5, and the error derivative tolerance to 10 per
     // second
     headingPID.setTolerance(2, 5);
@@ -312,23 +313,12 @@ public class Drivetrain extends SubsystemBase {
     // function is not recursive - Daniel's last message to creation
     
     //deadband stuff
-    if(leftPow > Constants.highDeadband) {
-      leftPow = 1;
-    }
-    if(rightPow > Constants.highDeadband) {
-      rightPow = 1;
-    }
-    if(leftPow < Constants.lowDeadband) {
-      leftPow = 0;
-    }
-    if(rightPow < Constants.lowDeadband) {
-      rightPow = 0;
-    }
+    
 
     //scale inputs
     leftPow = Math.pow(-leftStick, 3);
     rightPow = Math.pow(-rightStick, 3);
-    drivetrain.tankDrive(leftPow * 0.5, rightPow * 0.5); //actually drive
+    drivetrain.tankDrive(leftPow , rightPow); //actually drive
   }
 
   public void visionPIDReset() {

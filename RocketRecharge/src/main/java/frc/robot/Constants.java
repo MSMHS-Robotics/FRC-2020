@@ -40,9 +40,9 @@ public final class Constants {
 
     //Preset Constants
     public static double TrenchAngle = 3500;
-    public static double TrenchRPM = 6;
+    public static double TrenchRPM = 3800;
     public static double TenFootAngle = 45; 
-    public static double TenFootRPM = 2600;
+    public static double TenFootRPM = 3150;
     public static double LayupAngle = 10;
     public static double LayupRPM = 1000;
 

@@ -71,6 +71,7 @@ public class Climber extends SubsystemBase {
 		climberPistons2 = new Solenoid(6);
 
 		ClimberUnlatch();
+	
 
 		if (climberMotor != null) {
 			climberMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
@@ -106,19 +107,19 @@ public class Climber extends SubsystemBase {
 
 	public void ClimberLatch(){
 		if (Latch1 != null){
-			Latch1.set(true);
+			Latch1.set(true);//true
 		}
 		if (Latch2 != null){
-			Latch2.set(false);
+			Latch2.set(false);//false
 		}
 	}
 
 	public void ClimberUnlatch(){
 		if (Latch1 != null){
-			Latch1.set(false);
+			Latch1.set(false);//false
 		}
 		if (Latch2 != null){
-			Latch2.set(true);
+			Latch2.set(true);//true
 		}
 	}
 
@@ -128,10 +129,10 @@ public class Climber extends SubsystemBase {
 
 	public void ClimberPistonsBackIn() {
 		if (climberPistons1 != null) {
-			climberPistons1.set(true);
+			climberPistons1.set(false);//false
 		}
 		if (climberPistons2 != null) {
-			climberPistons2.set(false);
+			climberPistons2.set(true);//true
 		}
 		
 	}

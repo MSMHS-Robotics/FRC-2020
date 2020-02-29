@@ -8,6 +8,8 @@
 package frc.robot;
 
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode;
+import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Joystick;
@@ -55,16 +57,11 @@ public class Robot extends TimedRobot {
     gamepad1 = robotContainer.getJoystick1();
     gamepad2 = robotContainer.getJoystick2();
     blinkin = robotContainer.getBlinkin();
-    camera1 = new UsbCamera("Driver1", 1);
-    //climberCamera = new UsbCamera("ClimberCamera", 1);
-    //camera1.setExposureAuto();
-    camera1.setFPS(10);
-    camera1.setResolution(600, 500);
-    /*climberCamera.setExposureAuto();
-    climberCamera.setFPS(5);
-    climberCamera.setResolution(300, 300);
-    climberCamera.setFPS(0);*/
-    CameraServer.getInstance().startAutomaticCapture();
+    
+    camera1 = CameraServer.getInstance().startAutomaticCapture(0);
+    camera1.setVideoMode(PixelFormat.kMJPEG, 400, 300, 10);
+    //climberCamera = CameraServer.getInstance().startAutomaticCapture(1);
+    //climberCamera.setVideoMode(PixelFormat.kMJPEG, 25, 25, 2);
   }
 
   /**
@@ -81,24 +78,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    if(!unplugged1) {
-      try {
-        gamepad1.getRawAxis(1);
-      }
-      catch(Exception e) {
-        unplugged1 = true;
-        e.printStackTrace();
-      }
-    }
-    if(!unplugged2) {
-      try {
-        gamepad2.getRawAxis(1);
-      }
-      catch(Exception e) {
-        unplugged2 = true;
-        e.printStackTrace();
-      }
-    }
     //SmartDashboard.putBoolean(drivetrain.isVisionAligned());
   }
 

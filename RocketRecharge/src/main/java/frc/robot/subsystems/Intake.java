@@ -114,24 +114,24 @@ public class Intake extends SubsystemBase {
 
 	public void intakeExtend() {
 		if (armPistons1 != null) {
-			armPistons1.set(true);
+			armPistons1.set(false);//false
 		}
 		if (armPistons2 != null) {
-			armPistons2.set(false);
+			armPistons2.set(true);//true
 		}
 	}
 
 	public void intakeRetract() {
 		if (armPistons1 != null) {
-			armPistons1.set(false);
+			armPistons1.set(true);//true
 		}
 		if(armPistons2 != null) {
-			armPistons2.set(true);
+			armPistons2.set(false);//false
 		}
   }
 
   public boolean isRaised() {
-	return armPistons1.get() && armPistons2.get();
+	return armPistons1.get() && !armPistons2.get();
   }
 
   /*public boolean hasBall() {

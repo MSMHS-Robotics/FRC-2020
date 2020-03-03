@@ -115,7 +115,7 @@
             "content": {
               "_type": "Boolean Box",
               "_source0": "network_table:///Shuffleboard/Climber Tab/is it Deployed",
-              "_title": "/Shuffleboard/Climber Tab/is it Deployed",
+              "_title": "Climber Deployed",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }

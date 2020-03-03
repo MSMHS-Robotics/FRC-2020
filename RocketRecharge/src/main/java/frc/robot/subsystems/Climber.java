@@ -71,6 +71,7 @@ public class Climber extends SubsystemBase {
 		climberPistons2 = new Solenoid(6);
 
 		ClimberUnlatch();
+		ClimberPistonsBackIn();
 	
 
 		if (climberMotor != null) {
@@ -129,10 +130,10 @@ public class Climber extends SubsystemBase {
 
 	public void ClimberPistonsBackIn() {
 		if (climberPistons1 != null) {
-			climberPistons1.set(false);//false
+			climberPistons1.set(true);
 		}
 		if (climberPistons2 != null) {
-			climberPistons2.set(true);//true
+			climberPistons2.set(false);
 		}
 		
 	}

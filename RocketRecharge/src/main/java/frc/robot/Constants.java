@@ -39,12 +39,12 @@ public final class Constants {
     public static double AnglekF = 0;
 
     //Preset Constants
-    public static double TrenchAngle = 3500;
-    public static double TrenchRPM = 3800;
+    public static double TrenchAngle = 3300;
+    public static double TrenchRPM = 3300;
     public static double TenFootAngle = 45; 
     public static double TenFootRPM = 3150;
     public static double LayupAngle = 10;
-    public static double LayupRPM = 1000;
+    public static double LayupRPM = 3200;
 
     public static double RPMTolerance = 100;
     public static double AngleTolerance = 10;
@@ -87,7 +87,7 @@ public final class Constants {
     public static double extendclimbkP = 0.0001;
     public static double extendclimbkI = 0.0001;
     public static double extendclimbkD = 0.0001;
-    public static double distancesetpoint = 12000;
+    public static double distancesetpoint = 14000;
     public static final int kTimeoutMs = 30;
     public static final int kPIDLoopIdx = 0;
 

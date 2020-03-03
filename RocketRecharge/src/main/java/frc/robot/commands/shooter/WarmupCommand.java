@@ -79,7 +79,7 @@ public class WarmupCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      if(!shooter.shooting() && !isAuto) {
+      if(!shooter.shooting() && !interrupted && !isAuto) {
         shooter.stopPlease();
       }
   }

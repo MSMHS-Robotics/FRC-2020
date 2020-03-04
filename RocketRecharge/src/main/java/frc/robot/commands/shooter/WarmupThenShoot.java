@@ -7,9 +7,9 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class GKC extends SequentialCommandGroup {
+public class WarmupThenShoot extends SequentialCommandGroup {
 
-    public GKC(Shooter shooter, Joystick joystick, Drivetrain drivetrain, Intake intake) {
+    public WarmupThenShoot(Shooter shooter, Joystick joystick, Drivetrain drivetrain, Intake intake) {
         super(
             new WarmupCommand(shooter, joystick, -1, true, drivetrain),
             new WaitCommand(0.5),

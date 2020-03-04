@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import java.util.ArrayList;
@@ -129,7 +122,7 @@ public class RobotContainer {
   private final ShooterStopCommand stopShooter = new ShooterStopCommand(shooter);
   private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad2, 1, false, drivetrain);
   //private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
-  private final GKC shootTeleop = new GKC(shooter, gamepad1, drivetrain, intake);
+  private final WarmupThenShoot shootTeleop = new WarmupThenShoot(shooter, gamepad1, drivetrain, intake);
 
   //Stupid axis stuff
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently
@@ -137,7 +130,6 @@ public class RobotContainer {
     gamepad1.getRawAxis(1),
     gamepad1.getRawAxis(5)),
     drivetrain);
-  private final RunCommand climbUsingTehStick = new RunCommand(() -> climber.climbUsingStick(gamepad2.getRawAxis(5)));
   //this is jank and I have no idea if it will work
   //private final RunCommand shoot = new RunCommand(() -> {if(gamepad1.getRawAxis(3) < 0) {shooterWarmup.execute();} else{shooterWarmup.end(false);}});
  
@@ -247,7 +239,7 @@ public class RobotContainer {
     return runDrivetrain;
   }
 
-  public GKC getShootCommand(){
+  public WarmupThenShoot getShootCommand(){
     return shootTeleop;
   }
 

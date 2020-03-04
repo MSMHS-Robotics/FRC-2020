@@ -4,7 +4,6 @@ import java.util.Map; //need for boolean box widget on ShuffleBoard
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX; //hardware components
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.networktables.NetworkTableEntry; //shuffleboard
@@ -15,9 +14,6 @@ public class Intake extends SubsystemBase {
   private WPI_TalonSRX intakeMotor;
   private WPI_TalonSRX beltMotor;
   private WPI_TalonSRX triggerMotor;
-  private Solenoid armPistons1;
-  private Solenoid armPistons2;
-  private DigitalInput lastSensor;
   private DigitalInput triggerSensor;
   private DigitalInput detector1;
   private DigitalInput detector2;
@@ -32,14 +28,11 @@ public class Intake extends SubsystemBase {
 
   	public Intake() {
 		// uncomment once pneumatics attatched
-		armPistons1 = new Solenoid(0);
-		armPistons2 = new Solenoid(1);
-
+		
 		intakeMotor = new WPI_TalonSRX(15); // our motors
 		beltMotor = new WPI_TalonSRX(11);
 		triggerMotor = new WPI_TalonSRX(12); // change?
 
-		lastSensor = new DigitalInput(0); // are we still using sensors?
 		triggerSensor = new DigitalInput(1);
 
 		detector1 = new DigitalInput(4);
@@ -78,31 +71,6 @@ public class Intake extends SubsystemBase {
 	}
 
 	public boolean prepShot() {
-		if (lastSensor.get()) {
-			if (beltMotor != null) {
-				beltMotor.set(0);
-			}
-			// pretty sure that works, might take some tuning
-			if (triggerSensor.get()) {
-				if (triggerMotor != null) {
-					triggerMotor.set(1);
-				}
-				shotPrepped.setBoolean(this.prepShot());
-				return true;
-			} else {
-				if (triggerMotor != null) {
-					triggerMotor.set(0);
-				}
-				shotPrepped.setBoolean(this.prepShot());
-			}
-		} else {
-			if (beltMotor != null) {
-				beltMotor.set(1);
-			}
-			shotPrepped.setBoolean(this.prepShot());
-			return false;
-		}
-		shotPrepped.setBoolean(this.prepShot());
 		return false;
 	}
 
@@ -111,28 +79,6 @@ public class Intake extends SubsystemBase {
 			beltMotor.set(0);
 		}
 	}
-
-	public void intakeExtend() {
-		if (armPistons1 != null) {
-			armPistons1.set(false);//false
-		}
-		if (armPistons2 != null) {
-			armPistons2.set(true);//true
-		}
-	}
-
-	public void intakeRetract() {
-		if (armPistons1 != null) {
-			armPistons1.set(true);//true
-		}
-		if(armPistons2 != null) {
-			armPistons2.set(false);//false
-		}
-  }
-
-  public boolean isRaised() {
-	return armPistons1.get() && !armPistons2.get();
-  }
 
   /*public boolean hasBall() {
 	for(int x = 0; x < detectors.length; x++) {
@@ -145,6 +91,6 @@ public class Intake extends SubsystemBase {
 
   @Override
 	public void periodic() {
-		intakePosition.setBoolean(this.isRaised());
+		intakePosition.setBoolean(false);
 	}
 }

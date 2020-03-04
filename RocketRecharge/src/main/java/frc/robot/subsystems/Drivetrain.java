@@ -56,6 +56,7 @@ public class Drivetrain extends SubsystemBase {
   private NetworkTableEntry visionKp = tab.addPersistent("VisionKp", Constants.visionPID[0]).getEntry();
   private NetworkTableEntry visionKi = tab.addPersistent("VisionKi", Constants.visionPID[1]).getEntry();
   private NetworkTableEntry visionKd = tab.addPersistent("VisionKd", Constants.visionPID[2]).getEntry();
+  private NetworkTableEntry visionError = tab.addPersistent("Vision Error", 0).getEntry();
   private NetworkTableEntry drivingKp = tab.addPersistent("DrivingKp", Constants.drivingPID[0]).getEntry();
   private NetworkTableEntry drivingKi = tab.addPersistent("DrivingKi", Constants.drivingPID[1]).getEntry();
   private NetworkTableEntry drivingKd = tab.addPersistent("DrivingKd", Constants.drivingPID[2]).getEntry();
@@ -330,7 +331,13 @@ public class Drivetrain extends SubsystemBase {
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
     ledsOn();
-    return 70.25 / Math.tan(10 + ty.getDouble(20)); //ooh maths. taken from limelight docs (equation is d = (h2-h1) / tan(a1+a2))
+    double dist = 70.25 / Math.tan(10 + ty.getDouble(20)); //ooh maths. taken from limelight docs (equation is d = (h2-h1) / tan(a1+a2))
+    if(dist < 30) {
+      return dist;
+    }
+    else {
+      return dist - dist + 1;
+    }
     //the 70.25 is height of center of the circle (in the hexagon frame) in inches minus how high lens is off the groun (20 inches) (h2 - h1)
     //10 is angle limelight lens is at (a1)
     //20 is a random default value to return (a2)
@@ -362,15 +369,16 @@ public class Drivetrain extends SubsystemBase {
    * You need to import NetworkTable and NetworkTableEntry
    */
   public void visionAlign() {
+    ledsOn();
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tv = table.getEntry("tv");
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
-    ledsOn();
     if(tv.getDouble(0) == 1) {
       NetworkTableEntry tx = table.getEntry("tx");
   
       //start loop
       double x_offset = tx.getDouble(0);
+      visionError.setDouble(x_offset);
       drivetrain.arcadeDrive(0, MathUtil.clamp(-visionPID.calculate(x_offset), Constants.visionPIDconstraints[0], Constants.visionPIDconstraints[1]));
       if(x_offset < Constants.visionTolerance[0]) {
         aligned = true;
@@ -391,15 +399,16 @@ public class Drivetrain extends SubsystemBase {
    * You need to import NetworkTable and NetworkTableEntry
    */
   public void visionAlignSnipa() {
+    ledsOn();
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tv = table.getEntry("tv");
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
-    ledsOn();
     if(tv.getDouble(0) == 1) {
       NetworkTableEntry tx = table.getEntry("tx");
   
       //start loop
       double x_offset = tx.getDouble(0);
+      visionError.setDouble(x_offset);
       drivetrain.arcadeDrive(0, MathUtil.clamp(-visionPID.calculate(x_offset), Constants.visionPIDconstraints[0], Constants.visionPIDconstraints[1]));
       if(x_offset < Constants.visionTolerance[0]) {
         aligned = true;
@@ -424,6 +433,12 @@ public class Drivetrain extends SubsystemBase {
 
   public void toggleVisionAlign() {
     alignZoom = !alignZoom;
+    if(alignZoom) {
+      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
+    }
+    else {
+      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+    }
   }
 
   public boolean getVisionType() {

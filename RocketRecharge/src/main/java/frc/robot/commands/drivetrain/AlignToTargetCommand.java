@@ -47,7 +47,7 @@ public class AlignToTargetCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.ledsOff();
+    //drivetrain.ledsOff();
     blinkin.setRedLarson();
   }
 

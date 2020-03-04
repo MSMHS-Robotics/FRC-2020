@@ -64,6 +64,7 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry kDdivide = tab1.addPersistent("kDdivide", Constants.ShooterkDdivide).getEntry();
   private NetworkTableEntry ShooterkIz = tab1.addPersistent("ShooterkIz", Constants.ShooterkIz).getEntry();
   private NetworkTableEntry ShooterkFF = tab1.addPersistent("ShooterkFF", Constants.ShooterkFF).getEntry();
+  private NetworkTableEntry kFFdivide = tab1.addPersistent("kFFdivide", Constants.ShooterkFFdivide).getEntry();
   private NetworkTableEntry ShooterkMaxOutput = tab1.addPersistent("ShooterkMaxOutput", Constants.ShooterkMaxOutput).getEntry();
   private NetworkTableEntry ShooterkMinOutput = tab1.addPersistent("ShooterkMinOutput", Constants.ShooterkMinOutput).getEntry();
   private NetworkTableEntry RPMTolerance = tab1.addPersistent("RPMTolerance", Constants.RPMTolerance).getEntry();
@@ -110,7 +111,7 @@ public class Shooter extends SubsystemBase {
     }
 
     //keep this here for now
-    angleMotor = new WPI_TalonSRX(15);
+    angleMotor = new WPI_TalonSRX(16);
 
     if (shooterPID != null){
       shooterPID.setP(Constants.ShooterkP);
@@ -196,34 +197,34 @@ public class Shooter extends SubsystemBase {
     neededRPM.setDouble(rpm);
   }
 
-  public void trenchShot(){
+  public void trenchShot() {
     shooterAngle(Constants.TrenchAngle);
     warmUp(Constants.TrenchRPM);
     RPMSetpoint = Constants.TrenchRPM;
     angleSetpoint = Constants.TrenchAngle;
   }
 
-  public void tenFootShot(){
+  public void tenFootShot() {
     shooterAngle(Constants.TenFootAngle);
     warmUp(Constants.TenFootRPM);
     RPMSetpoint = Constants.TenFootRPM;
     angleSetpoint = Constants.TenFootAngle;
   }
 
-  public void layupShot(){
+  public void layupShot() {
     shooterAngle(Constants.LayupAngle);
     warmUp(Constants.LayupRPM);
     RPMSetpoint = Constants.LayupRPM;
     angleSetpoint = Constants.LayupAngle;
   }
 
-  public boolean isShooterGood(){
+  public boolean isShooterGood() {
     if (encoder == null){
       isShooterGood.setBoolean(false);
       return false;
     }
 
-    if(Math.abs(encoder.getVelocity() - RPMSetpoint) < Constants.RPMTolerance){ //&& Math.abs(encoder.getPosition() - angleSetpoint) < Constants.AnglekF){
+    if(Math.abs(encoder.getVelocity() - RPMSetpoint) < Constants.RPMTolerance) { //&& Math.abs(encoder.getPosition() - angleSetpoint) < Constants.AnglekF){
       isShooterGood.setBoolean(false);
       return true;
     }
@@ -248,6 +249,12 @@ public class Shooter extends SubsystemBase {
     if(Constants.ShooterkPdivide != tempSPdivide && shooterPID != null) {
       Constants.ShooterkPdivide = tempSPdivide;
       shooterPID.setP(Constants.ShooterkP/Constants.ShooterkPdivide);
+    }
+
+    double tempSFFdivide = kFFdivide.getDouble(Constants.ShooterkFFdivide);
+    if(Constants.ShooterkFFdivide != tempSFFdivide && shooterPID != null) {
+      Constants.ShooterkFFdivide = tempSFFdivide;
+      shooterPID.setP(Constants.ShooterkP/Constants.ShooterkFFdivide);
     }
 
     double tempSI = ShooterkI.getDouble(Constants.ShooterkI);

@@ -82,6 +82,7 @@ public class RobotContainer {
   
   private double rightTrigger = gamepad1.getRawAxis(3);
 
+  private JoystickButton back = new JoystickButton(gamepad1, 7);
   private JoystickButton back2 = new JoystickButton(gamepad2, 7);
 
   private JoystickButton start = new JoystickButton(gamepad1, 8);
@@ -112,6 +113,7 @@ public class RobotContainer {
   private final RunIndexerCommand unjam = new RunIndexerCommand(intake, -1);
   private final FeedCommand feedForward = new FeedCommand(intake, 1);
   private final FeedCommand feedReverse = new FeedCommand(intake, -1);
+  private final FeedCommand stopFeed = new FeedCommand(intake, 0);
   private final RunIntakeCommand setIdle = new RunIntakeCommand(intake, 0);
   
   private final PrepShotCommand prepShot = new PrepShotCommand(intake);
@@ -126,8 +128,8 @@ public class RobotContainer {
   //private final ShooterStop stopShooter = new ShooterStop(shooter);
   private final ShooterStopCommand stopShooter = new ShooterStopCommand(shooter);
   private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad2, 1, false, drivetrain);
-  private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
-
+  //private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
+  private final GKC shootTeleop = new GKC(shooter, gamepad1, drivetrain, intake);
 
   //Stupid axis stuff
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently
@@ -174,7 +176,8 @@ public class RobotContainer {
     aButton.whenPressed(align);
     aButton.whenReleased(runDrivetrain);
     aButton.whenReleased(setFire);
-    start.whenPressed(toggleVision); //so we can use less buttons
+    start.whenPressed(toggleVision);
+    back.whenPressed(runDrivetrain); //so we can use less buttons
     //aButton2.whenPressed(new ResetGyroCommand(drivetrain));
    
     //intake stuff. intake automagically sets power to 0 after command ends
@@ -183,6 +186,9 @@ public class RobotContainer {
     rightBumper.whenReleased(stopIntake);
     yButton.whenPressed(retractIntake);
     leftBumper.whenHeld(intakeOut);
+    leftBumper.whenReleased(stopIntake);
+    xButton.whenPressed(feedForward);
+    xButton.whenReleased(stopFeed);
     //leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically //no longer wanted
     //leftBumper.whenReleased(setIdle); //to sort the stuff out
     //yButton2.whenPressed(unjam); //run indexer backwards
@@ -199,10 +205,10 @@ public class RobotContainer {
 
     //shooter
     bButton2.whileHeld(shooterWarmup);
-    //bButton2.whenReleased(stopShooter);
-    bButton.whenHeld(shootTeleop);
+    bButton.whileHeld(shootTeleop);
+    bButton.whenReleased(stopShooter);
     bButton.whenReleased(runDrivetrain);
-
+    
   }
 
   //stuff for auto selector
@@ -241,7 +247,7 @@ public class RobotContainer {
     return runDrivetrain;
   }
 
-  public ShootBurstCommand getShootCommand(){
+  public GKC getShootCommand(){
     return shootTeleop;
   }
 

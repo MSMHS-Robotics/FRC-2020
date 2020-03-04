@@ -186,6 +186,7 @@ public class RobotContainer {
     rightBumper.whenReleased(stopIntake);
     yButton.whenPressed(retractIntake);
     leftBumper.whenHeld(intakeOut);
+    leftBumper.whenReleased(stopIntake);
     xButton.whenPressed(feedForward);
     xButton.whenReleased(stopFeed);
     //leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically //no longer wanted
@@ -204,10 +205,10 @@ public class RobotContainer {
 
     //shooter
     bButton2.whileHeld(shooterWarmup);
-    //bButton2.whenReleased(stopShooter);
-    bButton.whenHeld(shootTeleop);
+    bButton.whileHeld(shootTeleop);
+    bButton.whenReleased(stopShooter);
     bButton.whenReleased(runDrivetrain);
-
+    
   }
 
   //stuff for auto selector

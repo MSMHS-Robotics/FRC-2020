@@ -18,7 +18,7 @@ package frc.robot;
 public final class Constants {
     //shooter PID constants
     public static double ShooterkP = 7e-5;
-    public static double ShooterkI = 5e-7;
+    public static double ShooterkI = 6e-7;
     public static double ShooterkD = 0.001;
     public static double ShooterkIz = 0;
     public static double ShooterkFF = 6e-6;
@@ -29,7 +29,7 @@ public final class Constants {
     public static double ShooterkPdivide = 1;
     public static double ShooterkIdivide = 1;
     public static double ShooterkDdivide = 1;
-  
+    public static double ShooterkFFdivide = 10;
 
     //angle PID Constants
    
@@ -48,7 +48,7 @@ public final class Constants {
 
     public static double RPMTolerance = 100;
     public static double AngleTolerance = 10;
-    public static double[] visionPID = {0.03, 0, 0};
+    public static double[] visionPID = {0.029, 0.08, 0.0085};
     public static double[] visionPIDconstraints = {-0.5, 0.5};
     public static double[] headingPID = {0.15,0,0};
     public static double[] headingPIDconstraints = {-0.25, 0.25};
@@ -59,7 +59,7 @@ public final class Constants {
     public static double alignAllowedError = 0.1;
 
     public static double[] drivingTolerance = {2, 5};
-    public static double[] visionTolerance = {2, 5};
+    public static double[] visionTolerance = {0, 5};
     public static double[] headingTolerance = {2, 5};
     public static double highDeadband = 0.95;
     public static double lowDeadband = 0.05;

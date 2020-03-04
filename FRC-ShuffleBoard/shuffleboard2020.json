@@ -434,9 +434,9 @@
               "_title": "LeftEncoder"
             }
           },
-          "14,0": {
+          "12,2": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -454,6 +454,17 @@
               "_type": "Toggle Button",
               "_source0": "network_table:///Shuffleboard/Drivetrain Tab/Reset Gyro",
               "_title": "Reset Gyro"
+            }
+          },
+          "8,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Drivetrain Tab/Vision Error",
+              "_title": "Vision Error"
             }
           }
         }
@@ -614,9 +625,9 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "2,0": {
+          "4,5": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -625,9 +636,9 @@
               "_title": "kIdivide"
             }
           },
-          "3,0": {
+          "6,5": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -636,9 +647,9 @@
               "_title": "kDdivide"
             }
           },
-          "4,0": {
+          "2,5": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -647,9 +658,9 @@
               "_title": "kPdivide"
             }
           },
-          "5,0": {
+          "0,4": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -658,7 +669,7 @@
               "_title": "Vision Needed RPM"
             }
           },
-          "10,0": {
+          "0,2": {
             "size": [
               2,
               2
@@ -669,6 +680,17 @@
               "_title": "Shooter is Shooting",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/kFFdivide",
+              "_title": "kFFdivide"
             }
           }
         }
@@ -963,9 +985,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -11.0,
-    "y": -11.0,
-    "width": 1942.0,
-    "height": 1042.0
+    "x": -7.333333492279053,
+    "y": -7.333333492279053,
+    "width": 1294.6666259765625,
+    "height": 694.6666870117188
   }
 }

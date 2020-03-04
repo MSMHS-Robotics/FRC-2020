@@ -84,9 +84,7 @@ public class RobotContainer {
   //now for some commands
   //climber
   private final RaiseClimber raiseClimber = new RaiseClimber(climber);
-  private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
- // private final ConditionalCommand climbtoggle = new ConditionalCommand(autoClimb, raiseClimber, climber.isRaised());
-  // private final AutoDeployClimber climberDeploy = new AutoDeployClimber(intake, climber);
+  private final AutoClimb climbUp = new AutoClimb(climber, 5);
   
   //drivetrain
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
@@ -163,10 +161,8 @@ public class RobotContainer {
     aButton.whenReleased(setFire);
     start.whenPressed(toggleVision);
     back.whenPressed(runDrivetrain); //so we can use less buttons
-    //aButton2.whenPressed(new ResetGyroCommand(drivetrain));
-   
+    
     //intake stuff. intake automagically sets power to 0 after command ends
-    //rightBumper.whenPressed(intakeOut); //don't need this now
     rightBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
     rightBumper.whenReleased(stopIntake);
     yButton.whenPressed(retractIntake);
@@ -174,20 +170,11 @@ public class RobotContainer {
     leftBumper.whenReleased(stopIntake);
     xButton.whenPressed(feedForward);
     xButton.whenReleased(stopFeed);
-    //leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically //no longer wanted
-    //leftBumper.whenReleased(setIdle); //to sort the stuff out
-    //yButton2.whenPressed(unjam); //run indexer backwards
-
-    //======== stuff below this line is not up-to-date bindings wise  ======== exception is the bButton.whenHeld(shootTeleop); ========
+    
     //climber
-    //this might work don't trust it
-    //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes. I think unneeded now.
-    xButton2.whenHeld(climberDeploy);
-    yButton2.whenPressed(autoClimb);
+    yButton2.whenPressed(climbUp);
     rightBumper2.whenPressed(raiseClimber);
-    start2.whenPressed(unDeployClimber);
-    back2.whenPressed(unlatchCommand);
-
+    
     //shooter
     bButton2.whileHeld(shooterWarmup);
     bButton.whileHeld(shootTeleop);

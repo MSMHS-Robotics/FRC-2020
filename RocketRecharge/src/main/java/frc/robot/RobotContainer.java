@@ -84,14 +84,10 @@ public class RobotContainer {
   //now for some commands
   //climber
   private final RaiseClimber raiseClimber = new RaiseClimber(climber);
-  private final AutoClimb autoClimb = new AutoClimb(climber);
   private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
  // private final ConditionalCommand climbtoggle = new ConditionalCommand(autoClimb, raiseClimber, climber.isRaised());
-  private final UnDeployClimber unDeployClimber = new UnDeployClimber(climber);
- // private final AutoDeployClimber climberDeploy = new AutoDeployClimber(intake, climber);
- private final DeployClimber climberDeploy = new DeployClimber(climber);
- private final UnlatchCommand unlatchCommand = new UnlatchCommand(climber);
-
+  // private final AutoDeployClimber climberDeploy = new AutoDeployClimber(intake, climber);
+  
   //drivetrain
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
   private final ToggleVisionTypeCommand toggleVision = new ToggleVisionTypeCommand(drivetrain);
@@ -110,9 +106,6 @@ public class RobotContainer {
   private final RunIntakeCommand setIdle = new RunIntakeCommand(intake, 0);
   
   private final PrepShotCommand prepShot = new PrepShotCommand(intake);
-
-  private final RetractIntakeCommand retractIntake = new RetractIntakeCommand(intake);
-  private final AutoIntakeDeployCommand autoDeployIntake = new AutoIntakeDeployCommand(intake);
 
   //auto. maybe delete
   //private final TurnOnHeading turnOffLine = new TurnOnHeading(drivetrain, 90, -1);

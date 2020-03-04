@@ -3,11 +3,11 @@ package frc.robot.commands.climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;;
 
-public class LatchCommand extends CommandBase {
-    @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-    private Climber climber;
+public class StopClimb extends CommandBase {
+  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
+  private Climber climber;
 
-    public LatchCommand(Climber climber) {
+  public StopClimb(Climber climber) {
     this.climber = climber;
     addRequirements(climber);
   }
@@ -20,8 +20,7 @@ public class LatchCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.ClimberLatch();
-    //climber.climbUsingStick(x); this is for testing purposes
+    climber.stopClimb();
   }
 
   // Called once the command ends or is interrupted.

@@ -24,11 +24,19 @@ public class Intake extends SubsystemBase {
 
   private ShuffleboardTab Intaketab = Shuffleboard.getTab("Intake Tab");
   private NetworkTableEntry intakePosition = Intaketab.addPersistent("Intake Position", false).getEntry();
-  private NetworkTableEntry shotPrepped = Intaketab.addPersistent("Shot Prepped", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
+  
+  private NetworkTableEntry irAll = Intaketab.addPersistent("Has Any Ball", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
+  private NetworkTableEntry irTrigger = Intaketab.addPersistent("Chamber", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry(); 
+  private NetworkTableEntry ir1 = Intaketab.addPersistent("Ball 1", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
+  private NetworkTableEntry ir2 = Intaketab.addPersistent("Ball 2", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
+  private NetworkTableEntry ir3 = Intaketab.addPersistent("Ball 3", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
+  private NetworkTableEntry ir4 = Intaketab.addPersistent("Ball 4", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
+  private NetworkTableEntry ir5 = Intaketab.addPersistent("Ball 5", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
+  private NetworkTableEntry[] irs;
 
   	public Intake() {
 		// uncomment once pneumatics attatched
-		
+		irs = new NetworkTableEntry[] {ir1, ir2, ir3, ir4, ir5, irTrigger};
 		intakeMotor = new WPI_TalonSRX(15); // our motors
 		beltMotor = new WPI_TalonSRX(11);
 		triggerMotor = new WPI_TalonSRX(12); // change?
@@ -40,7 +48,7 @@ public class Intake extends SubsystemBase {
 		detector3 = new DigitalInput(6);
 		detector4 = new DigitalInput(7);
 		detector5 = new DigitalInput(8);
-		detectors = new DigitalInput[]{detector1, detector2, detector3, detector4, detector5};
+		detectors = new DigitalInput[] {detector1, detector2, detector3, detector4, detector5, triggerSensor};
 	}
 
 	public void runIntake(double power) {
@@ -75,22 +83,33 @@ public class Intake extends SubsystemBase {
 	}
 
 	public void setIdle() {
-		if (beltMotor != null) {
-			beltMotor.set(0);
+		if(!triggerSensor.get()) {
+			if (beltMotor != null) {
+				beltMotor.set(0.5);
+			}
+			if (triggerMotor != null) {
+				triggerMotor.set(-1);
+			}
+		}
+		else {
+			this.feed(0);
 		}
 	}
 
-  /*public boolean hasBall() {
+  public boolean hasBall() {
 	for(int x = 0; x < detectors.length; x++) {
+		irs[x].setBoolean(detectors[x].get()); //complete jank
 		if(detectors[x].get()) {
+			irAll.setBoolean(true);
 			return true;
 		}
 	}
 	return false;
-  }*/
+  }
 
   @Override
 	public void periodic() {
 		intakePosition.setBoolean(false);
+		this.setIdle();
 	}
 }

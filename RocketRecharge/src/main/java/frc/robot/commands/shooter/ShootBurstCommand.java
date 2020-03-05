@@ -80,7 +80,7 @@ public class ShootBurstCommand extends RocketTimedCommand {
         case 270:
             shooter.customShot(drivetrain.getNeededRPM());
         default:
-            shooter.tenFootShot(); // maybe change this?
+            //warmup sets up case
             break;
         }
 

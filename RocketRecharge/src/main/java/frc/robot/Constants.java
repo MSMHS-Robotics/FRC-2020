@@ -46,6 +46,7 @@ public final class Constants {
     public static double LayupAngle = 10;
     public static double LayupRPM = 3200;
 
+    public static double accelerationTolerance = 10;
     public static double RPMTolerance = 100;
     public static double AngleTolerance = 10;
     public static double[] visionPID = {0.029, 0.08, 0.0085};

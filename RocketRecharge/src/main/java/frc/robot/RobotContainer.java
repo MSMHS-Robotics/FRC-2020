@@ -18,6 +18,7 @@ import frc.robot.commands.intake.*; //a lot easier than importing them one by on
 import frc.robot.commands.climber.*;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.shooter.*;
+import frc.robot.diagnostics.Update;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -105,15 +106,15 @@ public class RobotContainer {
   
   private final PrepShotCommand prepShot = new PrepShotCommand(intake);
 
-  //auto. maybe delete
-  //private final TurnOnHeading turnOffLine = new TurnOnHeading(drivetrain, 90, -1);
-
   //shooter
   //private final ShooterStop stopShooter = new ShooterStop(shooter);
   private final ShooterStopCommand stopShooter = new ShooterStopCommand(shooter);
   private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad2, 1, false, drivetrain);
   //private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
   private final WarmupThenShoot shootTeleop = new WarmupThenShoot(shooter, gamepad1, drivetrain, intake);
+
+  //diagnostics
+  private final Update diagnosticsCommand = new Update(diagnostics);
 
   //Stupid axis stuff
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently
@@ -163,9 +164,9 @@ public class RobotContainer {
     back.whenPressed(runDrivetrain); //so we can use less buttons
     
     //intake stuff. intake automagically sets power to 0 after command ends
-    rightBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
+    //rightBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
     rightBumper.whenReleased(stopIntake);
-    yButton.whenPressed(retractIntake);
+    //yButton.whenPressed(retractIntake);
     leftBumper.whenHeld(intakeOut);
     leftBumper.whenReleased(stopIntake);
     xButton.whenPressed(feedForward);
@@ -212,7 +213,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     //this might automagically work. no touchy.
     return autos.get(autoNames.get(curr_auto));
-    //return turnOffLine;
   }
 
   public RunCommand getDriveCommand() {
@@ -241,5 +241,9 @@ public class RobotContainer {
 
   public Lights getBlinkin() {
     return blinkin;
+  }
+
+  public Command getDiagnosticsCommand() {
+    return diagnosticsCommand;
   }
 }

@@ -44,6 +44,7 @@ public class Robot extends TimedRobot {
   private Boolean unplugged2 = false;
   private UsbCamera camera1;
   private UsbCamera climberCamera;
+  private Command monitor;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -62,6 +63,8 @@ public class Robot extends TimedRobot {
     camera1.setVideoMode(PixelFormat.kMJPEG, 400, 300, 10);
     //climberCamera = CameraServer.getInstance().startAutomaticCapture(1);
     //climberCamera.setVideoMode(PixelFormat.kMJPEG, 25, 25, 2);
+
+    monitor = robotContainer.getDiagnosticsCommand();
   }
 
   /**
@@ -78,7 +81,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    //SmartDashboard.putBoolean(drivetrain.isVisionAligned());
+    monitor.schedule();
+
   }
 
   /**

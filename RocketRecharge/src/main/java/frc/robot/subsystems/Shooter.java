@@ -55,6 +55,10 @@ public class Shooter extends SubsystemBase {
   private double RPMSetpoint;
   private double angleSetpoint;
 
+  double pastTime = 0;
+  double pastVelocity = 0;
+  double shotAcceleration = 0;
+
   private ShuffleboardTab tab1 = Shuffleboard.getTab("Shooter");
   private NetworkTableEntry ShooterkP = tab1.addPersistent("ShooterkP", Constants.ShooterkP).getEntry();
   private NetworkTableEntry kPdivide = tab1.addPersistent("kPdivide", Constants.ShooterkPdivide).getEntry();
@@ -70,6 +74,8 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry RPMTolerance = tab1.addPersistent("RPMTolerance", Constants.RPMTolerance).getEntry();
   private NetworkTableEntry ShooterRPM = tab1.addPersistent("ShooterRPM", 0).getEntry();
   private NetworkTableEntry neededRPM = tab1.addPersistent("Vision Needed RPM", 0).getEntry();
+  private NetworkTableEntry ShotAcceleration = tab1.addPersistent("Shot Acceleration", 0).getEntry();
+  private NetworkTableEntry AccelerationTolerance = tab1.addPersistent("Acceleration Tolerance",Constants.accelerationTolerance).getEntry();
   private NetworkTableEntry isShooterGood = tab1.addPersistent("is Shooter Good", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
   private NetworkTableEntry isShooting = tab1.addPersistent("Shooter is Shooting", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
   private Boolean shootingFlag;
@@ -224,8 +230,8 @@ public class Shooter extends SubsystemBase {
       return false;
     }
 
-    if(Math.abs(encoder.getVelocity() - RPMSetpoint) < Constants.RPMTolerance) { //&& Math.abs(encoder.getPosition() - angleSetpoint) < Constants.AnglekF){
-      isShooterGood.setBoolean(false);
+    if(Math.abs(encoder.getVelocity() - RPMSetpoint) < Constants.RPMTolerance && Math.abs(shotAcceleration) < Constants.accelerationTolerance) {
+      isShooterGood.setBoolean(true);
       return true;
     }
 
@@ -237,7 +243,17 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     ShooterRPM.setDouble(shooterMotor.getEncoder().getVelocity());
+    ShotAcceleration.setDouble(shotAcceleration);
 
+    double currentTime = System.currentTimeMillis();
+    double currentVelocity = shooterMotor.getEncoder().getVelocity();
+    
+    shotAcceleration = (currentVelocity-pastVelocity)/((currentTime - pastTime)*60000);
+    pastTime = currentTime;
+    pastVelocity = currentVelocity;
+    
+    
+  
     //now for changing the PID values on robot and in Constants.java. this is going to be _very_ long
     double tempSP = ShooterkP.getDouble(Constants.ShooterkP);
     if(Constants.ShooterkP != tempSP && shooterPID != null) {
@@ -308,6 +324,11 @@ public class Shooter extends SubsystemBase {
     double tempTolerance = RPMTolerance.getDouble(Constants.RPMTolerance);
     if(Constants.RPMTolerance != tempTolerance){
       Constants.RPMTolerance = tempTolerance;
+    }
+
+    double tempATolerance = AccelerationTolerance.getDouble(Constants.accelerationTolerance);
+    if(Constants.accelerationTolerance != tempATolerance){
+      Constants.accelerationTolerance = tempATolerance;
     }
 
     //angle motor

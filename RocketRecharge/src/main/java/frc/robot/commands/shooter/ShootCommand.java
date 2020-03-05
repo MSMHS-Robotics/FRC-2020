@@ -81,6 +81,7 @@ public class ShootCommand extends RocketTimedCommand {
             break;
         default:
             //warmup sets up the case
+
             break;
         }
 

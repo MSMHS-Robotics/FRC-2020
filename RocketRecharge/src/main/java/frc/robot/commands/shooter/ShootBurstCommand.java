@@ -79,9 +79,6 @@ public class ShootBurstCommand extends RocketTimedCommand {
             break;
         case 270:
             shooter.customShot(drivetrain.getNeededRPM());
-        default:
-            shooter.tenFootShot(); // maybe change this?
-            break;
         }
 
         if (shooter.isShooterGood() || (hasShooterBeenGood && lastval == val)) {
@@ -89,7 +86,9 @@ public class ShootBurstCommand extends RocketTimedCommand {
             intake.feed(1);
         } else {
             hasShooterBeenGood = false;
-            intake.feed(0);
+            if (!intake.hasBall()) {
+                intake.feed(0);
+            }
         }
         lastval = val;
     }
@@ -98,7 +97,7 @@ public class ShootBurstCommand extends RocketTimedCommand {
     @Override
     public void end(boolean interrupted) {
         shooter.stopPlease();
-        intake.feed(0);
+        intake.setIdle();
     }
 
     // Returns true when the command should end.

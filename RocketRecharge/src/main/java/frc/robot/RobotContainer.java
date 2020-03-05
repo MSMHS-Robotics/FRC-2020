@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import java.util.ArrayList;
@@ -91,14 +84,8 @@ public class RobotContainer {
   //now for some commands
   //climber
   private final RaiseClimber raiseClimber = new RaiseClimber(climber);
-  private final AutoClimb autoClimb = new AutoClimb(climber);
-  private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
- // private final ConditionalCommand climbtoggle = new ConditionalCommand(autoClimb, raiseClimber, climber.isRaised());
-  private final UnDeployClimber unDeployClimber = new UnDeployClimber(climber);
- // private final AutoDeployClimber climberDeploy = new AutoDeployClimber(intake, climber);
- private final DeployClimber climberDeploy = new DeployClimber(climber);
- private final UnlatchCommand unlatchCommand = new UnlatchCommand(climber);
-
+  private final AutoClimb climbUp = new AutoClimb(climber, 5);
+  
   //drivetrain
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
   private final ToggleVisionTypeCommand toggleVision = new ToggleVisionTypeCommand(drivetrain);
@@ -118,9 +105,6 @@ public class RobotContainer {
   
   private final PrepShotCommand prepShot = new PrepShotCommand(intake);
 
-  private final RetractIntakeCommand retractIntake = new RetractIntakeCommand(intake);
-  private final AutoIntakeDeployCommand autoDeployIntake = new AutoIntakeDeployCommand(intake);
-
   //auto. maybe delete
   //private final TurnOnHeading turnOffLine = new TurnOnHeading(drivetrain, 90, -1);
 
@@ -129,7 +113,7 @@ public class RobotContainer {
   private final ShooterStopCommand stopShooter = new ShooterStopCommand(shooter);
   private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad2, 1, false, drivetrain);
   //private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
-  private final GKC shootTeleop = new GKC(shooter, gamepad1, drivetrain, intake);
+  private final WarmupThenShoot shootTeleop = new WarmupThenShoot(shooter, gamepad1, drivetrain, intake);
 
   //Stupid axis stuff
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently
@@ -137,7 +121,6 @@ public class RobotContainer {
     gamepad1.getRawAxis(1),
     gamepad1.getRawAxis(5)),
     drivetrain);
-  private final RunCommand climbUsingTehStick = new RunCommand(() -> climber.climbUsingStick(gamepad2.getRawAxis(5)));
   //this is jank and I have no idea if it will work
   //private final RunCommand shoot = new RunCommand(() -> {if(gamepad1.getRawAxis(3) < 0) {shooterWarmup.execute();} else{shooterWarmup.end(false);}});
  
@@ -178,10 +161,8 @@ public class RobotContainer {
     aButton.whenReleased(setFire);
     start.whenPressed(toggleVision);
     back.whenPressed(runDrivetrain); //so we can use less buttons
-    //aButton2.whenPressed(new ResetGyroCommand(drivetrain));
-   
+    
     //intake stuff. intake automagically sets power to 0 after command ends
-    //rightBumper.whenPressed(intakeOut); //don't need this now
     rightBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
     rightBumper.whenReleased(stopIntake);
     yButton.whenPressed(retractIntake);
@@ -189,20 +170,11 @@ public class RobotContainer {
     leftBumper.whenReleased(stopIntake);
     xButton.whenPressed(feedForward);
     xButton.whenReleased(stopFeed);
-    //leftBumper.whenReleased(retractIntake); //retracts, intake and indexer motor stop automatically //no longer wanted
-    //leftBumper.whenReleased(setIdle); //to sort the stuff out
-    //yButton2.whenPressed(unjam); //run indexer backwards
-
-    //======== stuff below this line is not up-to-date bindings wise  ======== exception is the bButton.whenHeld(shootTeleop); ========
+    
     //climber
-    //this might work don't trust it
-    //leftBumper.whenPressed(climbUsingTehStick); //for testing purposes. I think unneeded now.
-    xButton2.whenHeld(climberDeploy);
-    yButton2.whenPressed(autoClimb);
+    yButton2.whenPressed(climbUp);
     rightBumper2.whenPressed(raiseClimber);
-    start2.whenPressed(unDeployClimber);
-    back2.whenPressed(unlatchCommand);
-
+    
     //shooter
     bButton2.whileHeld(shooterWarmup);
     bButton.whileHeld(shootTeleop);
@@ -247,7 +219,7 @@ public class RobotContainer {
     return runDrivetrain;
   }
 
-  public GKC getShootCommand(){
+  public WarmupThenShoot getShootCommand(){
     return shootTeleop;
   }
 

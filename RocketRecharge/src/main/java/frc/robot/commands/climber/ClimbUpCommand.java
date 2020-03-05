@@ -23,7 +23,6 @@ public class ClimbUpCommand extends CommandBase {
 
   public ClimbUpCommand(Climber climber) {
     this.climber = climber;
-    
     addRequirements(climber);
   }
 
@@ -35,18 +34,16 @@ public class ClimbUpCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    isClimbed = climber.climbUp();
-    //climber.climbUsingStick(x); this is for testing purposes
+    climber.climbUp();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //climber.stop();
   }
 
   @Override
   public boolean isFinished() {
-    return isClimbed;
+    return true;
   }
 }

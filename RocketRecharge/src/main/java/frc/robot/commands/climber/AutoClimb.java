@@ -5,14 +5,12 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Climber;
 
 public class AutoClimb extends SequentialCommandGroup {
-
-    public AutoClimb(Climber climber) {
+    public AutoClimb(Climber climber, int timeout) {
         super(
+            new LowerClimber(climber),
             new ClimbUpCommand(climber),
-            new WaitCommand(.5),
-            new LatchCommand(climber),
-            new WaitCommand(.5),
-            new ClimberStopPlease(climber)
+            new WaitCommand(timeout),
+            new StopClimb(climber)
             );
     }
 }

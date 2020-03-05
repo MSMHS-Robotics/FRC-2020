@@ -1,13 +1,13 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;;
+import frc.robot.subsystems.Climber;
 
-public class UnlatchCommand extends CommandBase {
-    @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-    private Climber climber;
+public class LowerClimber extends CommandBase {
+  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
+  private Climber climber;
 
-    public UnlatchCommand(Climber climber) {
+  public LowerClimber(Climber climber) {
     this.climber = climber;
     addRequirements(climber);
   }
@@ -20,17 +20,18 @@ public class UnlatchCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.ClimberUnlatch();
-    //climber.climbUsingStick(x); this is for testing purposes
+    climber.lowerClimber();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    climber.stopRaise();
   }
 
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return Math.abs(climber.GetExtendError()) < 100;
   }
 }

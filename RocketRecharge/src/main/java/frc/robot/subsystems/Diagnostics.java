@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.hal.can.CANJNI;
+import edu.wpi.first.hal.can.CANStatus;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -8,9 +10,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Diagnostics extends SubsystemBase {
     private PowerDistributionPanel PDP = new PowerDistributionPanel(0);
+    private CANStatus canStatus = new CANStatus();
 
     private ShuffleboardTab tab = Shuffleboard.getTab("PDP");
-
     private NetworkTableEntry port0 = tab.addPersistent("Port 0", 0).getEntry();
     private NetworkTableEntry port1 = tab.addPersistent("Port 1", 0).getEntry();
     private NetworkTableEntry port2 = tab.addPersistent("Port 2", 0).getEntry();
@@ -33,8 +35,14 @@ public class Diagnostics extends SubsystemBase {
     private NetworkTableEntry totalCurrent = tab.addPersistent("Total Current", 0).getEntry();
     private NetworkTableEntry totalPower = tab.addPersistent("Total Power", 0).getEntry();
     private NetworkTableEntry temperature = tab.addPersistent("Temperature", 0).getEntry();
+
+    private NetworkTableEntry percentBus = tab.addPersistent("Percent Bus Utilization", 0).getEntry();
+    private NetworkTableEntry busOff = tab.addPersistent("Bus Off Count", 0).getEntry();
+    private NetworkTableEntry recieveError = tab.addPersistent("Recieve Error Count", 0).getEntry();
+    private NetworkTableEntry transmitError = tab.addPersistent("Transmit Error Count", 0).getEntry();
+    private NetworkTableEntry fullCount = tab.addPersistent("TX Full Count", 0).getEntry();
   
-    public Diagnostics(){
+    public Diagnostics() {
     }
     
     public void update() {
@@ -60,5 +68,12 @@ public class Diagnostics extends SubsystemBase {
         inputVoltage.setDouble(PDP.getVoltage());
         totalCurrent.setDouble(PDP.getTotalCurrent());
         totalPower.setDouble(PDP.getTotalPower());
+        
+        CANJNI.GetCANStatus(canStatus);
+        percentBus.setDouble(canStatus.percentBusUtilization);
+        busOff.setDouble(canStatus.busOffCount);
+        transmitError.setDouble(canStatus.transmitErrorCount);
+        recieveError.setDouble(canStatus.receiveErrorCount);
+        fullCount.setDouble(canStatus.txFullCount);
     }
 }

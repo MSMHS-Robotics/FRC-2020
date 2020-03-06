@@ -112,8 +112,9 @@ public class RobotContainer {
   //private final ShooterStop stopShooter = new ShooterStop(shooter);
   private final ShooterStopCommand stopShooter = new ShooterStopCommand(shooter);
   private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad2, 1, false, drivetrain);
-  //private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
-  private final WarmupThenShoot shootTeleop = new WarmupThenShoot(shooter, gamepad1, drivetrain, intake);
+  private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
+  private final ShooterStopCommand stopWarmupPlease = new ShooterStopCommand(shooter);
+  //private final WarmupThenShoot shootTeleop = new WarmupThenShoot(shooter, gamepad1, drivetrain, intake);
 
   //Stupid axis stuff
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently
@@ -180,6 +181,7 @@ public class RobotContainer {
     bButton.whileHeld(shootTeleop);
     bButton.whenReleased(stopShooter);
     bButton.whenReleased(runDrivetrain);
+    aButton2.whenPressed(stopShooter);
     
   }
 
@@ -219,9 +221,10 @@ public class RobotContainer {
     return runDrivetrain;
   }
 
-  public WarmupThenShoot getShootCommand(){
-    return shootTeleop;
-  }
+  //Backup shoot code
+  //public WarmupThenShoot getShootCommand(){
+   // return shootTeleop;
+  //}
 
   public WarmupCommand getWarmupCommand(){
     return shooterWarmup; 

@@ -49,12 +49,12 @@ public class Intake extends SubsystemBase {
 		upLimit = new DigitalInput(2);
 		bottomLimit = new DigitalInput(3);
 
-		detector1 = new DigitalInput(4);
+		/*detector1 = new DigitalInput(4);
 		detector2 = new DigitalInput(5);
 		detector3 = new DigitalInput(6);
 		detector4 = new DigitalInput(7);
 		detector5 = new DigitalInput(8);
-		detectors = new DigitalInput[] {detector1, detector2, detector3, detector4, detector5, triggerSensor};
+		detectors = new DigitalInput[] {detector1, detector2, detector3, detector4, detector5, triggerSensor};*/
 	}
 
 	public void extendIntake() {

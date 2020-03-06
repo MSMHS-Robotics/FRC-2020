@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -20,6 +13,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Encoder;
 //import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -36,14 +30,17 @@ public class Drivetrain extends SubsystemBase {
   //private ShuffleboardTab tab = Shuffleboard.getTab("drivetrain");
   //private NetworkTableEntry testPIDthing = tab.add("testPIDthing", 1).getEntry();
   
-  AHRS ahrs;
-  double visionPIDconstant1 = Constants.visionPID[0];
-  double visionPIDconstant2 = Constants.visionPID[1];
-  double visionPIDconstant3 = Constants.visionPID[2];
+  private Encoder leftEncoder;
+  private Encoder rightEncoder;
+
+  private AHRS ahrs;
+  private double visionPIDconstant1 = Constants.visionPID[0];
+  private double visionPIDconstant2 = Constants.visionPID[1];
+  private double visionPIDconstant3 = Constants.visionPID[2];
   
-  PIDController visionPID = new PIDController(visionPIDconstant1, visionPIDconstant2, visionPIDconstant3);
-  PIDController headingPID = new PIDController(.15, 0, 0);
-  PIDController drivingPID = new PIDController(1, 0, 0);
+  private PIDController visionPID = new PIDController(visionPIDconstant1, visionPIDconstant2, visionPIDconstant3);
+  private PIDController headingPID = new PIDController(.15, 0, 0);
+  private PIDController drivingPID = new PIDController(1, 0, 0);
   
   private ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain Tab");
   
@@ -93,8 +90,8 @@ public class Drivetrain extends SubsystemBase {
   private double leftPow = 0;
   private double rightPow = 0;
   
-  SpeedControllerGroup leftSide = new SpeedControllerGroup(left1, left2, left3);
-  SpeedControllerGroup rightSide = new SpeedControllerGroup(right1, right2, right3);
+  private SpeedControllerGroup leftSide = new SpeedControllerGroup(left1, left2, left3);
+  private SpeedControllerGroup rightSide = new SpeedControllerGroup(right1, right2, right3);
   
   private final DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
   public double speed;
@@ -103,6 +100,10 @@ public class Drivetrain extends SubsystemBase {
 
   public Drivetrain() {
     ledsOff();
+
+    leftEncoder = new Encoder(2, 3);
+    rightEncoder = new Encoder(4, 5);
+
     // Sets the error tolerance to 5, and the error derivative tolerance to 10 per
     // second
     headingPID.setTolerance(2, 5);
@@ -302,12 +303,8 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void encoderReset(){
-    encoderLeft1.setPosition(0);
-    encoderLeft2.setPosition(0);
-    encoderLeft3.setPosition(0);
-    encoderRight1.setPosition(0);
-    encoderRight2.setPosition(0);
-    encoderRight3.setPosition(0);
+    leftEncoder.reset();
+    rightEncoder.reset();
   }
   public void tankDrive(final double leftStick, final double rightStick) {
     // don't mess with this, drivetrain is a member of a different class, this
@@ -457,7 +454,7 @@ public class Drivetrain extends SubsystemBase {
      average += encoderLeft2.getPosition();
      average += encoderLeft3.getPosition();
      average /= 3;
-    return average;
+    return leftEncoder.getDistance();
   }
 
   public double rightEncoderAverage() {
@@ -465,7 +462,7 @@ public class Drivetrain extends SubsystemBase {
      average += encoderRight2.getPosition();
      average += encoderRight3.getPosition();
      average /= 3;
-    return average;
+    return rightEncoder.getDistance();
   }
 
 
@@ -498,6 +495,5 @@ public class Drivetrain extends SubsystemBase {
     return tab.addPersistent(name, defaultValue).getEntry();
   }
   */
-
 }
 

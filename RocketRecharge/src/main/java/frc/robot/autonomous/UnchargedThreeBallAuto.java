@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.drivetrain.DriveOnHeading;
 import frc.robot.commands.drivetrain.ResetGyroCommand;
-import frc.robot.commands.intake.AutoIntakeDeployCommand;
+//import frc.robot.commands.intake.AutoIntakeDeployCommand;
 import frc.robot.commands.shooter.ShootBurstCommand;
 //import frc.robot.commands.shooter.ShootAngleWarmupCommand;
 //import frc.robot.commands.drivetrain.TurnOnHeading;
@@ -18,7 +18,7 @@ public class UnchargedThreeBallAuto extends SequentialCommandGroup {
     public UnchargedThreeBallAuto(Drivetrain drivetrain, Intake intake, Shooter shooter) {
         super(
             new ResetGyroCommand(drivetrain),
-            new AutoIntakeDeployCommand(intake),
+            //new AutoIntakeDeployCommand(intake),
             new DriveOnHeading(drivetrain, 0, .5, .2),
             new DriveOnHeading(drivetrain, 0, -.5, .3),
             new WarmupCommand(shooter, null, 90, true, drivetrain),

@@ -94,6 +94,8 @@ public class RobotContainer {
   private final AlertHumanPlayerCommand setRainbow = new AlertHumanPlayerCommand(blinkin);
   
   //intake + indexer
+  private final DeployIntake deployIntake = new DeployIntake(intake);
+  private final RetractIntake retractIntake = new RetractIntake(intake);
   private final RunIntakeCommand intakeIn = new RunIntakeCommand(intake, -1);
   private final RunIntakeCommand intakeOut = new RunIntakeCommand(intake, 1);
   private final RunIntakeCommand stopIntake = new RunIntakeCommand(intake, 0);
@@ -143,7 +145,7 @@ public class RobotContainer {
     autos.put("Delay Three Ball Auto", new DelayedThreeBallAuto(drivetrain, intake, shooter));
     autos.put("Uncharged Three Ball Auto", new UnchargedThreeBallAuto(drivetrain, intake, shooter));
     autos.put("Drive Off Line Reverse", new DriveOffLineReverse(drivetrain));
-    autos.put("Eight Ball Auto", new EightBallAuto(drivetrain));
+    autos.put("Eight Ball Auto", new EightBallAuto(drivetrain, intake, shooter));
     autoNames = new ArrayList<>(autos.keySet());
     lengthOfList = autoNames.size();
   }
@@ -164,9 +166,9 @@ public class RobotContainer {
     back.whenPressed(runDrivetrain); //so we can use less buttons
     
     //intake stuff. intake automagically sets power to 0 after command ends
-    //rightBumper.whenHeld(autoDeployIntake); //extends, runs intake + belt
+    rightBumper.whenHeld(deployIntake); //extends, runs intake + belt
     rightBumper.whenReleased(stopIntake);
-    //yButton.whenPressed(retractIntake);
+    yButton.whenPressed(retractIntake);
     leftBumper.whenHeld(intakeOut);
     leftBumper.whenReleased(stopIntake);
     xButton.whenPressed(feedForward);

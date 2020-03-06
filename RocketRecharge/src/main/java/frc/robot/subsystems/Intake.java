@@ -11,10 +11,13 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class Intake extends SubsystemBase {
+  private WPI_TalonSRX intakePositionMotor;
   private WPI_TalonSRX intakeMotor;
   private WPI_TalonSRX beltMotor;
   private WPI_TalonSRX triggerMotor;
   private DigitalInput triggerSensor;
+  private DigitalInput upLimit;
+  private DigitalInput bottomLimit;
   private DigitalInput detector1;
   private DigitalInput detector2;
   private DigitalInput detector3;
@@ -40,8 +43,11 @@ public class Intake extends SubsystemBase {
 		intakeMotor = new WPI_TalonSRX(15); // our motors
 		beltMotor = new WPI_TalonSRX(11);
 		triggerMotor = new WPI_TalonSRX(12); // change?
+		intakePositionMotor = new WPI_TalonSRX(20); //need actual value
 
 		triggerSensor = new DigitalInput(1);
+		upLimit = new DigitalInput(2);
+		bottomLimit = new DigitalInput(3);
 
 		detector1 = new DigitalInput(4);
 		detector2 = new DigitalInput(5);
@@ -49,6 +55,28 @@ public class Intake extends SubsystemBase {
 		detector4 = new DigitalInput(7);
 		detector5 = new DigitalInput(8);
 		detectors = new DigitalInput[] {detector1, detector2, detector3, detector4, detector5, triggerSensor};
+	}
+
+	public void extendIntake() {
+		if(!bottomLimit.get()) {
+			intakePositionMotor.set(0.5);
+		}
+		else {
+			intakePositionMotor.set(0);
+		}
+	}
+
+	public void retractIntake() {
+		if (!upLimit.get()) {
+			intakePositionMotor.set(-0.5);
+		}
+		else {
+			intakePositionMotor.set(0);
+		}
+	}
+
+	public boolean isRaised() {
+		return upLimit.get();
 	}
 
 	public void runIntake(double power) {
@@ -70,11 +98,13 @@ public class Intake extends SubsystemBase {
 	}
 
 	public void feed(double power) {
-		if (beltMotor != null) {
-			beltMotor.set(power * 0.5);
-		}
-		if (triggerMotor != null) {
-			triggerMotor.set(-power);
+		if(!triggerSensor.get()) {
+			if (beltMotor != null) {
+				beltMotor.set(power * 0.5);
+			}
+			if (triggerMotor != null) {
+				triggerMotor.set(-power);
+			}
 		}
 	}
 

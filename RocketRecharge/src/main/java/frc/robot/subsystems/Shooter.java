@@ -39,6 +39,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ControlType;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -245,7 +246,7 @@ public class Shooter extends SubsystemBase {
     ShooterRPM.setDouble(shooterMotor.getEncoder().getVelocity());
     ShotAcceleration.setDouble(shotAcceleration);
 
-    double currentTime = System.currentTimeMillis();
+    double currentTime = Timer.getFPGATimestamp();
     double currentVelocity = shooterMotor.getEncoder().getVelocity();
     
     shotAcceleration = (currentVelocity-pastVelocity)/((currentTime - pastTime)*60000);

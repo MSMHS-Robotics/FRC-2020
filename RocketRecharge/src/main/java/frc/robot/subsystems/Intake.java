@@ -3,6 +3,9 @@ package frc.robot.subsystems;
 import java.util.Map; //need for boolean box widget on ShuffleBoard
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX; //hardware components
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+
 
 import edu.wpi.first.networktables.NetworkTableEntry; //shuffleboard
 import edu.wpi.first.wpilibj.DigitalInput;

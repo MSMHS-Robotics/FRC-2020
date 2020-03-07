@@ -20,6 +20,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Encoder;
 //import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -74,6 +75,8 @@ public class Drivetrain extends SubsystemBase {
   private NetworkTableEntry leftEncoderValue = tab.addPersistent("LeftEncoder", 0).getEntry();
   private NetworkTableEntry rightEncoderValue = tab.addPersistent("RightEncoder", 0).getEntry();
   private NetworkTableEntry encoderaverage = tab.addPersistent("encoderaverage", 0).getEntry();
+  private NetworkTableEntry throughBoreRight = tab.addPersistent("Through Bore Right", 0).getEntry();
+  private NetworkTableEntry throughBoreLeft = tab.addPersistent("Through Bore Left", 0).getEntry();
 
   private NetworkTableEntry resetGyroCommandEntry = tab.add("Reset Gyro", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
   
@@ -96,6 +99,10 @@ public class Drivetrain extends SubsystemBase {
   SpeedControllerGroup leftSide = new SpeedControllerGroup(left1, left2, left3);
   SpeedControllerGroup rightSide = new SpeedControllerGroup(right1, right2, right3);
   
+  //encoder test
+ // Encoder throughboreRight = new Encoder(5, 7);
+  //Encoder throughboreLeft = new Encoder(1, 4);
+
   private final DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
   public double speed;
   private boolean aligned = false;
@@ -157,6 +164,8 @@ public class Drivetrain extends SubsystemBase {
     leftEncoderValue.setDouble(leftEncoderAverage());
     rightEncoderValue.setDouble(rightEncoderAverage());
     encoderaverage.setDouble(encoderAverage());
+    //throughBoreLeft.setDouble(throughboreLeft.getDistance());
+    //throughBoreRight.setDouble(throughboreRight.getDistance());
 
    // Constants.headingIntegrator[0] = hIntegratorMin.getDouble(Constants.headingIntegrator[0]);
     //Constants.headingIntegrator[1] = hIntegratorMax.getDouble(Constants.headingIntegrator[1]);

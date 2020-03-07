@@ -86,6 +86,8 @@ public class RobotContainer {
   //climber
   private final RaiseClimber raiseClimber = new RaiseClimber(climber);
   private final AutoClimb climbUp = new AutoClimb(climber, 5);
+  //private final LowerClimber lowerClimber = new LowerClimber(climber);//added just in case
+  
   
   //drivetrain
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
@@ -177,6 +179,7 @@ public class RobotContainer {
     
     //climber
     yButton2.whenPressed(climbUp);
+    //xButton2.whenPressed(LowerClimber);//added just in case
     rightBumper2.whenPressed(raiseClimber);
     
     //shooter

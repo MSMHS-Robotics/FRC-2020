@@ -92,4 +92,13 @@ public final class Constants {
     public static final int kTimeoutMs = 30;
     public static final int kPIDLoopIdx = 0;
 
+    //intake
+    public static double intakesetpoint = 1000;
+    public static double intakekP = 0.0001;
+    public static double intakekI = 0.0001;
+    public static double intakekD = 0.0001;
+    public static final int kTimeoutMsin = 30;
+    public static final int kPIDLoopIdxin = 0;
+
+
 }

@@ -16,6 +16,8 @@ public class Climber extends SubsystemBase {
 	private WPI_TalonSRX extendMotor;
 	private WPI_TalonSRX climbMotor;
 	private DigitalInput bottomLimitSwitch;
+
+	double downSetpoint = 0;
 	
 	// shuffleboard
 	private ShuffleboardTab climberTab = Shuffleboard.getTab("Climber");
@@ -30,9 +32,8 @@ public class Climber extends SubsystemBase {
 	
 	public Climber() {
 		extendMotor = new WPI_TalonSRX(10);
-		bottomLimitSwitch = new DigitalInput(0);
-		//need actual value for
-		//climbMotor = new WPI_TalonSRX(11);
+		climbMotor = new WPI_TalonSRX(15);//change once talon is added
+		//bottomLimitSwitch = new DigitalInput(0); don't need this
 		extendMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,Constants.kPIDLoopIdx,Constants.kTimeoutMs);
 		extendMotor.setSelectedSensorPosition(0);
 		extendMotor.setSensorPhase(true);
@@ -70,12 +71,7 @@ public class Climber extends SubsystemBase {
 
 	public void lowerClimber() {
 		if(extendMotor != null) {
-			if(!bottomLimitSwitch.get()) {
-				extendMotor.set(ControlMode.PercentOutput, -0.5);
-			}
-			else {
-				extendMotor.set(ControlMode.PercentOutput, 0);
-			}
+			extendMotor.set(ControlMode.Position, downSetpoint);
 		}
 	}
 

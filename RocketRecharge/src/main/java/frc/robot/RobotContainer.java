@@ -85,7 +85,9 @@ public class RobotContainer {
   //now for some commands
   //climber
   private final RaiseClimber raiseClimber = new RaiseClimber(climber);
-  private final AutoClimb climbUp = new AutoClimb(climber, 5);
+  private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
+  private final StopClimb stopClimb = new StopClimb(climber);
+  private final StopRaise stopRaise = new StopRaise(climber);
   //private final LowerClimber lowerClimber = new LowerClimber(climber);//added just in case
   
   
@@ -97,10 +99,12 @@ public class RobotContainer {
   
   //intake + indexer
   private final DeployIntake deployIntake = new DeployIntake(intake, 1);
-  private final RetractIntake retractIntake = new RetractIntake(intake, 1);
+  private final RetractIntake retractIntake = new RetractIntake(intake, -1);
   private final RunIntakeCommand intakeIn = new RunIntakeCommand(intake, -1);
   private final RunIntakeCommand intakeOut = new RunIntakeCommand(intake, 1);
   private final RunIntakeCommand stopIntake = new RunIntakeCommand(intake, 0);
+  private final AutoIntakeDeployCommand autoDeploy = new AutoIntakeDeployCommand(intake);
+  
 
   private final RunIndexerCommand unjam = new RunIndexerCommand(intake, -1);
   private final FeedCommand feedForward = new FeedCommand(intake, 1);
@@ -169,9 +173,9 @@ public class RobotContainer {
     back.whenPressed(runDrivetrain); //so we can use less buttons
     
     //intake stuff. intake automagically sets power to 0 after command ends
-    rightBumper.whenHeld(deployIntake); //extends, runs intake + belt
+    rightBumper.whenHeld(autoDeploy); //extends, runs intake + belt
     rightBumper.whenReleased(stopIntake);
-    yButton.whenPressed(retractIntake);
+    yButton.whileHeld(retractIntake);
     leftBumper.whenHeld(intakeOut);
     leftBumper.whenReleased(stopIntake);
     xButton.whenPressed(feedForward);
@@ -179,9 +183,12 @@ public class RobotContainer {
     
     //climber
     yButton2.whenPressed(climbUp);
+    yButton2.whenReleased(stopClimb);
     //xButton2.whenPressed(LowerClimber);//added just in case
     rightBumper2.whenPressed(raiseClimber);
-    
+    rightBumper2.whenReleased(stopRaise);
+
+
     //shooter
     bButton2.whileHeld(shooterWarmup);
     bButton.whileHeld(shootTeleop);

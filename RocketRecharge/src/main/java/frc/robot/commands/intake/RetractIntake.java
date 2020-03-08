@@ -29,6 +29,7 @@ public class RetractIntake extends RocketTimedCommand {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intake.stopRaising();
   }
 
   // Returns true when the command should end.

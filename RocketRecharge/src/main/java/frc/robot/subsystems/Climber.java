@@ -31,8 +31,8 @@ public class Climber extends SubsystemBase {
 	private NetworkTableEntry extendError = climberTab.addPersistent("Extend Error", 0).getEntry();
 	
 	public Climber() {
-		extendMotor = new WPI_TalonSRX(10);
-		climbMotor = new WPI_TalonSRX(15);//change once talon is added
+		extendMotor = new WPI_TalonSRX(13);
+		climbMotor = new WPI_TalonSRX(14);
 		//bottomLimitSwitch = new DigitalInput(0); don't need this
 		extendMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,Constants.kPIDLoopIdx,Constants.kTimeoutMs);
 		extendMotor.setSelectedSensorPosition(0);
@@ -65,19 +65,14 @@ public class Climber extends SubsystemBase {
 
 	public void raiseClimberPID() {//not really PID
 		if (extendMotor != null) {
-			extendMotor.set(ControlMode.PercentOutput, Constants.climbSpeed);
+			extendMotor.set(ControlMode.PercentOutput, -Constants.climbSpeed);
 		}
 	}
 
-	public void lowerClimber() {
-		if(extendMotor != null) {
-			extendMotor.set(ControlMode.PercentOutput,-Constants.climbSpeed);
-		}
-	}
 
 	public void climbUp() {
 		if (climbMotor != null) {
-			climbMotor.set(ControlMode.PercentOutput, -Constants.climbSpeed);
+			climbMotor.set(ControlMode.PercentOutput, Constants.climbSpeed);
 		}
 	}
 

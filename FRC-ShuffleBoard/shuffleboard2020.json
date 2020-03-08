@@ -467,9 +467,9 @@
               "_title": "Vision Error"
             }
           },
-          "14,0": {
+          "12,5": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -478,15 +478,37 @@
               "_title": "Through Bore Right"
             }
           },
-          "14,1": {
+          "10,5": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///Shuffleboard/Drivetrain Tab/Through Bore Left",
               "_title": "Through Bore Left"
+            }
+          },
+          "2,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Drivetrain Tab/LTickBoreConstant",
+              "_title": "LTickBoreConstant"
+            }
+          },
+          "4,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Drivetrain Tab/RTickBoreConstant",
+              "_title": "RTickBoreConstant"
             }
           }
         }
@@ -647,7 +669,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "4,5": {
+          "5,5": {
             "size": [
               2,
               1
@@ -658,7 +680,7 @@
               "_title": "kIdivide"
             }
           },
-          "6,5": {
+          "7,5": {
             "size": [
               2,
               1
@@ -669,7 +691,7 @@
               "_title": "kDdivide"
             }
           },
-          "2,5": {
+          "3,5": {
             "size": [
               2,
               1
@@ -704,7 +726,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "8,5": {
+          "9,5": {
             "size": [
               2,
               1
@@ -726,9 +748,9 @@
               "_title": "Shot Acceleration"
             }
           },
-          "3,0": {
+          "5,4": {
             "size": [
-              1,
+              4,
               1
             ],
             "content": {
@@ -1022,6 +1044,202 @@
               "_type": "Text View",
               "_source0": "network_table:///Shuffleboard/Climber Tab/ExtendError",
               "_title": "ExtendError"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Intake Tab",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "network_table:///Shuffleboard/Intake Tab/",
+      "widgetPane": {
+        "gridSize": 68.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "0,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/Has Any Ball",
+              "_title": "Has Any Ball",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "2,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/Ball 2",
+              "_title": "Ball 2",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "4,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/Ball 3",
+              "_title": "Ball 3",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/Ball 1",
+              "_title": "Ball 1",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/Ball 4",
+              "_title": "Ball 4",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "10,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/Ball 5",
+              "_title": "Ball 5",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "12,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/Chamber",
+              "_title": "Chamber",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "0,2": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/Intake Position",
+              "_title": "Intake Position",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/Intake Setpoint",
+              "_title": "Intake Setpoint"
+            }
+          },
+          "2,2": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/Shot Prepped",
+              "_title": "Shot Prepped",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/IntakekD",
+              "_title": "IntakekD"
+            }
+          },
+          "6,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/IntakekI",
+              "_title": "IntakekI"
+            }
+          },
+          "8,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/IntakekP",
+              "_title": "IntakekP"
+            }
+          },
+          "8,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/Intake Error",
+              "_title": "Intake Error"
+            }
+          },
+          "14,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/IntakeEncoder",
+              "_title": "IntakeEncoder"
             }
           }
         }

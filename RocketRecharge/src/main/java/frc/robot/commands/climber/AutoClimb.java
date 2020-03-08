@@ -7,7 +7,6 @@ import frc.robot.subsystems.Climber;
 public class AutoClimb extends SequentialCommandGroup {
     public AutoClimb(Climber climber, int timeout) {
         super(
-            new LowerClimber(climber),
             new ClimbUpCommand(climber),
             new WaitCommand(timeout),
             new StopClimb(climber)

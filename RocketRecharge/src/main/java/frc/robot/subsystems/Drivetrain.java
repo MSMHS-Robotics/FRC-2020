@@ -78,6 +78,8 @@ public class Drivetrain extends SubsystemBase {
   private NetworkTableEntry encoderaverage = tab.addPersistent("encoderaverage", 0).getEntry();
   private NetworkTableEntry throughBoreRight = tab.addPersistent("Through Bore Right", 0).getEntry();
   private NetworkTableEntry throughBoreLeft = tab.addPersistent("Through Bore Left", 0).getEntry();
+  private NetworkTableEntry rTickBoreConstant = tab.addPersistent("RTickBoreConstant", Constants.rTickBoreConstant).getEntry();
+  private NetworkTableEntry lTickBoreConstant = tab.addPersistent("LTickBoreConstant", Constants.lTickBoreConstant).getEntry();
 
   private NetworkTableEntry resetGyroCommandEntry = tab.add("Reset Gyro", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
   
@@ -94,8 +96,6 @@ public class Drivetrain extends SubsystemBase {
   private final CANSparkMax right3 = new CANSparkMax(6, MotorType.kBrushless);
   private final CANEncoder encoderRight3 = new CANEncoder(right3);
 
-  private final Encoder throughBore1 = new Encoder(7, 8,true, CounterBase.EncodingType.k4X);
-  private final Encoder throughBore2 = new Encoder(3, 4,true, CounterBase.EncodingType.k4X);
   
   private double leftPow = 0;
   private double rightPow = 0;
@@ -144,11 +144,10 @@ public class Drivetrain extends SubsystemBase {
 
     
     //through bore encoder
-    throughBore1.reset();
-    throughBore2.reset();
+    throughboreRight.reset();
+    throughboreLeft.reset();
 
-    throughBore1.setDistancePerPulse(0);
-    throughBore2.setDistancePerPulse(0);
+    
 
 
 
@@ -307,12 +306,18 @@ public class Drivetrain extends SubsystemBase {
       encoderLeft3.setPositionConversionFactor(Constants.leftTickConstant);
     }
 
-    throughBore1.setDistancePerPulse(Constants.rTickBoreConstant);
-    throughBore2.setDistancePerPulse(Constants.lTickBoreConstant);
+    double tempRTickBoreConstant = rTickBoreConstant.getDouble(Constants.rTickBoreConstant);
+    if(Constants.rTickBoreConstant != tempRTickBoreConstant) {
+      Constants.rTickBoreConstant = tempRTickBoreConstant;
+      throughboreRight.setDistancePerPulse(Constants.rTickBoreConstant);
+    }
 
-    throughBore1.getDistance();
-    throughBore2.getDistance();
-    
+    double tempLTickBoreConstant = lTickBoreConstant.getDouble(Constants.lTickBoreConstant);
+    if(Constants.lTickBoreConstant != tempLTickBoreConstant) {
+      Constants.lTickBoreConstant = tempLTickBoreConstant;
+      throughboreLeft.setDistancePerPulse(Constants.lTickBoreConstant);
+    }
+
 
     if(resetGyroCommandEntry.getBoolean(false)) { 
       this.resetGyro();

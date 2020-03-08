@@ -26,12 +26,12 @@ public class RaiseClimber extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climber.stopRaise();
+   
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(climber.GetExtendError()) < 100;
+    return true;
   }
 }

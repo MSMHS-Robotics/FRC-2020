@@ -70,8 +70,8 @@ public final class Constants {
     public static double leftTickConstant = -2.2005;
 
     //same for the through bore encoder
-    public static double rTickBoreConstant = 2.1925;
-    public static double lTickBoreConstant = -2.2005;
+    public static double rTickBoreConstant = -1;
+    public static double lTickBoreConstant = 1;
     //public static double[] headingIntegrator = {-0.5, 0.5};
 
     
@@ -84,7 +84,7 @@ public final class Constants {
     }
 
     //climber (may need to look at this)
-    public static  double climbSpeed = 0.3;
+    public static  double climbSpeed = 1;
 	public static double motorPosition = 0;//fix later
     public static double motorUp = 10;//fix later
     

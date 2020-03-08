@@ -63,15 +63,15 @@ public class Climber extends SubsystemBase {
 		return extendMotor.getSelectedSensorPosition() - Constants.distancesetpoint;
 	}
 
-	public void raiseClimberPID() {
+	public void raiseClimberPID() {//not really PID
 		if (extendMotor != null) {
-			extendMotor.set(ControlMode.Position, Constants.distancesetpoint);
+			extendMotor.set(ControlMode.PercentOutput, Constants.climbSpeed);
 		}
 	}
 
 	public void lowerClimber() {
 		if(extendMotor != null) {
-			extendMotor.set(ControlMode.Position, downSetpoint);
+			extendMotor.set(ControlMode.PercentOutput,-Constants.climbSpeed);
 		}
 	}
 

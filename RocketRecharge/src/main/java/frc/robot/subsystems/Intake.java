@@ -20,8 +20,8 @@ public class Intake extends SubsystemBase {
   private WPI_TalonSRX beltMotor;
   private WPI_TalonSRX triggerMotor;
   private DigitalInput triggerSensor;
-  private DigitalInput upLimit;
-  private DigitalInput bottomLimit;
+  //private DigitalInput upLimit;
+  //private DigitalInput bottomLimit;
   private DigitalInput detector1;
   private DigitalInput detector2;
   private DigitalInput detector3;
@@ -61,14 +61,14 @@ public class Intake extends SubsystemBase {
 		intakePositionMotor = new WPI_TalonSRX(14); 
 
 		triggerSensor = new DigitalInput(1);
-		upLimit = new DigitalInput(2);
-		bottomLimit = new DigitalInput(3);
+		//upLimit = new DigitalInput(2);
+		//bottomLimit = new DigitalInput(3);
 
 		detector1 = new DigitalInput(4);
 		detector2 = new DigitalInput(5);
-		detector3 = new DigitalInput(6);
+		//detector3 = new DigitalInput(6);
 		detector4 = new DigitalInput(7);
-		detector5 = new DigitalInput(8);
+		//detector5 = new DigitalInput(8);
 		detectors = new DigitalInput[] {detector1, detector2, detector3, detector4, detector5, triggerSensor};
 
 		retractIntake();
@@ -103,28 +103,18 @@ public class Intake extends SubsystemBase {
 	}
 
 	public void extendIntake() {
-		if(!bottomLimit.get()) {
 			//intakePositionMotor.set(0.5);
 			intakePositionMotor.set(ControlMode.Position, Constants.intakesetpoint);
-		}
-		else {
-			intakePositionMotor.set(0);
-		}
 	}
 
 	public void retractIntake() {
-		if (!upLimit.get()) {
 			//intakePositionMotor.set(-0.5);
 			intakePositionMotor.set(ControlMode.Position, intakeUp);
-		}
-		else {
-			intakePositionMotor.set(0);
-		}
 	}
 
-	public boolean isRaised() {
-		return upLimit.get();
-	}
+	//public boolean isRaised() {
+		//return upLimit.get();
+	//}
 
 	public void runIntake(double power) {
 		if (intakeMotor != null) {

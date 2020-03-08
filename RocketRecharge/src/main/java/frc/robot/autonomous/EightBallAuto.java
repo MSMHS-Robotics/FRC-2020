@@ -20,7 +20,7 @@ public class EightBallAuto extends SequentialCommandGroup {
     public EightBallAuto(Drivetrain drivetrain, Intake intake, Shooter shooter) {
         super(
             new ResetGyroCommand(drivetrain),
-            new DeployIntake(intake),
+            new DeployIntake(intake, 1),
             new WaitCommand(1),
             new WarmupCommand(shooter, null, 90, true, drivetrain),
             new WaitCommand(1),

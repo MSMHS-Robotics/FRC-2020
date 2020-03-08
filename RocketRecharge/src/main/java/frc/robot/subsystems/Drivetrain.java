@@ -100,8 +100,8 @@ public class Drivetrain extends SubsystemBase {
   SpeedControllerGroup rightSide = new SpeedControllerGroup(right1, right2, right3);
   
   //encoder test
- // Encoder throughboreRight = new Encoder(5, 7);
-  //Encoder throughboreLeft = new Encoder(1, 4);
+  Encoder throughboreRight = new Encoder(6, 8);
+  Encoder throughboreLeft = new Encoder(2,3);
 
   private final DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
   public double speed;
@@ -164,8 +164,8 @@ public class Drivetrain extends SubsystemBase {
     leftEncoderValue.setDouble(leftEncoderAverage());
     rightEncoderValue.setDouble(rightEncoderAverage());
     encoderaverage.setDouble(encoderAverage());
-    //throughBoreLeft.setDouble(throughboreLeft.getDistance());
-    //throughBoreRight.setDouble(throughboreRight.getDistance());
+    throughBoreLeft.setDouble(throughboreLeft.getDistance());
+    throughBoreRight.setDouble(throughboreRight.getDistance());
 
    // Constants.headingIntegrator[0] = hIntegratorMin.getDouble(Constants.headingIntegrator[0]);
     //Constants.headingIntegrator[1] = hIntegratorMax.getDouble(Constants.headingIntegrator[1]);

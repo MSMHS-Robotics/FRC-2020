@@ -96,8 +96,8 @@ public class RobotContainer {
   private final AlertHumanPlayerCommand setRainbow = new AlertHumanPlayerCommand(blinkin);
   
   //intake + indexer
-  private final DeployIntake deployIntake = new DeployIntake(intake);
-  private final RetractIntake retractIntake = new RetractIntake(intake);
+  private final DeployIntake deployIntake = new DeployIntake(intake, 1);
+  private final RetractIntake retractIntake = new RetractIntake(intake, 1);
   private final RunIntakeCommand intakeIn = new RunIntakeCommand(intake, -1);
   private final RunIntakeCommand intakeOut = new RunIntakeCommand(intake, 1);
   private final RunIntakeCommand stopIntake = new RunIntakeCommand(intake, 0);
@@ -119,7 +119,7 @@ public class RobotContainer {
   //private final WarmupThenShoot shootTeleop = new WarmupThenShoot(shooter, gamepad1, drivetrain, intake);
 
   //diagnostics
-  private final Update diagnosticsCommand = new Update(diagnostics);
+  //private final Update diagnosticsCommand = new Update(diagnostics);
 
   //Stupid axis stuff
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently
@@ -251,7 +251,7 @@ public class RobotContainer {
     return blinkin;
   }
 
-  public Command getDiagnosticsCommand() {
+  /*public Command getDiagnosticsCommand() {
     return diagnosticsCommand;
-  }
+  }*/
 }

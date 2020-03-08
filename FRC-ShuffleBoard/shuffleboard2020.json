@@ -466,6 +466,28 @@
               "_source0": "network_table:///Shuffleboard/Drivetrain Tab/Vision Error",
               "_title": "Vision Error"
             }
+          },
+          "14,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Drivetrain Tab/Through Bore Right",
+              "_title": "Through Bore Right"
+            }
+          },
+          "14,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Drivetrain Tab/Through Bore Left",
+              "_title": "Through Bore Left"
+            }
           }
         }
       }
@@ -691,6 +713,28 @@
               "_type": "Text View",
               "_source0": "network_table:///Shuffleboard/Shooter/kFFdivide",
               "_title": "kFFdivide"
+            }
+          },
+          "11,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/Shot Acceleration",
+              "_title": "Shot Acceleration"
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Shooter/Acceleration Tolerance",
+              "_title": "Acceleration Tolerance"
             }
           }
         }

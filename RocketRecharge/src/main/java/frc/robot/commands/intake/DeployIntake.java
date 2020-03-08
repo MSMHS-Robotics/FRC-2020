@@ -1,14 +1,17 @@
 package frc.robot.commands.intake;
 
+import frc.robot.commands.RocketTimedCommand;
 import frc.robot.subsystems.Intake;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+//import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class DeployIntake extends CommandBase {
+public class DeployIntake extends RocketTimedCommand {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private Intake intake;
+  private double timeout;
 
-  public DeployIntake(Intake intake) {
+  public DeployIntake(Intake intake, double timeout) {
     this.intake = intake;
+    this.timeout = timeout;
     addRequirements(intake);
   }
 
@@ -31,6 +34,6 @@ public class DeployIntake extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !intake.isRaised();
+    return super.isTimedOut();
   }
 }

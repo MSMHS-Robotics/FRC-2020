@@ -9,7 +9,6 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
-
 //CANSparkMax
 //import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
@@ -19,6 +18,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 //import edu.wpi.first.wpilibj.PIDOutput;
@@ -45,6 +45,7 @@ public class Drivetrain extends SubsystemBase {
   PIDController visionPID = new PIDController(visionPIDconstant1, visionPIDconstant2, visionPIDconstant3);
   PIDController headingPID = new PIDController(.15, 0, 0);
   PIDController drivingPID = new PIDController(1, 0, 0);
+ 
   
   private ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain Tab");
   
@@ -92,6 +93,9 @@ public class Drivetrain extends SubsystemBase {
   private final CANEncoder  encoderRight2 = new CANEncoder (right2);
   private final CANSparkMax right3 = new CANSparkMax(6, MotorType.kBrushless);
   private final CANEncoder encoderRight3 = new CANEncoder(right3);
+
+  private final Encoder throughBore1 = new Encoder(7, 8,true, CounterBase.EncodingType.k4X);
+  private final Encoder throughBore2 = new Encoder(3, 4,true, CounterBase.EncodingType.k4X);
   
   private double leftPow = 0;
   private double rightPow = 0;
@@ -137,6 +141,16 @@ public class Drivetrain extends SubsystemBase {
     encoderRight1.setPosition(0);
     encoderRight2.setPosition(0);
     encoderRight3.setPosition(0);
+
+    
+    //through bore encoder
+    throughBore1.reset();
+    throughBore2.reset();
+
+    throughBore1.setDistancePerPulse(0);
+    throughBore2.setDistancePerPulse(0);
+
+
 
     try {
       /***********************************************************************
@@ -292,6 +306,13 @@ public class Drivetrain extends SubsystemBase {
       encoderLeft2.setPositionConversionFactor(Constants.leftTickConstant);
       encoderLeft3.setPositionConversionFactor(Constants.leftTickConstant);
     }
+
+    throughBore1.setDistancePerPulse(Constants.rTickBoreConstant);
+    throughBore2.setDistancePerPulse(Constants.lTickBoreConstant);
+
+    throughBore1.getDistance();
+    throughBore2.getDistance();
+    
 
     if(resetGyroCommandEntry.getBoolean(false)) { 
       this.resetGyro();

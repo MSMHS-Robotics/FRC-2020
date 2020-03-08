@@ -68,6 +68,10 @@ public final class Constants {
     //how to calculate: push the robot a specific distance and divide 120 by the encoder count given
     public static double rightTickConstant = 2.1925;
     public static double leftTickConstant = -2.2005;
+
+    //same for the through bore encoder
+    public static double rTickBoreConstant = 2.1925;
+    public static double lTickBoreConstant = -2.2005;
     //public static double[] headingIntegrator = {-0.5, 0.5};
 
     

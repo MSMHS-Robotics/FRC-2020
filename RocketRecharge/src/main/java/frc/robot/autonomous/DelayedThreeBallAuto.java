@@ -18,9 +18,9 @@ import frc.robot.subsystems.Shooter;
 public class DelayedThreeBallAuto extends SequentialCommandGroup {
     public DelayedThreeBallAuto(Drivetrain drivetrain, Intake intake, Shooter shooter) {
         super(
+            new DeployIntake(intake, 1),
             new ResetGyroCommand(drivetrain),
             new WaitCommand(5),
-            new DeployIntake(intake, 1),
             new WarmupCommand(shooter, null, 90, true, drivetrain),
             new WaitCommand(1),
             new ShootBurstCommand(shooter, intake, null, 90, 5, true, drivetrain),//changed for testing

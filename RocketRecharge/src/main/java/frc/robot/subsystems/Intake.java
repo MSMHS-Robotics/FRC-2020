@@ -126,6 +126,10 @@ public class Intake extends SubsystemBase {
 		intakeExtended = false;
 	}
 
+	public void setIntakeStatus(boolean status){
+		intakeExtended = status;
+	}
+
 	public void stopRaising() {
 		intakePositionMotor.set(ControlMode.PercentOutput, 0);
 	}
@@ -179,17 +183,18 @@ public class Intake extends SubsystemBase {
 		}
 	}
 
+	
 	public boolean hasBall() {
-		for (int x = 0; x < detectors.length; x++) {
+		/*for (int x = 0; x < detectors.length; x++) {
 			irs[x].setBoolean(detectors[x].get()); // complete jank
 			if (detectors[x].get()) {
 				irAll.setBoolean(true);
 				return true;
 			}
-		}
-		return false;
+		}*/
+		return true;
 	}
-
+	
 	@Override
 	public void periodic() {
 		intakeEncoderValue.setDouble(intakePositionMotor.getSelectedSensorPosition());

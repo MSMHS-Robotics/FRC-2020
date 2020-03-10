@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import java.util.Map; //need for boolean box widget on ShuffleBoard
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX; //hardware components
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
@@ -18,7 +20,9 @@ public class Intake extends SubsystemBase {
 	private WPI_TalonSRX intakePositionMotor;
 	private WPI_TalonSRX intakeMotor;
 	private WPI_TalonSRX beltMotor;
-	private WPI_TalonSRX triggerMotor;
+	//private WPI_TalonSRX triggerMotor;
+	private CANSparkMax triggerMotor;
+
 	private DigitalInput triggerSensor;
 	// private DigitalInput upLimit;
 	// private DigitalInput bottomLimit;
@@ -67,7 +71,7 @@ public class Intake extends SubsystemBase {
 		irs = new NetworkTableEntry[] { ir1, ir2, ir3, ir4, ir5, irTrigger };
 		intakeMotor = new WPI_TalonSRX(15); // our motors
 		beltMotor = new WPI_TalonSRX(11);
-		triggerMotor = new WPI_TalonSRX(12); // change?
+		triggerMotor = new CANSparkMax(12, MotorType.kBrushless); // change?
 		intakePositionMotor = new WPI_TalonSRX(10);
 
 		triggerSensor = new DigitalInput(0);
@@ -83,8 +87,7 @@ public class Intake extends SubsystemBase {
 
 		
 		intakePositionMotor.set(ControlMode.PercentOutput, 0);
-		intakePositionMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx,
-				Constants.kTimeoutMsin);
+		intakePositionMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx, Constants.kTimeoutMsin);
 		intakePositionMotor.setSelectedSensorPosition(0);
 		intakePositionMotor.setSensorPhase(true);
 		intakePositionMotor.setInverted(true);
@@ -92,6 +95,7 @@ public class Intake extends SubsystemBase {
 		if (intakePositionMotor != null) {
 			intakePositionMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdxin, Constants.kTimeoutMsin);
 		}
+		
 		// Config the peak and nominal outputs
 		if (intakePositionMotor != null) {
 			intakePositionMotor.configNominalOutputForward(0, Constants.kTimeoutMsin);

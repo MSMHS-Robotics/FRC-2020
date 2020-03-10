@@ -18,7 +18,6 @@ import frc.robot.commands.intake.*; //a lot easier than importing them one by on
 import frc.robot.commands.climber.*;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.shooter.*;
-import frc.robot.diagnostics.Update;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -28,7 +27,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
-import frc.robot.subsystems.Diagnostics;;
+import frc.robot.subsystems.Diagnostics;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a

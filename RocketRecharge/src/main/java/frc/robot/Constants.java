@@ -40,13 +40,13 @@ public final class Constants {
 
     //Preset Constants
     public static double TrenchAngle = 3300;
-    public static double TrenchRPM = 3300;
+    public static double TrenchRPM = 3400;
     public static double TenFootAngle = 45; 
     public static double TenFootRPM = 3150;
     public static double LayupAngle = 10;
-    public static double LayupRPM = 3200;
+    public static double LayupRPM = 3800;
 
-    public static double accelerationTolerance = 10;
+    public static double accelerationTolerance = 1;
     public static double RPMTolerance = 100;
     public static double AngleTolerance = 10;
     public static double[] visionPID = {0.019, 0.08, 0.0085};

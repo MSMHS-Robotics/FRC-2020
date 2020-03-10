@@ -118,7 +118,7 @@ public class Shooter extends SubsystemBase {
     }
 
     //keep this here for now
-    angleMotor = new WPI_TalonSRX(16);
+    //angleMotor = new WPI_TalonSRX(16);
 
     if (shooterPID != null){
       shooterPID.setP(Constants.ShooterkP);
@@ -129,7 +129,7 @@ public class Shooter extends SubsystemBase {
       shooterPID.setOutputRange(Constants.ShooterkMinOutput, Constants.ShooterkMaxOutput);
     }
     // set PID coefficients
-    
+   /* 
     //angle motor config
     if (angleMotor != null){
       angleMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
@@ -149,8 +149,9 @@ public class Shooter extends SubsystemBase {
 		  angleMotor.config_kI(Constants.kPIDLoopIdx, Constants.AnglekI, Constants.kTimeoutMs);
       angleMotor.config_kD(Constants.kPIDLoopIdx, Constants.AnglekD, Constants.kTimeoutMs);
     }
+    */
   }
-
+  
  
   public boolean warmUp(double RPM) { 
     if (shooterPID != null){
@@ -161,7 +162,7 @@ public class Shooter extends SubsystemBase {
     return false; 
   }
 
-  
+  /*
   public boolean shooterAngle(double angle) {
     if (angleMotor != null){
       angleMotor.set(ControlMode.Position, angle);
@@ -169,7 +170,7 @@ public class Shooter extends SubsystemBase {
     }
     return false;
   }
-  
+  */
 
   public boolean stopPlease() {
     if (shooterMotor != null) {
@@ -197,7 +198,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void customShot(double rpm) {
-    shooterAngle(Constants.TrenchAngle); //need to change. this is temp. we don't have an articulating hood yet, so should be fine for now
+    //shooterAngle(Constants.TrenchAngle); //need to change. this is temp. we don't have an articulating hood yet, so should be fine for now
     warmUp(rpm);
     RPMSetpoint = rpm;
     angleSetpoint = Constants.TrenchAngle; //also temp. <!-- !!!CHANGE!!! -->
@@ -205,21 +206,21 @@ public class Shooter extends SubsystemBase {
   }
 
   public void trenchShot() {
-    shooterAngle(Constants.TrenchAngle);
+   // shooterAngle(Constants.TrenchAngle);
     warmUp(Constants.TrenchRPM);
     RPMSetpoint = Constants.TrenchRPM;
     angleSetpoint = Constants.TrenchAngle;
   }
 
   public void tenFootShot() {
-    shooterAngle(Constants.TenFootAngle);
+   // shooterAngle(Constants.TenFootAngle);
     warmUp(Constants.TenFootRPM);
     RPMSetpoint = Constants.TenFootRPM;
     angleSetpoint = Constants.TenFootAngle;
   }
 
   public void layupShot() {
-    shooterAngle(Constants.LayupAngle);
+    //shooterAngle(Constants.LayupAngle);
     warmUp(Constants.LayupRPM);
     RPMSetpoint = Constants.LayupRPM;
     angleSetpoint = Constants.LayupAngle;
@@ -249,7 +250,7 @@ public class Shooter extends SubsystemBase {
     double currentTime = Timer.getFPGATimestamp();
     double currentVelocity = shooterMotor.getEncoder().getVelocity();
     
-    shotAcceleration = (currentVelocity-pastVelocity)/((currentTime - pastTime)*60000);
+    shotAcceleration = (currentVelocity-pastVelocity)/((currentTime - pastTime)*60);
     pastTime = currentTime;
     pastVelocity = currentVelocity;
     

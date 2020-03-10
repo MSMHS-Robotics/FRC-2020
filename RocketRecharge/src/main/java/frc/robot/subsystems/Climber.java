@@ -99,7 +99,7 @@ public class Climber extends SubsystemBase {
 		extendError.setDouble(GetExtendError());
 		extendPosition.setDouble(extendMotor.getSelectedSensorPosition());
 		
-		double TempClimberSpeed = climbSpeed.getDouble(0.5);
+		double TempClimberSpeed = climbSpeed.getDouble(1);
 		if (TempClimberSpeed != Constants.climbSpeed) {
 			Constants.climbSpeed = TempClimberSpeed;
 			climbSpeed.setDouble(Constants.climbSpeed);

@@ -5,29 +5,26 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.shooter;
+package frc.robot.commands.intake;
 
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class ShootAngleWarmupCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Shooter shooter;
-  private double Angle;
-  private boolean isLinedUp;
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param angleadjust The subsystem used by this command.
-   */
-  public ShootAngleWarmupCommand(Shooter shooter, double angle) {
-    this.shooter= shooter;
-    Angle = angle;
+public class SetIntakeStatus extends CommandBase {
+  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
+
+  private Intake intake;
+  private boolean status;
+  
+  
+  public SetIntakeStatus(Intake intake,boolean status) {
+    this.intake = intake;
+    this.status = status;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter);
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
@@ -38,17 +35,18 @@ public class ShootAngleWarmupCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //isLinedUp = shooter.shooterAngle(Angle);
+     intake.setIntakeStatus(status);
   }
-
+  
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+  
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return isLinedUp;
+    return true;
   }
 }

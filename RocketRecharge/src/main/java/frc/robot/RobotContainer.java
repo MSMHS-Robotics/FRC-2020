@@ -170,6 +170,7 @@ public class RobotContainer {
     aButton.whenReleased(runDrivetrain);
     aButton.whenReleased(setFire);
     start.whenPressed(toggleVision);
+    start.whenReleased(runDrivetrain);
     back.whenPressed(runDrivetrain); //so we can use less buttons
     
     //intake stuff. intake automagically sets power to 0 after command ends
@@ -196,6 +197,7 @@ public class RobotContainer {
     bButton.whenReleased(runDrivetrain);
     aButton2.whenPressed(stopShooter);
     xButton2.whenPressed(stopWarmupPlease);
+    xButton2.whenReleased(runDrivetrain);
     
     
   }

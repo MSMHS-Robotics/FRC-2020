@@ -50,7 +50,7 @@ public final class Constants {
     public static double RPMTolerance = 100;
     public static double AngleTolerance = 10;
     public static double[] visionPID = {0.019, 0.08, 0.0085};
-    public static double[] visionPIDconstraints = {-0.5, 0.5};
+    public static double[] visionPIDconstraints = {-0.35, 0.35};
     public static double[] headingPID = {0.05,0.001,0.001};
     public static double[] headingPIDconstraints = {-0.5, 0.5};
     public static double[] drivingPID = {1, 0, 0};

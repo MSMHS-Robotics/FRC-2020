@@ -195,6 +195,8 @@ public class RobotContainer {
     bButton.whenReleased(stopShooter);
     bButton.whenReleased(runDrivetrain);
     aButton2.whenPressed(stopShooter);
+    xButton2.whenPressed(stopWarmupPlease);
+    
     
   }
 

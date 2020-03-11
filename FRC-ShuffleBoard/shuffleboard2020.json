@@ -1241,6 +1241,17 @@
               "_source0": "network_table:///Shuffleboard/Intake Tab/IntakeEncoder",
               "_title": "IntakeEncoder"
             }
+          },
+          "14,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///Shuffleboard/Intake Tab/Intake Motor Speed",
+              "_title": "Intake Motor Speed"
+            }
           }
         }
       }

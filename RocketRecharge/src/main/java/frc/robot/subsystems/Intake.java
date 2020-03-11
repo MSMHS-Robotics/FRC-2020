@@ -163,10 +163,10 @@ public class Intake extends SubsystemBase {
 	public void feed(double power) {
 
 		if (beltMotor != null) {
-			beltMotor.set(power * 0.5);
+			beltMotor.set(power);
 		}
 		if (triggerMotor != null) {
-			triggerMotor.set(-power);
+			triggerMotor.set(power);
 		}
 	}
 

@@ -4,35 +4,29 @@ import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
- * A command to feed into the shooter
+ * A command to set the status of the intake, for use in auton
  */
-public class FeedCommand extends CommandBase {
+public class SetIntakeStatusCommand extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
 
   private Intake intake;
-  private double power;
-
+  private boolean status;
+  
   /**
-   * A command to feed into the shooter
+   * A command to set the status of the intake, for use in auton
    * @param intake an intake subsystem
-   * @param power the speed at which to feed
+   * @param status a boolean of whether the intake is raised or not
   */
-  public FeedCommand(Intake intake, double power) {
+  public SetIntakeStatusCommand(Intake intake,boolean status) {
     this.intake = intake;
-    this.power = power;
+    this.status = status;
     addRequirements(intake);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.feed(power);
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    intake.feed(0);
+    intake.setIntakeStatus(status);
   }
 
   // Returns true when the command should end.

@@ -4,20 +4,20 @@ import frc.robot.commands.RocketTimedCommand;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class RetractIntake extends RocketTimedCommand {
+/** A command to retract the intake */
+public class RetractIntakeCommand extends RocketTimedCommand {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private Intake intake;
   private double timeout;
 
-  public RetractIntake(Intake intake, double timeout) {
+  /** A command to retract the intake
+   * @param intake an intake subsystem
+   * @param timeout timeout for the command
+   */
+  public RetractIntakeCommand(Intake intake, double timeout) {
     this.intake = intake;
     this.timeout = timeout;
     addRequirements(intake);
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
   }
 
   // Called every time the scheduler runs while the command is scheduled.

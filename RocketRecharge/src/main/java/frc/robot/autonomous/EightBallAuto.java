@@ -7,7 +7,7 @@ import frc.robot.commands.drivetrain.ResetGyroCommand;
 import frc.robot.commands.drivetrain.TurnOnHeading;
 import frc.robot.commands.intake.DeployIntake;
 import frc.robot.commands.intake.RunIntakeCommand;
-import frc.robot.commands.intake.SetIntakeStatus;
+import frc.robot.commands.intake.SetIntakeStatusCommand;
 //import frc.robot.commands.drivetrain.SetDrive;
 import frc.robot.commands.shooter.ShootBurstCommand;
 //import frc.robot.commands.shooter.ShootAngleWarmupCommand;
@@ -22,7 +22,7 @@ public class EightBallAuto extends SequentialCommandGroup {
     public EightBallAuto(Drivetrain drivetrain, Intake intake, Shooter shooter) {
         super(
             new ResetGyroCommand(drivetrain),
-            new SetIntakeStatus(intake, false),
+            new SetIntakeStatusCommand(intake, false),
             new DeployIntake(intake, 0.25),
             new WarmupCommand(shooter, null, 90, true, drivetrain),
             new ShootBurstCommand(shooter, intake, null, 90, 3.5, true, drivetrain), //changed for testing

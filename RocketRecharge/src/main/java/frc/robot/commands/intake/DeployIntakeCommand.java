@@ -2,16 +2,18 @@ package frc.robot.commands.intake;
 
 import frc.robot.commands.RocketTimedCommand;
 import frc.robot.subsystems.Intake;
-//import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class DeployIntake extends RocketTimedCommand {
+/** A command to extend/deploy the intake */
+public class DeployIntakeCommand extends RocketTimedCommand {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private Intake intake;
   private double timeout;
- 
-  
 
-  public DeployIntake(Intake intake, double timeout) {
+  /** A command to extend/deploy the intake
+   * @param intake an intake subsystem
+   * @param timeout the timeout for the command
+   */
+  public DeployIntakeCommand(Intake intake, double timeout) {
     this.intake = intake;
     this.timeout = timeout;
     addRequirements(intake);

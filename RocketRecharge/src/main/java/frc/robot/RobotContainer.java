@@ -97,7 +97,7 @@ public class RobotContainer {
   
   //intake + indexer
   private final DeployIntake deployIntake = new DeployIntake(intake, 1);
-  private final RetractIntake retractIntake = new RetractIntake(intake, -1);
+  private final RetractIntakeCommand retractIntake = new RetractIntakeCommand(intake, -1);
   private final RunIntakeCommand intakeIn = new RunIntakeCommand(intake, -1);
   private final RunIntakeCommand intakeOut = new RunIntakeCommand(intake, 1);
   private final RunIntakeCommand stopIntake = new RunIntakeCommand(intake, 0);

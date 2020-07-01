@@ -6,22 +6,31 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.commands.RocketTimedCommand;
 
+/** A command to shoot very fastily using the Limelight to get the distance */
 public class ShootBurstVisionCommand extends RocketTimedCommand {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
     private Shooter shooter;
     private Intake intake;
-    private final Drivetrain drivetrain;
+    private Drivetrain drivetrain;
+    
     private double timeout;
     private boolean isAuto;
     
-    public ShootBurstVisionCommand(Shooter shooter, Intake intake, Joystick joystick, int preset, double timeout,
-            boolean auto, Drivetrain drivetrain) {
+    /** A command to shoot very fastily using the Limelight to get the distance.
+     * @param shooter a shooter subsystem
+     * @param intake an intake subsystem
+     * @param drivetrain a drivetrain subsystem
+     * @param joystick a Joystick
+     * @param timeout the timout for the command
+     * @param isAuto true if in an auton, false otherwise
+    */
+    public ShootBurstVisionCommand(Shooter shooter, Intake intake, Drivetrain drivetrain, Joystick joystick, double timeout, boolean isAuto) {
         this.shooter = shooter;
         this.intake = intake;
         this.timeout = timeout;
         this.drivetrain = drivetrain;
-        isAuto = auto;
-        // Use addRequirements() here to declare subsystem dependencies.
+        this.isAuto = isAuto;
+        
         addRequirements(shooter, intake, drivetrain);
     }
 

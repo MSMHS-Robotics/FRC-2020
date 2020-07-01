@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -14,14 +7,15 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.commands.RocketTimedCommand;
 
 /**
- * An example command that uses an example subsystem.
+ * A command to shoot
  */
 public class ShootCommand extends RocketTimedCommand {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-    private final Shooter shooter;
-    private final Intake intake;
-    private final Joystick joystick;
-    private final Drivetrain drivetrain;
+    private Shooter shooter;
+    private Intake intake;
+    private Joystick joystick;
+    private Drivetrain drivetrain;
+    
     private int preset;
     private double timeout;
     private boolean isAuto;

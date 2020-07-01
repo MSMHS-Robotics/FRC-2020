@@ -1,12 +1,15 @@
 package frc.robot;
 
+// Utils for Auto selector
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+// Needed for binding commands
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
+// All of our autons
 import frc.robot.autonomous.DriveOffLine;
 import frc.robot.autonomous.DriveOffLineReverse;
 import frc.robot.autonomous.EightBallAuto;
@@ -14,15 +17,20 @@ import frc.robot.autonomous.ThreeBallAuto;
 import frc.robot.autonomous.DelayedThreeBallAuto;
 import frc.robot.autonomous.UnchargedThreeBallAuto;
 
-import frc.robot.commands.intake.*; //a lot easier than importing them one by one
+// Import the commands
+import frc.robot.commands.intake.*;
 import frc.robot.commands.climber.*;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.shooter.*;
 import frc.robot.diagnostics.Update;
+
+// import some stuff
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.drivetrain.TurnOnHeading;
+
+// import our subsystems
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
@@ -37,14 +45,6 @@ import frc.robot.subsystems.Diagnostics;;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-
-  //subsystems go here:
-  //auto commands
-  // private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain, 90, -1);
-  //private final EightBallAuto eightBallAuto = new EightBallAuto(drivetrain);
-  //private final DriveOffLine driveAuto = new DriveOffLine(drivetrain);
-  
   //subsytems
   private final Climber climber = new Climber();
   private final Intake intake = new Intake();
@@ -88,8 +88,6 @@ public class RobotContainer {
   private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
   private final StopClimb stopClimb = new StopClimb(climber);
   private final StopRaise stopRaise = new StopRaise(climber);
-  //private final LowerClimber lowerClimber = new LowerClimber(climber);//added just in case
-  
   
   //drivetrain
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
@@ -105,15 +103,12 @@ public class RobotContainer {
   private final RunIntakeCommand stopIntake = new RunIntakeCommand(intake, 0);
   private final AutoIntakeDeployCommand autoDeploy = new AutoIntakeDeployCommand(intake);
   
-
   private final RunIndexerCommand unjam = new RunIndexerCommand(intake, -1);
   private final FeedCommand feedForward = new FeedCommand(intake, 1);
   private final FeedCommand feedReverse = new FeedCommand(intake, -1);
   private final FeedCommand stopFeed = new FeedCommand(intake, 0);
   private final RunIntakeCommand setIdle = new RunIntakeCommand(intake, 0);
   
-  private final PrepShotCommand prepShot = new PrepShotCommand(intake);
-
   //shooter
   //private final ShooterStop stopShooter = new ShooterStop(shooter);
   private final ShooterStopCommand stopShooter = new ShooterStopCommand(shooter);
@@ -146,6 +141,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    
     //auto selector stuff
     autos.put("Drive Off Line", new DriveOffLine(drivetrain));
     autos.put("Three Ball Auto", new ThreeBallAuto(drivetrain, intake, shooter));
@@ -164,15 +160,14 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //drivetrain stuff. working on toggle hardware zoom with 1 button
-    //update: TOGGLING DONE! untested though
+    //drivetrain stuff
     aButton.whenPressed(align);
     aButton.whenReleased(runDrivetrain);
     aButton.whenReleased(setFire);
     start.whenPressed(toggleVision);
     start.whenReleased(runDrivetrain);
-    back.whenPressed(runDrivetrain); //so we can use less buttons
-    
+    back.whenPressed(runDrivetrain);
+
     //intake stuff. intake automagically sets power to 0 after command ends
     rightBumper.whenHeld(autoDeploy); //extends, runs intake + belt
     rightBumper.whenReleased(stopIntake);
@@ -198,11 +193,13 @@ public class RobotContainer {
     aButton2.whenPressed(stopShooter);
     xButton2.whenPressed(stopWarmupPlease);
     xButton2.whenReleased(runDrivetrain);
-    
-    
   }
 
-  //stuff for auto selector
+  /**
+   * Gets all of the names for the auto selector
+   * 
+   * @return a String of all the names joined together
+   */
   public String getNames() {
     String tempAutoNames = "";
     for(int i = 0; i < this.getLength(); i++) {
@@ -211,14 +208,30 @@ public class RobotContainer {
     return tempAutoNames;
   }
 
+  /**
+   * Gets the name of desired auto
+   *
+   * @param y index of name you want to get
+   * @return returns a String of the name of the auto
+   */
   public String getName(int y) {
     return "\n>>" + autoNames.get(y);
   }
 
+  /**
+   * Sets the current auto (i.e. the one that will be returned to Robot and run)
+   *
+   * @param x index of the auto you want to be run
+   */
   public void setAutoNum(int x) {
     curr_auto = x;
   }
 
+  /**
+   * Gets the length of the list of autons
+   *
+   * @return length of the list of autons
+   */
   public int getLength() {
     return lengthOfList;
   }
@@ -229,40 +242,66 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    //this might automagically work. no touchy.
     return autos.get(autoNames.get(curr_auto));
   }
 
+  /**
+   * Returns the command to run the drivetrain
+   * @return the runDrivetrain command
+   */
   public RunCommand getDriveCommand() {
     return runDrivetrain;
   }
 
-  //Backup shoot code
-  //public WarmupThenShoot getShootCommand(){
-   // return shootTeleop;
-  //}
+  /* Backup shoot code
+  public WarmupThenShoot getShootCommand() {
+    return shootTeleop;
+  }
+  */
 
+  /**
+   * Returns the command to warm up the shooter
+   * @return the shooterWarmup command
+   */
   public WarmupCommand getWarmupCommand(){
     return shooterWarmup; 
   }
 
+  /**
+   * Returns gamepad 1
+   * @return gamepad 1
+   */
   public Joystick getJoystick1() {
     return gamepad1;
   }
 
+  /**
+   * Returns gamepad 1
+   * @return gamepad 1
+   */
   public Joystick getJoystick2(){
     return gamepad2;
   }
 
+  /**
+   * Returns the "A" button on gamepad 1
+   * @return JoystickButton a
+   */
   public JoystickButton getButtonA1() {
     return aButton; 
   }
 
+  /**
+   * Returns the fancy LEDs
+   * @return blinkin
+   */
   public Lights getBlinkin() {
     return blinkin;
   }
 
-  /*public Command getDiagnosticsCommand() {
+  /*
+  public Command getDiagnosticsCommand() {
     return diagnosticsCommand;
-  }*/
+  }
+  */
 }

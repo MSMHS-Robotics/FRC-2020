@@ -1,52 +1,55 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.subsystems;
 
+// Gyro sensor
 import com.kauailabs.navx.frc.AHRS;
+
+// Encoders
+import edu.wpi.first.wpilibj.Encoder;
 import com.revrobotics.CANEncoder;
-//CANSparkMax
-//import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
-//import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+// Shuffleboard
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.CounterBase;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Encoder;
-//import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
+// Driver station
+import edu.wpi.first.wpilibj.DriverStation;
+
+// Drivetrain-y stuff
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+
+// Other
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
   //private ShuffleboardTab tab = Shuffleboard.getTab("drivetrain");
-  //private NetworkTableEntry testPIDthing = tab.add("testPIDthing", 1).getEntry();
   
-  AHRS ahrs;
-  double visionPIDconstant1 = Constants.visionPID[0];
-  double visionPIDconstant2 = Constants.visionPID[1];
-  double visionPIDconstant3 = Constants.visionPID[2];
+  // Gyro
+  private AHRS ahrs;
+
+  // Vision stuff
+  private double visionPIDconstant1 = Constants.visionPID[0];
+  private double visionPIDconstant2 = Constants.visionPID[1];
+  private double visionPIDconstant3 = Constants.visionPID[2];
   
-  PIDController visionPID = new PIDController(visionPIDconstant1, visionPIDconstant2, visionPIDconstant3);
-  PIDController headingPID = new PIDController(.15, 0, 0);
-  PIDController drivingPID = new PIDController(1, 0, 0);
+  private PIDController visionPID = new PIDController(visionPIDconstant1, visionPIDconstant2, visionPIDconstant3);
+  private PIDController headingPID = new PIDController(.15, 0, 0);
+  private PIDController drivingPID = new PIDController(1, 0, 0);
+
+  private boolean aligned = false;
+  private boolean alignZoom = true;
  
-  
+  // Shuffleboard
   private ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain Tab");
   
   private NetworkTableEntry visionConstraintMax = tab.addPersistent("VisionPIDMax", Constants.visionPIDconstraints[1]).getEntry();
@@ -83,6 +86,7 @@ public class Drivetrain extends SubsystemBase {
 
   private NetworkTableEntry resetGyroCommandEntry = tab.add("Reset Gyro", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
   
+  // Encoders
   private final CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
   private final CANEncoder encoderLeft1 = new CANEncoder(left1);
   private final CANSparkMax left2 = new CANSparkMax(2, MotorType.kBrushless);
@@ -96,37 +100,36 @@ public class Drivetrain extends SubsystemBase {
   private final CANSparkMax right3 = new CANSparkMax(6, MotorType.kBrushless);
   private final CANEncoder encoderRight3 = new CANEncoder(right3);
 
-  
+  // Powers for scaling inputs
   private double leftPow = 0;
   private double rightPow = 0;
   
-  SpeedControllerGroup leftSide = new SpeedControllerGroup(left1, left2, left3);
-  SpeedControllerGroup rightSide = new SpeedControllerGroup(right1, right2, right3);
-  
-  //encoder test
-  Encoder throughboreRight = new Encoder(6, 8);
-  Encoder throughboreLeft = new Encoder(2,3);
+  // Encoder test
+  private Encoder throughboreRight = new Encoder(6, 8);
+  private Encoder throughboreLeft = new Encoder(2,3);
 
+  // Drivetrain stuff
+  private SpeedControllerGroup leftSide = new SpeedControllerGroup(left1, left2, left3);
+  private SpeedControllerGroup rightSide = new SpeedControllerGroup(right1, right2, right3);
   private final DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
-  public double speed;
-  private boolean aligned = false;
-  private boolean alignZoom = true;
-
+  
   public Drivetrain() {
-    ledsOff();
-    // Sets the error tolerance to 5, and the error derivative tolerance to 10 per
-    // second
+    this.ledsOff(); // turn off Limelight LEDs
+    
+    // Sets the error tolerance to 5, and the error derivative tolerance to 10 per second
     headingPID.setTolerance(2, 5);
     headingPID.setIntegratorRange(-0.5, 0.5);
+
     // Enables continuous input on a range from -180 to 180
     headingPID.enableContinuousInput(-180, 180);
-    // Sets the error tolerance to 5, and the error derivative tolerance to 10 per
-    // second
+    
+    // Sets the error tolerance to 5, and the error derivative tolerance to 10 per second
     drivingPID.setTolerance(2, 5);
     drivingPID.setIntegratorRange(-0.5, 0.5);
     // Enables continuous input on a range from -180 to 180
     //drivingPID.enableContinuousInput(-180, 180);
 
+    // Encoder initialize stuff
     encoderLeft1.setPositionConversionFactor(1);
     encoderLeft2.setPositionConversionFactor(1);
     encoderLeft3.setPositionConversionFactor(1);
@@ -141,34 +144,19 @@ public class Drivetrain extends SubsystemBase {
     encoderRight1.setPosition(0);
     encoderRight2.setPosition(0);
     encoderRight3.setPosition(0);
-
     
     //through bore encoder
     throughboreRight.reset();
     throughboreLeft.reset();
 
-    
-
-
-
+    // Initialize gyro
     try {
-      /***********************************************************************
-       * navX-MXP: - Communication via RoboRIO MXP (SPI, I2C) and USB. - See
-       * http://navx-mxp.kauailabs.com/guidance/selecting-an-interface.
-       * 
-       * navX-Micro: - Communication via I2C (RoboRIO MXP or Onboard) and USB. - See
-       * http://navx-micro.kauailabs.com/guidance/selecting-an-interface.
-       * 
-       * VMX-pi: - Communication via USB. - See
-       * https://vmx-pi.kauailabs.com/installation/roborio-installation/
-       * 
-       * Multiple navX-model devices on a single robot are supported.
-       ************************************************************************/
       ahrs = new AHRS(SPI.Port.kMXP);
     } catch (RuntimeException ex) {
       DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
     }
-  } 
+  }
+
   //=================================================================================
   @Override
   public void periodic() {
@@ -180,7 +168,7 @@ public class Drivetrain extends SubsystemBase {
     throughBoreLeft.setDouble(throughboreLeft.getDistance());
     throughBoreRight.setDouble(throughboreRight.getDistance());
 
-   // Constants.headingIntegrator[0] = hIntegratorMin.getDouble(Constants.headingIntegrator[0]);
+    // Constants.headingIntegrator[0] = hIntegratorMin.getDouble(Constants.headingIntegrator[0]);
     //Constants.headingIntegrator[1] = hIntegratorMax.getDouble(Constants.headingIntegrator[1]);
     //no more constraints (what we clamp to in the PID stuff using Math.clamp())
 
@@ -195,6 +183,7 @@ public class Drivetrain extends SubsystemBase {
 
 
     //now for changing the PID values on robot and in Constants.java. this is going to be _very_ long
+    
     double tempVP = visionKp.getDouble(Constants.visionPID[0]);
     if(Constants.visionPID[0] != tempVP) {
       Constants.visionPID[0] = tempVP;
@@ -324,18 +313,34 @@ public class Drivetrain extends SubsystemBase {
     }
 
     //dang that is some messy code
-
   }
   //==================================================================================
+  
+  /**
+   * Resets our gyro (AHRS) so we don't kill people in auto
+   */
+  public boolean resetGyro() {
+    ahrs.reset();
+    return true;
+  }
+
+  /**
+   * Reset the headingPID
+   */
   public void headingPIDReset() {
     headingPID.reset();
   }
 
-  // idk if we need to reset again?
+  /**
+   * Reset the driving PID
+   */
   public void drivingPIDReset() {
     drivingPID.reset();
   }
 
+  /**
+   * Reset the encoders
+   */
   public void encoderReset(){
     encoderLeft1.setPosition(0);
     encoderLeft2.setPosition(0);
@@ -344,45 +349,62 @@ public class Drivetrain extends SubsystemBase {
     encoderRight2.setPosition(0);
     encoderRight3.setPosition(0);
   }
-  public void tankDrive(final double leftStick, final double rightStick) {
-    // don't mess with this, drivetrain is a member of a different class, this
-    // function is not recursive - Daniel's last message to creation
-    
-    //deadband stuff
-    
 
-    //scale inputs
+  /**
+   * Resets the vision PID
+   */
+  public void visionPIDReset() {
+    visionPID.reset();
+  }
+  
+  /**
+   * Does the actual driving part
+   * @param leftStick value of the left stick Y axis
+   * @param rightStick value of the right stick Y axis
+   */
+  public void tankDrive(final double leftStick, final double rightStick) {
+    //scale inputs (needs to be non-even number, otherwise we can't drive backwards)
     leftPow = Math.pow(-leftStick, 3);
     rightPow = Math.pow(-rightStick, 3);
     drivetrain.tankDrive(leftPow , rightPow); //actually drive
   }
 
-  public void visionPIDReset() {
-    visionPID.reset();
-  }
-
+  /**
+   * Uses the Limelight to get distance to goal
+   * Does this using an equation taken from the limelight docs
+   * @return the distance to the target in inches. If distance is -1 then we are too far away
+   */
   public Double getDist() {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
-    ledsOn();
+    
+    this.ledsOn();
+    
     double dist = 70.25 / Math.tan(10 + ty.getDouble(20)); //ooh maths. taken from limelight docs (equation is d = (h2-h1) / tan(a1+a2))
-    if(dist < 30) {
+    
+    if (dist < 30) {
       return dist;
-    }
-    else {
-      return dist - dist + 1;
-    }
+    } 
+    // else
+    return -1;
+
     //the 70.25 is height of center of the circle (in the hexagon frame) in inches minus how high lens is off the groun (20 inches) (h2 - h1)
     //10 is angle limelight lens is at (a1)
     //20 is a random default value to return (a2)
   }
 
+  /**
+   * Uses some arcane magical equation to return the RPM we need based on the distance to the target
+   * Found it on SE somewhere, but not really sure if it's correct
+   * @return the RPM needed to shoot the PCs to the goal
+    */
   public Double getNeededRPM() {
     double d = this.getDist(); //distance to target
     double angle = 45; //angle we are shooting at
     double g = 9.81; //acceleration due to gravity
     double h = 20; //height above ground we are shooting at
+    
     //the 60 is to convert RPM into seconds to get m/s for velocity. RPM / 60 * wheel radius = tangential velocity
     //wheel radius is 2 because we are using the blue 4" wheels
     //the ball rotates to match the tangential velocity so center of mass rotates to have .5 the velocity. so the * 2 of tangent_v equation cancels the /2 of this so you don't see it in the below actual code equation
@@ -390,10 +412,12 @@ public class Drivetrain extends SubsystemBase {
     return 60 * ((1 / Math.cos(angle) * Math.sqrt((0.5 * (d * d) * g) / (d * Math.tan(angle) + h))));
   }
 
+  /** Turns the Limelight LEDs off */
   public void ledsOff() {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
   }
 
+  /** Turns the Limelight LEDs on */
   public void ledsOn() {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
   }
@@ -404,41 +428,42 @@ public class Drivetrain extends SubsystemBase {
    * You need to import NetworkTable and NetworkTableEntry
    */
   public void visionAlign() {
-    ledsOn();
+    this.ledsOn(); // turn LEDs on so we can target
+    
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tv = table.getEntry("tv");
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
-    if(tv.getDouble(0) == 1) {
+    if (tv.getDouble(0) == 1) {
       NetworkTableEntry tx = table.getEntry("tx");
   
       //start loop
       double x_offset = tx.getDouble(0);
       visionError.setDouble(x_offset);
       drivetrain.arcadeDrive(0, MathUtil.clamp(-visionPID.calculate(x_offset), Constants.visionPIDconstraints[0], Constants.visionPIDconstraints[1]));
-      if(x_offset < Constants.visionTolerance[0]) {
-        aligned = true;
+      if (x_offset < Constants.visionTolerance[0]) { // If we are aligned close enough
+        aligned = true; // then we are aligned and can stop aligning
       }
-      else {
-        aligned = false;
+      else { // else,
+        aligned = false; // we need to continue turning
       }
     }
-    else {
-      drivetrain.arcadeDrive(0, 0);
+    else { // we are aligned then
+      drivetrain.arcadeDrive(0, 0); // and can stop driving
     }
-    //end loop
   }
 
   /**
-   * Aligns us with the vision target, but with 2x snipaaaaaaaaaa hardware zoom. 
+   * Aligns us with the vision target, but with 2x snipa hardware zoom. 
    * This function is called in the AlignToTargetCommand.java. 
    * You need to import NetworkTable and NetworkTableEntry
    */
   public void visionAlignSnipa() {
-    ledsOn();
+    this.ledsOn();
+
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tv = table.getEntry("tv");
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
-    if(tv.getDouble(0) == 1) {
+    if (tv.getDouble(0) == 1) {
       NetworkTableEntry tx = table.getEntry("tx");
   
       //start loop
@@ -459,13 +484,14 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
-   * this function returns if we are aligned with the vision target or not
+   * Returns if we are aligned with the vision target or not
+   * @return if we are aligned or not
    */
   public boolean isVisionAligned() {
-    //might be helpful sometime
     return aligned;
   }
 
+  /** Toggles whether we are using 1x or 2x zoom on the Limelight */
   public void toggleVisionAlign() {
     alignZoom = !alignZoom;
     if(alignZoom) {
@@ -476,63 +502,61 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
+  /**
+   * Returns if we are zooming or not
+   * @return if we are using 2x or 1x zoom on LL
+   */
   public boolean getVisionType() {
     return alignZoom;
   }
 
+  /**
+   * Gives average of left and right encoders
+   * Calls leftEncoderAverage() and rightEncoderAverage() and averages them
+   * @return L and R encoder average
+   */
   public double encoderAverage() {
-    double average = leftEncoderAverage();
-    average += rightEncoderAverage();
-    average /=2;
-    return average;
+    return (this.leftEncoderAverage() + this.rightEncoderAverage()) / 2;
   }
 
+  /**
+   * Gives average of left encoders
+   * @return average of left encoders
+   */
   public double leftEncoderAverage() {
-    double average = encoderLeft1.getPosition();
-     average += encoderLeft2.getPosition();
-     average += encoderLeft3.getPosition();
-     average /= 3;
-    return average;
+    return (encoderLeft1.getPosition() + encoderLeft2.getPosition() + encoderLeft3.getPosition()) / 3;
   }
 
+  /**
+   * Gives average of right encoders
+   * @return average of right encoders
+   */
   public double rightEncoderAverage() {
-    double average = encoderRight1.getPosition();
-     average += encoderRight2.getPosition();
-     average += encoderRight3.getPosition();
-     average /= 3;
-    return average;
+    return (encoderRight1.getPosition() + encoderRight2.getPosition() + encoderRight3.getPosition()) / 3;
   }
 
-
-
+  /**
+   * Drives the robot on a heading
+   * @param power the speed to drive at
+   * @param angle the angle to drive on/turn to
+   * @return if the robot is on the heading or is off by a few degs
+   */
   public boolean driveOnHeading(double power, double angle) {
-    final double currentAngle = ahrs.getYaw(); // is this right?
-    final double turnPower = MathUtil.clamp(headingPID.calculate(currentAngle, angle), Constants.headingPIDconstraints[0], Constants.headingPIDconstraints[1]);
+    double turnPower = MathUtil.clamp(headingPID.calculate(ahrs.getYaw(), angle), Constants.headingPIDconstraints[0], Constants.headingPIDconstraints[1]);
     drivetrain.arcadeDrive(power, turnPower);
     return headingPID.atSetpoint();
   }
 
-  public boolean driveDistance(double distance,double angle) {
-    final double currentDistance = encoderAverage();// is this right?
-    final double drivePower = MathUtil.clamp(drivingPID.calculate(currentDistance, angle), -0.5, 0.5);
-    final boolean headingAligned = this.driveOnHeading(drivePower, angle);
+  /**
+   * Drives the robot a distance on an angle
+   * @param distance how far to drive in inches
+   * @param angle the angle to rive on
+   * @return if we are aligned and have reached the distance
+   */
+  public boolean driveDistance(double distance, double angle) {
+    double drivePower = MathUtil.clamp(drivingPID.calculate(this.encoderAverage(), angle), -0.5, 0.5);
+    boolean headingAligned = this.driveOnHeading(drivePower, angle);
     return drivingPID.atSetpoint() && headingAligned;
   }
-
-  /**
-   * Resets our gyro (AHRS) so we don't kill people in auto
-   */
-  public boolean resetGyro() {
-    ahrs.reset();
-    return true;
-  }
-
-  //would this help? Maybe make smaller?
-  /*
-  private NetworkTableEntry addP(String name, double defaultValue) {
-    return tab.addPersistent(name, defaultValue).getEntry();
-  }
-  */
-
 }
 

@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 /**
@@ -32,7 +25,6 @@ public final class Constants {
     public static double ShooterkFFdivide = 10;
 
     //angle PID Constants
-   
     public static double AnglekP = 0.15;
     public static double AnglekI = 0.0;
     public static double AnglekD = 1.0;
@@ -49,8 +41,12 @@ public final class Constants {
     public static double accelerationTolerance = 1;
     public static double RPMTolerance = 100;
     public static double AngleTolerance = 10;
+    
+    // Vision constants
     public static double[] visionPID = {0.019, 0.08, 0.0085};
     public static double[] visionPIDconstraints = {-0.35, 0.35};
+    
+    // Auton constants
     public static double[] headingPID = {0.05,0.001,0.001};
     public static double[] headingPIDconstraints = {-0.5, 0.5};
     public static double[] drivingPID = {1, 0, 0};
@@ -74,19 +70,8 @@ public final class Constants {
     public static double lTickBoreConstant = 1;
     //public static double[] headingIntegrator = {-0.5, 0.5};
 
-    
-    
-
-    public void setVisionPID(double kp, double ksomething, double ksomethingelse) {
-        visionPID[0] = kp;
-        visionPID[1] = ksomething;
-        visionPID[2] = ksomethingelse;
-    }
-
-    //climber (may need to look at this)
+    //climber (not much)
     public static  double climbSpeed = 1;
-	public static double motorPosition = 0;//fix later
-    public static double motorUp = 10;//fix later
     
     //climberPID
     public static double extendclimbkP = 0.0001;
@@ -103,6 +88,4 @@ public final class Constants {
     public static double intakekD = 0.0001;
     public static final int kTimeoutMsin = 30;
     public static final int kPIDLoopIdxin = 0;
-
-
 }

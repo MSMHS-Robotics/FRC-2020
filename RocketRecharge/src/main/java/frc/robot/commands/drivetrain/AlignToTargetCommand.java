@@ -4,11 +4,18 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Lights;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+/** A command to align the robot with the vision target */
 public class AlignToTargetCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  
   private final Drivetrain drivetrain;
   private final Lights blinkin;
 
+  /** 
+   * Constructor
+   * @param drivetrain a drivetrain subsystem
+   * @param blinkin a lights subsystem
+   */
   public AlignToTargetCommand(Drivetrain drivetrain, Lights blinkin) {
     this.drivetrain = drivetrain;
     this.blinkin = blinkin;
@@ -24,18 +31,20 @@ public class AlignToTargetCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(drivetrain.getVisionType()) { //true is snipa, false is normal
+    if (drivetrain.getVisionType()) { //true is snipa, false is normal
       drivetrain.visionAlignSnipa();
-      if(drivetrain.isVisionAligned()) {
+      if (drivetrain.isVisionAligned()) {
         blinkin.setGreen();
       }
       else {
         blinkin.setRedLarson();
       }
     }
+
+    // Otherwise 1x zoom
     else {
       drivetrain.visionAlign();
-      if(drivetrain.isVisionAligned()) {
+      if (drivetrain.isVisionAligned()) {
         blinkin.setGreen();
       }
       else {
@@ -47,7 +56,7 @@ public class AlignToTargetCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //drivetrain.ledsOff();
+    drivetrain.ledsOff();
     blinkin.setRedLarson();
   }
 

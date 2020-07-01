@@ -1,23 +1,24 @@
 package frc.robot.subsystems;
 
+// import Talon SRX stuff
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+// Import shuffleboard stuff
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
 
 	private WPI_TalonSRX extendMotor;
 	private WPI_TalonSRX climbMotor;
-	private DigitalInput bottomLimitSwitch;
-
-	double downSetpoint = 0;
+	
+	private double downSetpoint = 0;
 	
 	// shuffleboard
 	private ShuffleboardTab climberTab = Shuffleboard.getTab("Climber");
@@ -33,7 +34,7 @@ public class Climber extends SubsystemBase {
 	public Climber() {
 		extendMotor = new WPI_TalonSRX(13);
 		climbMotor = new WPI_TalonSRX(14);
-		//bottomLimitSwitch = new DigitalInput(0); don't need this
+		
 		extendMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,Constants.kPIDLoopIdx,Constants.kTimeoutMs);
 		extendMotor.setSelectedSensorPosition(0);
 		extendMotor.setSensorPhase(true);
@@ -42,6 +43,7 @@ public class Climber extends SubsystemBase {
 		if (extendMotor != null) {
 			extendMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 		}
+
 		// Config the peak and nominal outputs
 		if (extendMotor != null) {
 			extendMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
@@ -59,41 +61,51 @@ public class Climber extends SubsystemBase {
 		}
 	}
 	
+	/**
+    * Gets difference between distancesetpoint and what we're currently at
+    * @return extend error
+    */
 	public double GetExtendError() {
 		return extendMotor.getSelectedSensorPosition() - Constants.distancesetpoint;
 	}
 
-	public void raiseClimberPID() {//not really PID
+	/**
+	 * Raises the climber at a constant speed so we can prepare to climb
+	 */
+	public void raiseClimber() {
 		if (extendMotor != null) {
 			extendMotor.set(ControlMode.PercentOutput, -Constants.climbSpeed);
 		}
 	}
 
-
+	/**
+	 * Climbs up at a constant speed
+	 */
 	public void climbUp() {
 		if (climbMotor != null) {
 			climbMotor.set(ControlMode.PercentOutput, Constants.climbSpeed);
 		}
 	}
 
-	public void climbDown() {
-		if (climbMotor != null) {
-			climbMotor.set(ControlMode.PercentOutput, Constants.climbSpeed);
-		}
-	}
-
+	/**
+	 * Stops the extend motor
+	 */
 	public void stopRaise() {
 		if (extendMotor != null) {
 			extendMotor.set(0);
 		}
 	}
 
+	/**
+	 * Stops the climb motor
+	 */
 	public void stopClimb() {
 		if (climbMotor != null) {
 			climbMotor.set(0);
 		}
 	}
 	
+	// Shuffleboard stuff
 	@Override
 	public void periodic() {
 		extendError.setDouble(GetExtendError());

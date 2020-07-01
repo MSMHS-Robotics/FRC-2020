@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
     //climberCamera = CameraServer.getInstance().startAutomaticCapture(1);
     //climberCamera.setVideoMode(PixelFormat.kMJPEG, 25, 25, 2);
 
-   // monitor = robotContainer.getDiagnosticsCommand();
+    // monitor = robotContainer.getDiagnosticsCommand();
   }
 
   /**
@@ -100,8 +100,8 @@ public class Robot extends TimedRobot {
     if(gamepad1.getPOV() == -1) {
       wasPressed = false;
     }
+
     else if(!wasPressed) {
-      
       //180 is up and 0 is down
       if(gamepad1.getPOV() == 180) {
         if(tempCurrAuto < robotContainer.getLength() - 1) {
@@ -119,7 +119,6 @@ public class Robot extends TimedRobot {
       }
     }
    
-    
     CurrentAuto.setString(robotContainer.getName(tempCurrAuto));
   }
 

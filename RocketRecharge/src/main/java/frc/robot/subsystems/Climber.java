@@ -13,6 +13,7 @@ import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/** A climber subsystem class */
 public class Climber extends SubsystemBase {
 
 	private WPI_TalonSRX extendMotor;
@@ -31,6 +32,7 @@ public class Climber extends SubsystemBase {
 	private NetworkTableEntry distanceSetpoint = climberTab.addPersistent("Extend Distance Setpoint", Constants.distancesetpoint).getEntry();
 	private NetworkTableEntry extendError = climberTab.addPersistent("Extend Error", 0).getEntry();
 	
+	/** A climber subsystem class */
 	public Climber() {
 		extendMotor = new WPI_TalonSRX(13);
 		climbMotor = new WPI_TalonSRX(14);

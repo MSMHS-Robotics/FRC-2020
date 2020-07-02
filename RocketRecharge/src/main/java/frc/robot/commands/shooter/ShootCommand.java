@@ -21,20 +21,25 @@ public class ShootCommand extends RocketTimedCommand {
     private boolean isAuto;
     
     /**
-     * Creates a new ExampleCommand.
+     * A command to shoot.
      *
-     * @param shooter The subsystem used by this command.
+     * @param shooter a shooter subsystem
+     * @param intake an intake subsystem
+     * @param drivetrain a drivetrain subystem
+     * @param joystick a joystick
+     * @param preset the preset to shoot at
+     * @param timout the timout for the command
+     * @param isAuto a boolean representing if we are running in auton or not
      */
-    public ShootCommand(Shooter shooter, Intake intake, Joystick joystick, int preset, double timeout, boolean auto,
-            Drivetrain drivetrain) {
+    public ShootCommand(Shooter shooter, Intake intake, Drivetrain drivetrain, Joystick joystick, int preset, double timeout, boolean isAuto) {
         this.shooter = shooter;
         this.intake = intake;
         this.joystick = joystick;
         this.preset = preset;
         this.timeout = timeout;
         this.drivetrain = drivetrain;
-        isAuto = auto;
-        // Use addRequirements() here to declare subsystem dependencies.
+        this.isAuto = isAuto;
+        
         addRequirements(shooter, intake, drivetrain);
     }
 
@@ -44,7 +49,6 @@ public class ShootCommand extends RocketTimedCommand {
         if (isAuto) {
             super.setTimeout(timeout);
         }
-
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -61,24 +65,23 @@ public class ShootCommand extends RocketTimedCommand {
         shooter.setShootingFlag(true);
 
         switch (val) {
-        case 0:
-            shooter.trenchShot();
-            break;
-        case 90:
-            shooter.tenFootShot();
-            break;
-        case 180:
-            shooter.layupShot();
-            break;
-        case 270:
-            shooter.customShot(drivetrain.getNeededRPM());
-            break;
-        default:
-            //warmup sets up the case
-
-            break;
+            case 0:
+                shooter.trenchShot();
+                break;
+            case 90:
+                shooter.tenFootShot();
+                break;
+            case 180:
+                shooter.layupShot();
+                break;
+            case 270:
+                shooter.customShot(drivetrain.getNeededRPM());
+                break;
+            default:
+                //warmup sets up the case
+                break;
         }
-
+        
         if (shooter.isShooterGood()) {
             intake.feed(1);
         } else {

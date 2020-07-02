@@ -31,9 +31,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants;
 
+/** A Drivetrain subsystem class */
 public class Drivetrain extends SubsystemBase {
-  //private ShuffleboardTab tab = Shuffleboard.getTab("drivetrain");
-  
   // Gyro
   private AHRS ahrs;
 
@@ -113,6 +112,7 @@ public class Drivetrain extends SubsystemBase {
   private SpeedControllerGroup rightSide = new SpeedControllerGroup(right1, right2, right3);
   private final DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
   
+  /** A Drivetrain subsystem class */
   public Drivetrain() {
     this.ledsOff(); // turn off Limelight LEDs
     
@@ -157,7 +157,6 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
-  //=================================================================================
   @Override
   public void periodic() {
     //ooooooooof get ready
@@ -314,8 +313,7 @@ public class Drivetrain extends SubsystemBase {
 
     //dang that is some messy code
   }
-  //==================================================================================
-  
+ 
   /**
    * Resets our gyro (AHRS) so we don't kill people in auto
    */

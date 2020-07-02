@@ -21,6 +21,7 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj.Timer;
 import java.util.Map;
 
+/** A Shooter subsystem class */
 public class Shooter extends SubsystemBase {
   // Motors
   private CANSparkMax shooterMotor;
@@ -74,7 +75,7 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry LayupAngle = tab2.addPersistent("LayupAngle", Constants.LayupAngle).getEntry();
   private NetworkTableEntry LayupRPM = tab2.addPersistent("LayupRPM", Constants.LayupRPM).getEntry();
 
-
+  /** A Shooter subsystem class */
   public Shooter() {
     shootingFlag = false;
     shooterMotor = new CANSparkMax(7, MotorType.kBrushless);
@@ -86,7 +87,6 @@ public class Shooter extends SubsystemBase {
       encoder = shooterMotor.getEncoder();
     }
 
-   
     // second motor
     shooterMotor2 = new CANSparkMax(8, MotorType.kBrushless);
     if (shooterMotor2 != null){

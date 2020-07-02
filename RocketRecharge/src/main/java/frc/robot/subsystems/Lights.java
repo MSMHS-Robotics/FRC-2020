@@ -9,6 +9,7 @@ public class Lights extends SubsystemBase {
     // Easiest to configure it as a Spark
     private Spark blinkin;
 
+    /** For use with the REV Blinkin */
     public Lights() {
         blinkin = new Spark(0);
     }

@@ -8,6 +8,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Shooter;
 
+/** An auto command sequence to shoot with the Limelight. I guess. */
 public class VisionShotSeq extends SequentialCommandGroup {
     public VisionShotSeq(Drivetrain drivetrain, Lights blinkin, Joystick joystick, Shooter shooter, Intake intake) {
         super(

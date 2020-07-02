@@ -3,37 +3,25 @@ package frc.robot.commands.shooter;
 import frc.robot.commands.RocketTimedCommand;
 import frc.robot.subsystems.Shooter;
 
+/** A command to stop the shooter */
 public class ShooterStopCommand extends RocketTimedCommand {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-    private final Shooter shooter;
-    private Boolean stopSucceded;
+    private Shooter shooter;
     
     /**
-     * Creates a new StopShooterCommand.
+     * A command to stop the shooter.
      *
-     * @param shooter The subsystem used by this command.
+     * @param shooter a shooter subsystem
      */
     public ShooterStopCommand(Shooter shooter) {
         this.shooter = shooter;
-        stopSucceded = false;
         addRequirements(shooter);
-    }
-
-    // Called when the command is initially scheduled.
-    @Override
-    public void initialize() {
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         shooter.stopPercent();
-    }
-
-    // Called once the command ends or is interrupted.
-    @Override
-    public void end(boolean interrupted) {
-        
     }
 
     // Returns true when the command should end.

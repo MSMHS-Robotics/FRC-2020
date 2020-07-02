@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+/** An Intake subsystem class */
 public class Intake extends SubsystemBase {
 	private WPI_TalonSRX positionMotor;
 	private WPI_TalonSRX intakeMotor;
@@ -60,6 +61,7 @@ public class Intake extends SubsystemBase {
 	private NetworkTableEntry intakeError = Intaketab.addPersistent("Intake Error", 0).getEntry();
 	private NetworkTableEntry intakeEncoderValue = Intaketab.addPersistent("IntakeEncoder", 0).getEntry();
 
+    /** An Intake subsystem class */
 	public Intake() {
 		// Motors
 		intakeMotor = new WPI_TalonSRX(15);
@@ -187,7 +189,7 @@ public class Intake extends SubsystemBase {
 	 */
 	public void setIdle() {
 		if (!triggerSensor.get()) {
-			this.feed(0)
+			this.feed(0);
 		} else {
 			this.feed(0);
 		}

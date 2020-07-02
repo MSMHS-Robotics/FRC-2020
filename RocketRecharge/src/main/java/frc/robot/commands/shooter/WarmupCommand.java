@@ -16,40 +16,39 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
- * An example command that uses an example subsystem.
+ * A command to warmup the shooter before shooting
  */
 public class WarmupCommand extends CommandBase {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-    private final Shooter shooter;
-    private final Joystick joystick;
+    private Shooter shooter;
+    private Joystick joystick;
     private int preset;
     private boolean isAuto;
     private Drivetrain drivetrain;
 
     /**
-     * Creates a new ExampleCommand.
+     * A command to warmup the shooter before shooting.
      *
-     * @param shooter The subsystem used by this command.
+     * @param shooter a shooter subsystem
+     * @param drivetrain a drivetrain subystem
+     * @param joystick a joystick
+     * @param preset the preset to shoot at
+     * @param isAuto a boolean representing if we are running in auton or not
      */
-    public WarmupCommand(Shooter shooter, Joystick joystick, int preset, boolean auto, Drivetrain drivetrain) {
+    public WarmupCommand(Shooter shooter, Drivetrain drivetrain, Joystick joystick, int preset, boolean isAuto) {
     this.shooter = shooter;
     this.joystick = joystick;
     this.preset = preset;
-    isAuto = auto;
+    this.isAuto = isAuto;
     this.drivetrain = drivetrain;
-    // Use addRequirements() here to declare subsystem dependencies.
+    
     addRequirements(shooter, drivetrain);
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      int val;
+    int val;
 
     if(isAuto){
         val = preset;

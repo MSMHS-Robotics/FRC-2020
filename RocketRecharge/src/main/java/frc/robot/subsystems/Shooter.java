@@ -75,6 +75,9 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry LayupAngle = tab2.addPersistent("LayupAngle", Constants.LayupAngle).getEntry();
   private NetworkTableEntry LayupRPM = tab2.addPersistent("LayupRPM", Constants.LayupRPM).getEntry();
 
+  private ShuffleboardTab toggleTab = Shuffleboard.getTab("Toggle Tab");
+	private NetworkTableEntry toggleDiag = toggleTab.add("Comp Mode?", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+
   /** A Shooter subsystem class */
   public Shooter() {
     shootingFlag = false;
@@ -246,6 +249,11 @@ public class Shooter extends SubsystemBase {
     ShotAcceleration.setDouble(shotAcceleration);
     isShooterGood.setBoolean(isShooterGood());
     isShooting.setBoolean(shootingFlag);
+
+		// If comp mode is true
+		if(toggleDiag.getBoolean(false)) { 
+			continue;
+		}
   
     //now for changing the PID values on robot and in Constants.java. this is going to be _very_ long
     double tempSP = ShooterkP.getDouble(Constants.ShooterkP);

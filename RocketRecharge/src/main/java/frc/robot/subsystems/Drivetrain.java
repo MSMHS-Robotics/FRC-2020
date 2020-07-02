@@ -85,6 +85,9 @@ public class Drivetrain extends SubsystemBase {
 
   private NetworkTableEntry resetGyroCommandEntry = tab.add("Reset Gyro", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
   
+	private ShuffleboardTab toggleTab = Shuffleboard.getTab("Toggle Tab");
+	private NetworkTableEntry toggleDiag = toggleTab.add("Comp Mode?", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+
   // Encoders
   private final CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
   private final CANEncoder encoderLeft1 = new CANEncoder(left1);
@@ -180,6 +183,10 @@ public class Drivetrain extends SubsystemBase {
     Constants.drivingPIDconstraints[0] = drivingConstraintMin.getDouble(Constants.drivingPIDconstraints[0]);
     Constants.drivingPIDconstraints[1] = drivingConstraintMax.getDouble(Constants.drivingPIDconstraints[1]);
 
+    // If comp mode is true
+		if(toggleDiag.getBoolean(false)) { 
+			continue;
+		}
 
     //now for changing the PID values on robot and in Constants.java. this is going to be _very_ long
     

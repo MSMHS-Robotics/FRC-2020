@@ -32,6 +32,9 @@ public class Climber extends SubsystemBase {
 	private NetworkTableEntry distanceSetpoint = climberTab.addPersistent("Extend Distance Setpoint", Constants.distancesetpoint).getEntry();
 	private NetworkTableEntry extendError = climberTab.addPersistent("Extend Error", 0).getEntry();
 	
+	private ShuffleboardTab toggleTab = Shuffleboard.getTab("Toggle Tab");
+	private NetworkTableEntry toggleDiag = toggleTab.add("Comp Mode?", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+  
 	/** A climber subsystem class */
 	public Climber() {
 		extendMotor = new WPI_TalonSRX(13);
@@ -112,6 +115,11 @@ public class Climber extends SubsystemBase {
 	public void periodic() {
 		extendError.setDouble(GetExtendError());
 		extendPosition.setDouble(extendMotor.getSelectedSensorPosition());
+
+		// If comp mode is true
+		if(toggleDiag.getBoolean(false)) { 
+			continue;
+		}
 		
 		double TempClimberSpeed = climbSpeed.getDouble(1);
 		if (TempClimberSpeed != Constants.climbSpeed) {

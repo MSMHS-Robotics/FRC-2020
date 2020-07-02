@@ -61,6 +61,10 @@ public class Intake extends SubsystemBase {
 	private NetworkTableEntry intakeError = Intaketab.addPersistent("Intake Error", 0).getEntry();
 	private NetworkTableEntry intakeEncoderValue = Intaketab.addPersistent("IntakeEncoder", 0).getEntry();
 
+	private ShuffleboardTab toggleTab = Shuffleboard.getTab("Toggle Tab");
+	private NetworkTableEntry toggleDiag = toggleTab.add("Comp Mode?", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+
+
     /** An Intake subsystem class */
 	public Intake() {
 		// Motors
@@ -225,6 +229,11 @@ public class Intake extends SubsystemBase {
 		// Wait why do we set to 0 constantly?
 		//TODO
 		this.setIdle();
+
+		// If comp mode is true
+		if(toggleDiag.getBoolean(false)) { 
+			continue;
+		}
 
 		double tempINP = intakekP.getDouble(Constants.intakekP);
 		if (Constants.intakekP != tempINP && positionMotor != null) {

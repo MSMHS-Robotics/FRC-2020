@@ -34,6 +34,10 @@ public class Robot extends TimedRobot {
 
   private int tempCurrAuto = 0;
   private ShuffleboardTab autoTab = Shuffleboard.getTab("Auto Tab");
+
+  private ShuffleboardTab toggleTab = Shuffleboard.getTab("Toggle Tab");
+  private NetworkTableEntry toggleDiag = toggleTab.add("Comp Mode?", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+
   private NetworkTableEntry CurrentAuto = autoTab.addPersistent("Current Auto", "initializing").getEntry();
   private NetworkTableEntry allAutos = autoTab.addPersistent("All Auto Programs", "intiializing").getEntry();
   private Joystick gamepad1;
@@ -63,7 +67,7 @@ public class Robot extends TimedRobot {
     camera1.setVideoMode(PixelFormat.kMJPEG, 400, 300, 10);
     //climberCamera = CameraServer.getInstance().startAutomaticCapture(1);
     //climberCamera.setVideoMode(PixelFormat.kMJPEG, 25, 25, 2);
-
+    
     // monitor = robotContainer.getDiagnosticsCommand();
   }
 
@@ -81,6 +85,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
     //monitor.schedule();
 
   }

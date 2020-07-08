@@ -73,7 +73,7 @@ public class Intake extends SubsystemBase {
 		triggerMotor = new CANSparkMax(12, MotorType.kBrushless);
 		positionMotor = new WPI_TalonSRX(10);
 
-		triggerSensor = new DigitalInput(0);
+		//triggerSensor = new DigitalInput(0);
 		
 		/*
 		// Sensors

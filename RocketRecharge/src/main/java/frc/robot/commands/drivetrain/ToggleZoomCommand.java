@@ -1,6 +1,6 @@
 package frc.robot.commands.drivetrain;
 
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
@@ -8,21 +8,21 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  */
 public class ToggleZoomCommand extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-  private Drivetrain drivetrain;
+  private Limelight limelight;
 
   /**
    * Constructor
-   * @param drivetrain a drivetrain subsystem
+   * @param limelight a limelight subsystem
    */
-  public ToggleZoomCommand(Drivetrain drivetrain) {
-    this.drivetrain = drivetrain;
-    addRequirements(drivetrain);
+  public ToggleZoomCommand(Limelight limelight) {
+    this.limelight = limelight;
+    addRequirements(limelight);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.toggleVisionAlign();
+    limelight.toggleZoom();
   }
 
   // Returns true when the command should end.

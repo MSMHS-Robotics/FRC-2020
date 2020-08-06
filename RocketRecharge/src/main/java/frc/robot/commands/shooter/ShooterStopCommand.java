@@ -21,7 +21,7 @@ public class ShooterStopCommand extends RocketTimedCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        shooter.stopPercent();
+        shooter.stop();
     }
 
     // Returns true when the command should end.

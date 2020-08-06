@@ -46,12 +46,13 @@ import frc.robot.subsystems.Diagnostics;;
  */
 public class RobotContainer {
   //subsytems
-  private final Climber climber = new Climber();
-  private final Intake intake = new Intake();
-  private final Shooter shooter = new Shooter();
-  private final Drivetrain drivetrain = new Drivetrain();
-  private final Lights blinkin = new Lights();
+  private final Climber climber = new Climber(13, 14);
   private final Diagnostics diagnostics = new Diagnostics();
+  private final Drivetrain drivetrain = new Drivetrain(1, 2, 3, 4, 5, 6);
+  private final Intake intake = new Intake(10, 11, 15, 12);
+  private final Lights blinkin = new Lights(0);
+  private final Limelight limelight = new Limelight();
+  private final Shooter shooter = new Shooter(7, 8);
   
   //joysticks
   //raw axis 2 and 5 are the Y axis for the left and right joysticks.
@@ -91,7 +92,7 @@ public class RobotContainer {
   
   //drivetrain
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
-  private final ToggleVisionTypeCommand toggleVision = new ToggleVisionTypeCommand(drivetrain);
+  private final ToggleZoomCommand toggleVision = new ToggleZoomCommand(limelight);
   private final SetRedHeartbeatCommand setFire = new SetRedHeartbeatCommand(blinkin);
   private final AlertHumanPlayerCommand setRainbow = new AlertHumanPlayerCommand(blinkin);
   
@@ -110,15 +111,13 @@ public class RobotContainer {
   private final RunIntakeCommand setIdle = new RunIntakeCommand(intake, 0);
   
   //shooter
-  //private final ShooterStop stopShooter = new ShooterStop(shooter);
   private final ShooterStopCommand stopShooter = new ShooterStopCommand(shooter);
   private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad2, 1, false, drivetrain);
   private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
   private final ShooterStopCommand stopWarmupPlease = new ShooterStopCommand(shooter);
-  //private final WarmupThenShoot shootTeleop = new WarmupThenShoot(shooter, gamepad1, drivetrain, intake);
-
+  
   //diagnostics
-  //private final Update diagnosticsCommand = new Update(diagnostics);
+  private final Update diagnosticsCommand = new Update(diagnostics);
 
   //Stupid axis stuff
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently
@@ -127,8 +126,7 @@ public class RobotContainer {
     gamepad1.getRawAxis(5)),
     drivetrain);
   //this is jank and I have no idea if it will work
-  //private final RunCommand shoot = new RunCommand(() -> {if(gamepad1.getRawAxis(3) < 0) {shooterWarmup.execute();} else{shooterWarmup.end(false);}});
- 
+  
   //auto selector stuff
   private TreeMap<String, Command> autos = new TreeMap<String, Command>();
   private ArrayList<String> autoNames;

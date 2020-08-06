@@ -101,7 +101,7 @@ public class ShootBurstCommand extends RocketTimedCommand {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        shooter.stopPlease();
+        shooter.stop();
         intake.setIdle();
     }
 

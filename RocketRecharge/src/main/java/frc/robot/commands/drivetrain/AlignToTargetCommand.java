@@ -19,7 +19,7 @@ public class AlignToTargetCommand extends CommandBase {
   public AlignToTargetCommand(Drivetrain drivetrain, Lights blinkin) {
     this.drivetrain = drivetrain;
     this.blinkin = blinkin;
-    addRequirements(drivetrain);
+    addRequirements(drivetrain, blinkin);
   }
 
   // Called when the command is initially scheduled.
@@ -31,38 +31,24 @@ public class AlignToTargetCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (drivetrain.getVisionType()) { //true is snipa, false is normal
-      drivetrain.visionAlignSnipa();
-      if (drivetrain.isVisionAligned()) {
-        blinkin.setGreen();
-      }
-      else {
-        blinkin.setRedLarson();
-      }
+    boolean aligned = drivetrain.visionAlign();
+    if (aligned) {
+      blinkin.setGreen();
     }
-
-    // Otherwise 1x zoom
     else {
-      drivetrain.visionAlign();
-      if (drivetrain.isVisionAligned()) {
-        blinkin.setGreen();
-      }
-      else {
-        blinkin.setRedLarson();
-      }
+      blinkin.setRedLarson();
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.ledsOff();
     blinkin.setRedLarson();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return drivetrain.isVisionAligned();
+    return aligned;
   }
 }

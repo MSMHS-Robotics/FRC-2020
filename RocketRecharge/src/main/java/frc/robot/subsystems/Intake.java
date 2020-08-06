@@ -21,71 +21,29 @@ import frc.robot.Constants;
 /** An Intake subsystem class */
 public class Intake extends SubsystemBase {
 	private WPI_TalonSRX positionMotor;
-	private WPI_TalonSRX intakeMotor;
 	private WPI_TalonSRX beltMotor;
+	private WPI_TalonSRX intakeMotor;
 	private CANSparkMax triggerMotor;
 	
 	private boolean intakeExtended = false;
-
-	/*
-	// Sensor stuff
-	private DigitalInput triggerSensor;
-	private DigitalInput detector1;
-	private DigitalInput detector2;
-	private DigitalInput detector3;
-	private DigitalInput detector4;
-	private DigitalInput detector5;
-	private DigitalInput[] detectors;
-	*/
 
 	// Shuffleboard
 	private ShuffleboardTab Intaketab = Shuffleboard.getTab("Intake Tab");
 	private NetworkTableEntry intakePosition = Intaketab.addPersistent("Intake Position", false).getEntry();
 
-	/*
-	private NetworkTableEntry irAll = Intaketab.addPersistent("Has Any Ball", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
-	private NetworkTableEntry irTrigger = Intaketab.addPersistent("Chamber", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
-	private NetworkTableEntry ir1 = Intaketab.addPersistent("Ball 1", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
-	private NetworkTableEntry ir2 = Intaketab.addPersistent("Ball 2", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
-	private NetworkTableEntry ir3 = Intaketab.addPersistent("Ball 3", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
-	private NetworkTableEntry ir4 = Intaketab.addPersistent("Ball 4", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
-	private NetworkTableEntry ir5 = Intaketab.addPersistent("Ball 5", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
-	
-	private NetworkTableEntry[] irs;
-	*/
-
-	private NetworkTableEntry intakekP = Intaketab.addPersistent("IntakekP", Constants.intakekP).getEntry();
-	private NetworkTableEntry intakekI = Intaketab.addPersistent("IntakekI", Constants.intakekI).getEntry();
-	private NetworkTableEntry intakekD = Intaketab.addPersistent("IntakekD", Constants.intakekD).getEntry();
-	private NetworkTableEntry intakeSetpoint = Intaketab.addPersistent("Intake Setpoint", Constants.intakesetpoint).getEntry();
-	private NetworkTableEntry intakeError = Intaketab.addPersistent("Intake Error", 0).getEntry();
-	private NetworkTableEntry intakeEncoderValue = Intaketab.addPersistent("IntakeEncoder", 0).getEntry();
-
-	private ShuffleboardTab toggleTab = Shuffleboard.getTab("Toggle Tab");
-	private NetworkTableEntry toggleDiag = toggleTab.add("Comp Mode?", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
-
-
-    /** An Intake subsystem class */
-	public Intake() {
+    /** An Intake subsystem class
+	 * @param positionPort the port for the position motor
+	 * @param beltPort the port for the belt motors
+	 * @param intakePort the port for the intake (wheel shaft) motor
+	 * @param triggerPort the port for the trigger motor
+	 */
+	public Intake(int positionPort, int beltPort, int intakePort, int triggerPort) {
 		// Motors
-		intakeMotor = new WPI_TalonSRX(15);
-		beltMotor = new WPI_TalonSRX(11);
-		triggerMotor = new CANSparkMax(12, MotorType.kBrushless);
 		positionMotor = new WPI_TalonSRX(10);
+		beltMotor = new WPI_TalonSRX(11);
+		intakeMotor = new WPI_TalonSRX(15);
+		triggerMotor = new CANSparkMax(12, MotorType.kBrushless);
 
-		//triggerSensor = new DigitalInput(0);
-		
-		/*
-		// Sensors
-		irs = new NetworkTableEntry[] { ir1, ir2, ir3, ir4, ir5, irTrigger };
-		detector1 = new DigitalInput(4);
-		detector2 = new DigitalInput(5);
-		detector3 = new DigitalInput(6);
-		detector4 = new DigitalInput(7);
-		detector5 = new DigitalInput(8);
-		detectors = new DigitalInput[] { detector1, detector2, detector3, detector4, detector5, triggerSensor };
-		*/
-		
 		positionMotor.set(ControlMode.PercentOutput, 0);
 		positionMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx, Constants.kTimeoutMsin);
 		positionMotor.setSelectedSensorPosition(0);
@@ -189,73 +147,20 @@ public class Intake extends SubsystemBase {
 	}
 
 	/**
-	 * Leftover broken dreams of using sensors
-	 */
-	public void setIdle() {
-		if (!triggerSensor.get()) {
-			this.feed(0);
-		} else {
-			this.feed(0);
-		}
-	}
-
-	/**
 	 * Returns if we have a ball somewhere in the robot using the IR sensors
 	 * Currently does nothing because we don't have IR sensors
 	 * @return true if we have a ball, false otherwise
 	 */
 	public boolean hasBall() {
-		/*
-		for (int x = 0; x < detectors.length; x++) {
-			irs[x].setBoolean(detectors[x].get()); // complete jank
-			if (detectors[x].get()) {
-				irAll.setBoolean(true);
-				return true;
-			}
-		}
-		return false;
-		*/
 		return true;
 	}
 	
 	// Shuffleboard
 	@Override
 	public void periodic() {
-		intakeEncoderValue.setDouble(positionMotor.getSelectedSensorPosition());
+		//intakeEncoderValue.setDouble(positionMotor.getSelectedSensorPosition());
 		
 		// ALSO WHAT IS THIS
 		intakePosition.setBoolean(false);
-
-		// Wait why do we set to 0 constantly?
-		//TODO
-		this.setIdle();
-
-		// If comp mode is true
-		if(toggleDiag.getBoolean(false)) { 
-			continue;
-		}
-
-		double tempINP = intakekP.getDouble(Constants.intakekP);
-		if (Constants.intakekP != tempINP && positionMotor != null) {
-			Constants.intakekP = tempINP;
-			positionMotor.config_kP(Constants.kPIDLoopIdxin, Constants.intakekP, Constants.kTimeoutMsin);
-		}
-
-		double tempINI = intakekI.getDouble(Constants.intakekI);
-		if (Constants.intakekI != tempINI && positionMotor != null) {
-			Constants.intakekI = tempINI;
-			positionMotor.config_kI(Constants.kPIDLoopIdxin, Constants.intakekI, Constants.kTimeoutMsin);
-		}
-
-		double tempIND = intakekD.getDouble(Constants.intakekD);
-		if (Constants.intakekD != tempIND && positionMotor != null) {
-			Constants.intakekD = tempIND;
-			positionMotor.config_kD(Constants.kPIDLoopIdxin, Constants.intakekD, Constants.kTimeoutMsin);
-		}
-
-		double tempintakeSetpoint = intakeSetpoint.getDouble(Constants.intakesetpoint);
-		if (Constants.intakesetpoint != tempintakeSetpoint) {
-			Constants.intakesetpoint = tempintakeSetpoint;
-		}
 	}
 }

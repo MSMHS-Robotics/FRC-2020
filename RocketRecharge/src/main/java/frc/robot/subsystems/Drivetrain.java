@@ -17,9 +17,6 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
-// Driver station
-import edu.wpi.first.wpilibj.DriverStation;
-
 // Drivetrain-y stuff
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -30,24 +27,18 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants;
+import frc.robot.subsystems.Limelight;
 
 /** A Drivetrain subsystem class */
 public class Drivetrain extends SubsystemBase {
   // Gyro
   private AHRS ahrs;
 
-  // Vision stuff
-  private double visionPIDconstant1 = Constants.visionPID[0];
-  private double visionPIDconstant2 = Constants.visionPID[1];
-  private double visionPIDconstant3 = Constants.visionPID[2];
-  
-  private PIDController visionPID = new PIDController(visionPIDconstant1, visionPIDconstant2, visionPIDconstant3);
+  // PIDz
+  private PIDController visionPID = new PIDController(0.019, 0.08, 0.0085);
   private PIDController headingPID = new PIDController(.15, 0, 0);
   private PIDController drivingPID = new PIDController(1, 0, 0);
 
-  private boolean aligned = false;
-  private boolean alignZoom = true;
- 
   // Shuffleboard
   private ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain Tab");
   
@@ -85,22 +76,8 @@ public class Drivetrain extends SubsystemBase {
 
   private NetworkTableEntry resetGyroCommandEntry = tab.add("Reset Gyro", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
   
-	private ShuffleboardTab toggleTab = Shuffleboard.getTab("Toggle Tab");
-	private NetworkTableEntry toggleDiag = toggleTab.add("Comp Mode?", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
-
-  // Encoders
-  private final CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
-  private final CANEncoder encoderLeft1 = new CANEncoder(left1);
-  private final CANSparkMax left2 = new CANSparkMax(2, MotorType.kBrushless);
-  private final CANEncoder  encoderLeft2 = new CANEncoder(left2);
-  private final CANSparkMax left3 = new CANSparkMax(3, MotorType.kBrushless);
-  private final CANEncoder  encoderLeft3 = new CANEncoder (left3);
-  private final CANSparkMax right1 = new CANSparkMax(4, MotorType.kBrushless);
-  private final CANEncoder encoderRight1 = new CANEncoder (right1);
-  private final CANSparkMax right2 = new CANSparkMax(5, MotorType.kBrushless);
-  private final CANEncoder  encoderRight2 = new CANEncoder (right2);
-  private final CANSparkMax right3 = new CANSparkMax(6, MotorType.kBrushless);
-  private final CANEncoder encoderRight3 = new CANEncoder(right3);
+  private ShuffleboardTab toggleTab = Shuffleboard.getTab("Toggle Tab");
+  private NetworkTableEntry toggleDiag = toggleTab.add("Comp Mode?", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
   // Powers for scaling inputs
   private double leftPow = 0;
@@ -110,15 +87,32 @@ public class Drivetrain extends SubsystemBase {
   private Encoder throughboreRight = new Encoder(6, 8);
   private Encoder throughboreLeft = new Encoder(2,3);
 
-  // Drivetrain stuff
-  private SpeedControllerGroup leftSide = new SpeedControllerGroup(left1, left2, left3);
-  private SpeedControllerGroup rightSide = new SpeedControllerGroup(right1, right2, right3);
-  private final DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
-  
+  // VisIoN!
+  private Limelight limelight = new Limelight();
+
   /** A Drivetrain subsystem class */
-  public Drivetrain() {
-    this.ledsOff(); // turn off Limelight LEDs
+  public Drivetrain(int left1Port, int left2Port, int left3Port, int right1Port, int right2Port, int right3Port) {
+    // Drivetrain motors
+    private CANSparkMax left1 = new CANSparkMax(left1Port, MotorType.kBrushless);
+    private CANSparkMax left2 = new CANSparkMax(left2Port, MotorType.kBrushless);
+    private CANSparkMax left3 = new CANSparkMax(left3Port, MotorType.kBrushless);
+    private CANSparkMax right1 = new CANSparkMax(right1Port, MotorType.kBrushless);
+    private CANSparkMax right2 = new CANSparkMax(right2Port, MotorType.kBrushless);
+    private CANSparkMax right3 = new CANSparkMax(right3Port, MotorType.kBrushless);
     
+    // Drivetrain motor encoders
+    private CANEncoder encoderLeft1 = new CANEncoder(left1);
+    private CANEncoder encoderLeft2 = new CANEncoder(left2);
+    private CANEncoder encoderLeft3 = new CANEncoder(left3);
+    private CANEncoder encoderRight1 = new CANEncoder(right1);
+    private CANEncoder encoderRight2 = new CANEncoder(right2);
+    private CANEncoder encoderRight3 = new CANEncoder(right3);
+    
+    // Actual drivetrain stuff
+    private SpeedControllerGroup leftSide = new SpeedControllerGroup(left1, left2, left3);
+    private SpeedControllerGroup rightSide = new SpeedControllerGroup(right1, right2, right3);
+    private DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
+
     // Sets the error tolerance to 5, and the error derivative tolerance to 10 per second
     headingPID.setTolerance(2, 5);
     headingPID.setIntegratorRange(-0.5, 0.5);
@@ -153,11 +147,7 @@ public class Drivetrain extends SubsystemBase {
     throughboreLeft.reset();
 
     // Initialize gyro
-    try {
-      ahrs = new AHRS(SPI.Port.kMXP);
-    } catch (RuntimeException ex) {
-      DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
-    }
+    ahrs = new AHRS(SPI.Port.kMXP);
   }
 
   @Override
@@ -171,7 +161,7 @@ public class Drivetrain extends SubsystemBase {
     throughBoreRight.setDouble(throughboreRight.getDistance());
 
     // Constants.headingIntegrator[0] = hIntegratorMin.getDouble(Constants.headingIntegrator[0]);
-    //Constants.headingIntegrator[1] = hIntegratorMax.getDouble(Constants.headingIntegrator[1]);
+    // Constants.headingIntegrator[1] = hIntegratorMax.getDouble(Constants.headingIntegrator[1]);
     //no more constraints (what we clamp to in the PID stuff using Math.clamp())
 
     Constants.headingPIDconstraints[0] = headingConstraintMin.getDouble(Constants.headingPIDconstraints[0]);
@@ -184,11 +174,11 @@ public class Drivetrain extends SubsystemBase {
     Constants.drivingPIDconstraints[1] = drivingConstraintMax.getDouble(Constants.drivingPIDconstraints[1]);
 
     // If comp mode is true
-		if(toggleDiag.getBoolean(false)) { 
-			continue;
-		}
+    if(toggleDiag.getBoolean(false)) { 
+      continue; // skip the rest for speeeed
+    }
 
-    //now for changing the PID values on robot and in Constants.java. this is going to be _very_ long
+    // now for changing the PID values on robot and in Constants.java. this is going to be _very_ long
     
     double tempVP = visionKp.getDouble(Constants.visionPID[0]);
     if(Constants.visionPID[0] != tempVP) {
@@ -316,11 +306,12 @@ public class Drivetrain extends SubsystemBase {
 
     if(resetGyroCommandEntry.getBoolean(false)) { 
       this.resetGyro();
+      resetGyroCommandEntry.setBoolean(true);
     }
 
     //dang that is some messy code
   }
- 
+
   /**
    * Resets our gyro (AHRS) so we don't kill people in auto
    */
@@ -342,7 +333,14 @@ public class Drivetrain extends SubsystemBase {
   public void drivingPIDReset() {
     drivingPID.reset();
   }
-
+  
+  /**
+   * Resets the vision PID
+   */
+  public void visionPIDReset() {
+    visionPID.reset();
+  }
+  
   /**
    * Reset the encoders
    */
@@ -356,163 +354,24 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
-   * Resets the vision PID
-   */
-  public void visionPIDReset() {
-    visionPID.reset();
-  }
-  
-  /**
    * Does the actual driving part
    * @param leftStick value of the left stick Y axis
    * @param rightStick value of the right stick Y axis
    */
-  public void tankDrive(final double leftStick, final double rightStick) {
-    //scale inputs (needs to be non-even number, otherwise we can't drive backwards)
-    leftPow = Math.pow(-leftStick, 3);
-    rightPow = Math.pow(-rightStick, 3);
-    drivetrain.tankDrive(leftPow , rightPow); //actually drive
+  public void tankDrive(double leftStick, double rightStick) {
+    //scale inputs (needs to be non-even number, otherwise we can't drive backwards because -1 ** 2 == 1 != -1)
+    drivetrain.tankDrive(Math.pow(leftStick, 3), Math.pow(rightStick, 3)); //actually drive
   }
 
-  /**
-   * Uses the Limelight to get distance to goal
-   * Does this using an equation taken from the limelight docs
-   * @return the distance to the target in inches. If distance is -1 then we are too far away
-   */
-  public Double getDist() {
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry ty = table.getEntry("ty");
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
-    
-    this.ledsOn();
-    
-    double dist = 70.25 / Math.tan(10 + ty.getDouble(20)); //ooh maths. taken from limelight docs (equation is d = (h2-h1) / tan(a1+a2))
-    
-    if (dist < 30) {
-      return dist;
-    } 
-    // else
-    return -1;
-
-    //the 70.25 is height of center of the circle (in the hexagon frame) in inches minus how high lens is off the groun (20 inches) (h2 - h1)
-    //10 is angle limelight lens is at (a1)
-    //20 is a random default value to return (a2)
-  }
-
-  /**
-   * Uses some arcane magical equation to return the RPM we need based on the distance to the target
-   * Found it on SE somewhere, but not really sure if it's correct
-   * @return the RPM needed to shoot the PCs to the goal
-    */
-  public Double getNeededRPM() {
-    double d = this.getDist(); //distance to target
-    double angle = 45; //angle we are shooting at
-    double g = 9.81; //acceleration due to gravity
-    double h = 20; //height above ground we are shooting at
-    
-    //the 60 is to convert RPM into seconds to get m/s for velocity. RPM / 60 * wheel radius = tangential velocity
-    //wheel radius is 2 because we are using the blue 4" wheels
-    //the ball rotates to match the tangential velocity so center of mass rotates to have .5 the velocity. so the * 2 of tangent_v equation cancels the /2 of this so you don't see it in the below actual code equation
-    //units are in inches and degrees and seconds and stuff
-    return 60 * ((1 / Math.cos(angle) * Math.sqrt((0.5 * (d * d) * g) / (d * Math.tan(angle) + h))));
-  }
-
-  /** Turns the Limelight LEDs off */
-  public void ledsOff() {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
-  }
-
-  /** Turns the Limelight LEDs on */
-  public void ledsOn() {
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
-  }
-
-  /**
-   * Aligns us with the vision target. 
-   * This function is called in the AlignToTargetCommand.java. 
-   * You need to import NetworkTable and NetworkTableEntry
-   */
-  public void visionAlign() {
-    this.ledsOn(); // turn LEDs on so we can target
-    
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tv = table.getEntry("tv");
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
-    if (tv.getDouble(0) == 1) {
-      NetworkTableEntry tx = table.getEntry("tx");
-  
-      //start loop
-      double x_offset = tx.getDouble(0);
-      visionError.setDouble(x_offset);
-      drivetrain.arcadeDrive(0, MathUtil.clamp(-visionPID.calculate(x_offset), Constants.visionPIDconstraints[0], Constants.visionPIDconstraints[1]));
-      if (x_offset < Constants.visionTolerance[0]) { // If we are aligned close enough
-        aligned = true; // then we are aligned and can stop aligning
-      }
-      else { // else,
-        aligned = false; // we need to continue turning
-      }
-    }
-    else { // we are aligned then
-      drivetrain.arcadeDrive(0, 0); // and can stop driving
-    }
-  }
-
-  /**
-   * Aligns us with the vision target, but with 2x snipa hardware zoom. 
-   * This function is called in the AlignToTargetCommand.java. 
-   * You need to import NetworkTable and NetworkTableEntry
-   */
-  public void visionAlignSnipa() {
-    this.ledsOn();
-
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tv = table.getEntry("tv");
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
-    if (tv.getDouble(0) == 1) {
-      NetworkTableEntry tx = table.getEntry("tx");
-  
-      //start loop
-      double x_offset = tx.getDouble(0);
-      visionError.setDouble(x_offset);
-      drivetrain.arcadeDrive(0, MathUtil.clamp(-visionPID.calculate(x_offset), Constants.visionPIDconstraints[0], Constants.visionPIDconstraints[1]));
-      if(x_offset < Constants.visionTolerance[0]) {
-        aligned = true;
-      }
-      else {
-        aligned = false;
-      }
-    }
-    else {
-      drivetrain.arcadeDrive(0, 0);
-    }
-    //end loop
-  }
-
-  /**
-   * Returns if we are aligned with the vision target or not
+  /** Aligns us to the target using the LL subsystem
+   * The command that runs this is responsible for deciding if we should be zoomed or unzoomed, and when to stop
+   * Stopping should be based on the return value of this function
    * @return if we are aligned or not
    */
-  public boolean isVisionAligned() {
-    return aligned;
-  }
-
-  /** Toggles whether we are using 1x or 2x zoom on the Limelight */
-  public void toggleVisionAlign() {
-    alignZoom = !alignZoom;
-    if(alignZoom) {
-      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
-    }
-    else {
-      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
-    }
-  }
-
-  /**
-   * Returns if we are zooming or not
-   * @return if we are using 2x or 1x zoom on LL
-   */
-  public boolean getVisionType() {
-    return alignZoom;
+  public boolean alignToTarget() {
+    double offset = limelight.getXOffset();
+    drivetrain.arcadeDrive(0, MathUtil.clamp(visionPID.calculate(offset), Constants.visionConstraints[0], Constants.visionConstraints[1]));
+    return limelight.isAligned();
   }
 
   /**
@@ -564,4 +423,3 @@ public class Drivetrain extends SubsystemBase {
     return drivingPID.atSetpoint() && headingAligned;
   }
 }
-

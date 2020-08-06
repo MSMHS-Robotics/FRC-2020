@@ -44,7 +44,7 @@ public final class Constants {
     
     // Vision constants
     public static double[] visionPID = {0.019, 0.08, 0.0085};
-    public static double[] visionPIDconstraints = {-0.35, 0.35};
+    public static double[] visionConstraints = {-0.35, 0.35};
     
     // Auton constants
     public static double[] headingPID = {0.05,0.001,0.001};
@@ -52,24 +52,25 @@ public final class Constants {
     public static double[] drivingPID = {1, 0, 0};
     public static double[] drivingPIDconstraints = {-0.5, 0.5};
     public static double[] encoderConstants = {0,0,0};
-    public static double[] speed = {1};
+    public static double speed = 1;
     public static double alignAllowedError = 0.1;
 
     public static double[] drivingTolerance = {2, 5};
     public static double[] visionTolerance = {0, 5};
     public static double[] headingTolerance = {2, 5};
+    
+    // deadband
     public static double highDeadband = 0.95;
     public static double lowDeadband = 0.05;
 
-    //how to calculate: push the robot a specific distance and divide 120 by the encoder count given
+    // how to calculate: push the robot a specific distance and divide 120 by the encoder count given
     public static double rightTickConstant = 2.1925;
     public static double leftTickConstant = -2.2005;
 
-    //same for the through bore encoder
+    // same for the through bore encoder
     public static double rTickBoreConstant = -1;
     public static double lTickBoreConstant = 1;
-    //public static double[] headingIntegrator = {-0.5, 0.5};
-
+    
     //climber (not much)
     public static  double climbSpeed = 1;
     

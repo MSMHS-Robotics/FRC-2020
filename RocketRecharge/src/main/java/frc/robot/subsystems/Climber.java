@@ -35,8 +35,11 @@ public class Climber extends SubsystemBase {
 	private ShuffleboardTab toggleTab = Shuffleboard.getTab("Toggle Tab");
 	private NetworkTableEntry toggleDiag = toggleTab.add("Comp Mode?", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
   
-	/** A climber subsystem class */
-	public Climber() {
+	/** A climber subsystem class
+	 * @param extendPort the port for the extension motor
+	 * @param climbPort the port for the winch motor
+	 */
+	public Climber(int extendPort, int climbPort) {
 		extendMotor = new WPI_TalonSRX(13);
 		climbMotor = new WPI_TalonSRX(14);
 		

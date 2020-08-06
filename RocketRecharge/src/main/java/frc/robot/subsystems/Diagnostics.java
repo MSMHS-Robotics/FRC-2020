@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  * A Diagnostics class to post a buttload of values to Shuffleboard for debugging electrical and mechanical (not software) stuff
  */
 public class Diagnostics extends SubsystemBase {
-   // private PowerDistributionPanel PDP = new PowerDistributionPanel(0);
-   // private CANStatus canStatus = new CANStatus();
+   private PowerDistributionPanel PDP = new PowerDistributionPanel(0);
+   private CANStatus canStatus = new CANStatus();
 
     private ShuffleboardTab tab = Shuffleboard.getTab("PDP");
     private NetworkTableEntry port0 = tab.addPersistent("Port 0", 0).getEntry();
@@ -47,8 +47,7 @@ public class Diagnostics extends SubsystemBase {
   
     public Diagnostics() {
     }
-    
-    /* 
+     
     public void update() {
         port0.setDouble(PDP.getCurrent(0));
         port1.setDouble(PDP.getCurrent(1));
@@ -79,6 +78,5 @@ public class Diagnostics extends SubsystemBase {
         transmitError.setDouble(canStatus.transmitErrorCount);
         recieveError.setDouble(canStatus.receiveErrorCount);
         fullCount.setDouble(canStatus.txFullCount);
-    }
-    */
+    }   
 }

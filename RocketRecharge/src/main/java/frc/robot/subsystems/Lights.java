@@ -10,8 +10,8 @@ public class Lights extends SubsystemBase {
     private Spark blinkin;
 
     /** For use with the REV Blinkin */
-    public Lights() {
-        blinkin = new Spark(0);
+    public Lights(int port) {
+        blinkin = new Spark(port);
     }
 
     /** Sets the lights to Red Larson Scanner */

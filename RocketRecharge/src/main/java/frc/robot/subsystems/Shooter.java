@@ -26,16 +26,13 @@ public class Shooter extends SubsystemBase {
   // Motors
   private CANSparkMax shooterMotor;
   private CANSparkMax shooterMotor2;
-  private WPI_TalonSRX angleMotor;
 
   // Control
   private CANPIDController shooterPID;
-  private CANPIDController anglePID;
   private CANEncoder encoder;
   
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   private double RPMSetpoint;
-  private double angleSetpoint;
   private Boolean shootingFlag;
 
   private double pastTime = 0;
@@ -63,25 +60,19 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry isShooterGood = tab1.addPersistent("is Shooter Good", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
   private NetworkTableEntry isShooting = tab1.addPersistent("Shooter is Shooting", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
   
-  private NetworkTableEntry AnglekP = tab1.addPersistent("AnglekP", Constants.AnglekP).getEntry();
-  private NetworkTableEntry AnglekI = tab1.addPersistent("AnglekI", Constants.AnglekI).getEntry();
-  private NetworkTableEntry AnglekD = tab1.addPersistent("AnglekD", Constants.AnglekD).getEntry();
-
   private ShuffleboardTab tab2 = Shuffleboard.getTab("Shooter Presets");
-  private NetworkTableEntry TrenchAngle = tab2.addPersistent("TrenchAngle", Constants.TrenchAngle).getEntry();
   private NetworkTableEntry TrenchRPM = tab2.addPersistent("TrenchRPM", Constants.TrenchRPM).getEntry();
-  private NetworkTableEntry TenFootAngle = tab2.addPersistent("TenFootAngle", Constants.TenFootAngle).getEntry();
   private NetworkTableEntry TenFootRPM = tab2.addPersistent("TenFootRPM", Constants.TenFootRPM).getEntry();
-  private NetworkTableEntry LayupAngle = tab2.addPersistent("LayupAngle", Constants.LayupAngle).getEntry();
   private NetworkTableEntry LayupRPM = tab2.addPersistent("LayupRPM", Constants.LayupRPM).getEntry();
 
   private ShuffleboardTab toggleTab = Shuffleboard.getTab("Toggle Tab");
 	private NetworkTableEntry toggleDiag = toggleTab.add("Comp Mode?", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
   /** A Shooter subsystem class */
-  public Shooter() {
+  public Shooter(int shooter1Port, int shooter2Port) {
     shootingFlag = false;
     shooterMotor = new CANSparkMax(7, MotorType.kBrushless);
+    shooterMotor2 = new CANSparkMax(8, MotorType.kBrushless);
     
     if (shooterMotor != null) { // Init motor
       shooterMotor.restoreFactoryDefaults();
@@ -91,7 +82,6 @@ public class Shooter extends SubsystemBase {
     }
 
     // second motor
-    shooterMotor2 = new CANSparkMax(8, MotorType.kBrushless);
     if (shooterMotor2 != null){
       shooterMotor2.restoreFactoryDefaults();
       shooterMotor2.follow(shooterMotor, true); // Set it to follow the first motor
@@ -109,29 +99,6 @@ public class Shooter extends SubsystemBase {
       shooterPID.setFF(Constants.ShooterkFF);
       shooterPID.setOutputRange(Constants.ShooterkMinOutput, Constants.ShooterkMaxOutput);
     }
-    
-    /* 
-    //angle motor config
-    if (angleMotor != null){
-      angleMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-    }
-    
-    //Config the peak and nominal outputs 
-    if (angleMotor != null){
-		  angleMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
-		  angleMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		  angleMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
-		  angleMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-    }
-  
-    //Config the Velocity closed loop gains in slot0
-    if (angleMotor != null){ 
-		  angleMotor.config_kF(Constants.kPIDLoopIdx, Constants.AnglekF, Constants.kTimeoutMs);
-		  angleMotor.config_kP(Constants.kPIDLoopIdx, Constants.AnglekP, Constants.kTimeoutMs);
-		  angleMotor.config_kI(Constants.kPIDLoopIdx, Constants.AnglekI, Constants.kTimeoutMs);
-      angleMotor.config_kD(Constants.kPIDLoopIdx, Constants.AnglekD, Constants.kTimeoutMs);
-    }
-    */
   }
   
   /**
@@ -144,27 +111,8 @@ public class Shooter extends SubsystemBase {
     }
   }
 
-  /*
-  public boolean shooterAngle(double angle) {
-    if (angleMotor != null){
-      angleMotor.set(ControlMode.Position, angle);
-      return Math.abs(angleMotor.getClosedLoopError()) < 1;
-    }
-    return false;
-  }
-  */
-
-  /**
-   * Stops the shooter motor by setting volts to it to 0
-   */
-  public void stopPlease() {
-    if (shooterMotor != null) {
-      shooterMotor.setVoltage(0);
-    }
-  }
-
-  /** IDK what this does. Backup? */
-  public void stopPercent() {
+  /** Stops the shooter motor */
+  public void stop() {
     if(shooterMotor != null) {
       shooterMotor.set(0);
     }
@@ -198,26 +146,20 @@ public class Shooter extends SubsystemBase {
 
   /** Shoots with presets for the trench */
   public void trenchShot() {
-    //shooterAngle(Constants.TrenchAngle);
     warmUp(Constants.TrenchRPM);
     RPMSetpoint = Constants.TrenchRPM;
-    //angleSetpoint = Constants.TrenchAngle;
   }
 
   /** Shoots with presets for 10 feet */
   public void tenFootShot() {
-    //shooterAngle(Constants.TenFootAngle);
     warmUp(Constants.TenFootRPM);
     RPMSetpoint = Constants.TenFootRPM;
-    //angleSetpoint = Constants.TenFootAngle;
   }
 
   /** Shoots with presets for right in front of the goal */
   public void layupShot() {
-    //shooterAngle(Constants.LayupAngle);
     warmUp(Constants.LayupRPM);
     RPMSetpoint = Constants.LayupRPM;
-    //angleSetpoint = Constants.LayupAngle;
   }
 
   /**

@@ -134,7 +134,7 @@ public class Intake extends SubsystemBase {
 		intakeExtended = status;
 	}
 
-	public int stopRaising() {
+	public void stopRaising() {
 		intakePositionMotor.set(ControlMode.PercentOutput, 0);
 	}
 

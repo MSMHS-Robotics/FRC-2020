@@ -1,7 +1,8 @@
 name: FRC Build & Test
 on: [push, pull_request]
 
-jobs:
+# not sure how many minutes we get so for niwnwe stop
+#jobs:
   build:
     runs-on: ubuntu-18.04
     steps:
@@ -9,4 +10,4 @@ jobs:
     - name: FRC Build & Test
       uses: ewpratten/FRC-actions@v1
       with:
-        build_mode: 'all'
+        build_mode: 'build'

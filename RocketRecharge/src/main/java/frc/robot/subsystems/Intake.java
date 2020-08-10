@@ -52,7 +52,7 @@ public class Intake extends SubsystemBase {
 			.withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
 	private NetworkTableEntry ir4 = Intaketab.addPersistent("Ball 4", false).withWidget("Boolean Box")
 			.withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
-	private NetworkTableEntry ir6 = Intaketab.addPersistent("Ball 5", false).withWidget("Boolean Box")
+	private NetworkTableEntry ir5 = Intaketab.addPersistent("Ball 5", false).withWidget("Boolean Box")
 			.withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
 	private NetworkTableEntry[] irs;
 
@@ -134,7 +134,7 @@ public class Intake extends SubsystemBase {
 		intakeExtended = status;
 	}
 
-	public void stopRaising() {
+	public int stopRaising() {
 		intakePositionMotor.set(ControlMode.PercentOutput, 0);
 	}
 

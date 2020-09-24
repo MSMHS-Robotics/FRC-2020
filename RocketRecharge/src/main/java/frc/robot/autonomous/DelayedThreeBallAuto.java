@@ -3,9 +3,9 @@ package frc.robot.autonomous;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-import frc.robot.commands.drivetrain.DriveOnHeading;
+import frc.robot.commands.drivetrain.DriveOnHeadingCommand;
 import frc.robot.commands.drivetrain.ResetGyroCommand;
-import frc.robot.commands.intake.DeployIntake;
+import frc.robot.commands.intake.DeployIntakeCommand;
 
 import frc.robot.commands.shooter.ShootBurstCommand;
 import frc.robot.commands.shooter.WarmupCommand;
@@ -23,13 +23,13 @@ public class DelayedThreeBallAuto extends SequentialCommandGroup {
     */
     public DelayedThreeBallAuto(Drivetrain drivetrain, Intake intake, Shooter shooter) {
         super(
-            new DeployIntake(intake, 1), // deploy
+            new DeployIntakeCommand(intake, 1), // deploy
             new ResetGyroCommand(drivetrain), // fresh start
             new WaitCommand(5), // delay
             new WarmupCommand(shooter, null, 90, true, drivetrain), // warm up
             new WaitCommand(1), // wait
             new ShootBurstCommand(shooter, intake, null, 90, 5, true, drivetrain), // Shoot!
-            new DriveOnHeading(drivetrain, 0, -0.3, 2) // drive back
+            new DriveOnHeadingCommand(drivetrain, 0, -0.3, 2) // drive back
             );
     }
 }

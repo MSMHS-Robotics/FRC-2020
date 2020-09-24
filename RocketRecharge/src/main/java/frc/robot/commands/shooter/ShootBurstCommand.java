@@ -90,9 +90,6 @@ public class ShootBurstCommand extends RocketTimedCommand {
             intake.feed(1);
         } else {
             hasShooterBeenGood = false;
-            if (!intake.hasBall()) {
-                intake.feed(0);
-            }
         }
         lastval = val;
     }
@@ -101,7 +98,7 @@ public class ShootBurstCommand extends RocketTimedCommand {
     @Override
     public void end(boolean interrupted) {
         shooter.stopPlease();
-        intake.setIdle();
+        intake.feed(0);
     }
 
     // Returns true when the command should end.

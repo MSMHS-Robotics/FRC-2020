@@ -179,15 +179,15 @@ public class RobotContainer {
     yButton.whileHeld(retractIntake);
     leftBumper.whenHeld(intakeOut);
     leftBumper.whenReleased(stopIntake);
-    xButton.whenPressed(feedForward);
+    xButton.whileHeld(feedForward);
     xButton.whenReleased(stopFeed);
     
     //climber
-    yButton2.whenPressed(climbUp);
-    yButton2.whenReleased(stopClimb);
+    //yButton2.whenPressed(climbUp);
+    //yButton2.whenReleased(stopClimb);
     //xButton2.whenPressed(LowerClimber);//added just in case
-    rightBumper2.whenPressed(raiseClimber);
-    rightBumper2.whenReleased(stopRaise);
+    //rightBumper2.whenPressed(raiseClimber);
+    //rightBumper2.whenReleased(stopRaise);
 
 
     //shooter

@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Diagnostics extends SubsystemBase {
-   // private PowerDistributionPanel PDP = new PowerDistributionPanel(0);
-   // private CANStatus canStatus = new CANStatus();
+    private PowerDistributionPanel PDP = new PowerDistributionPanel(0);
+    private CANStatus canStatus = new CANStatus();
 
     private ShuffleboardTab tab = Shuffleboard.getTab("PDP");
     private NetworkTableEntry port0 = tab.addPersistent("Port 0", 0).getEntry();
@@ -44,8 +44,9 @@ public class Diagnostics extends SubsystemBase {
   
     public Diagnostics() {
     }
-   /* 
-    public void update() {
+    
+    @Override
+    public void periodic() {
         port0.setDouble(PDP.getCurrent(0));
         port1.setDouble(PDP.getCurrent(1));
         port2.setDouble(PDP.getCurrent(2));
@@ -75,5 +76,5 @@ public class Diagnostics extends SubsystemBase {
         transmitError.setDouble(canStatus.transmitErrorCount);
         recieveError.setDouble(canStatus.receiveErrorCount);
         fullCount.setDouble(canStatus.txFullCount);
-    }*/
+    }
 }

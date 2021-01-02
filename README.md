@@ -21,24 +21,26 @@ This runs in disabledPeriodic and allows us to choose an autonomous program from
 
 ## Controls
 Gamepad 1:
- - A: 
- - B: 
- - X: 
- - Y: 
- - LB: 
- - RB: 
- - LT: 
- - RT: 
- - LX: 
- - LY: 
- - LS: 
- - RX: 
- - RY: 
- - RS: 
- - DU: 
- - DR: 
- - DD: 
- - DL: 
- - Back: 
- - Start: 
+ - A: align with vision target
+ - B: shoot (uses dpad for presets)
+ - X: feed balls through the pass-through
+ - Y: retract intake
+ - LB: run intake outwards
+ - RB: deploy intake + run it inwards
+ - DU: layup preset (right in front of the goal)
+ - DR: starting line preset
+ - DD: trench run preset
+ - DL: use limelight to get needed RPM
+ - Back: schedule drive command (in case we get stuck in another command; returns control of the robot back to the drivers)
+ - Start: toggle hardware zoom on the limelight
  
+Gamepad 2:
+ - A: kill the shooter
+ - B: warm up the shooter (uses dpad for presets)
+ - X: kill warming up
+ - Y: climb up
+ - RB: raise the climber
+ - DU: layup preset (right in front of the goal)
+ - DR: starting line preset
+ - DD: trench run preset
+ - DL: use limelight to get needed RPM

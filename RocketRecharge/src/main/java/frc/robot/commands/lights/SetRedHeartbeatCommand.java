@@ -1,4 +1,4 @@
-package frc.robot.commands.drivetrain;
+package frc.robot.commands.lights;
 
 import frc.robot.subsystems.Lights;
 import edu.wpi.first.wpilibj2.command.CommandBase;

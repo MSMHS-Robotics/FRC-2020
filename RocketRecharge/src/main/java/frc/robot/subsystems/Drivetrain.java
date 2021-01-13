@@ -31,6 +31,22 @@ import frc.robot.subsystems.Limelight;
 
 /** A Drivetrain subsystem class */
 public class Drivetrain extends SubsystemBase {
+  //motors
+  private CANSparkMax left1;
+  private CANSparkMax left2;
+  private CANSparkMax left3;
+  private CANSparkMax right1;
+  private CANSparkMax right2;
+  private CANSparkMax right3;
+
+  //encoders
+  private CANEncoder encoderLeft1;
+  private CANEncoder encoderLeft2;
+  private CANEncoder encoderLeft3;
+  private CANEncoder encoderRight1;
+  private CANEncoder encoderRight2;
+  private CANEncoder encoderRight3;
+  
   // Gyro
   private AHRS ahrs;
 
@@ -93,20 +109,20 @@ public class Drivetrain extends SubsystemBase {
   /** A Drivetrain subsystem class */
   public Drivetrain(int left1Port, int left2Port, int left3Port, int right1Port, int right2Port, int right3Port) {
     // Drivetrain motors
-    private CANSparkMax left1 = new CANSparkMax(left1Port, MotorType.kBrushless);
-    private CANSparkMax left2 = new CANSparkMax(left2Port, MotorType.kBrushless);
-    private CANSparkMax left3 = new CANSparkMax(left3Port, MotorType.kBrushless);
-    private CANSparkMax right1 = new CANSparkMax(right1Port, MotorType.kBrushless);
-    private CANSparkMax right2 = new CANSparkMax(right2Port, MotorType.kBrushless);
-    private CANSparkMax right3 = new CANSparkMax(right3Port, MotorType.kBrushless);
+    CANSparkMax left1 = new CANSparkMax(left1Port, MotorType.kBrushless);
+    CANSparkMax left2 = new CANSparkMax(left2Port, MotorType.kBrushless);
+    CANSparkMax left3 = new CANSparkMax(left3Port, MotorType.kBrushless);
+    CANSparkMax right1 = new CANSparkMax(right1Port, MotorType.kBrushless);
+    CANSparkMax right2 = new CANSparkMax(right2Port, MotorType.kBrushless);
+    CANSparkMax right3 = new CANSparkMax(right3Port, MotorType.kBrushless);
     
     // Drivetrain motor encoders
-    private CANEncoder encoderLeft1 = new CANEncoder(left1);
-    private CANEncoder encoderLeft2 = new CANEncoder(left2);
-    private CANEncoder encoderLeft3 = new CANEncoder(left3);
-    private CANEncoder encoderRight1 = new CANEncoder(right1);
-    private CANEncoder encoderRight2 = new CANEncoder(right2);
-    private CANEncoder encoderRight3 = new CANEncoder(right3);
+    CANEncoder encoderLeft1 = new CANEncoder(left1);
+    CANEncoder encoderLeft2 = new CANEncoder(left2);
+    CANEncoder encoderLeft3 = new CANEncoder(left3);
+    CANEncoder encoderRight1 = new CANEncoder(right1);
+    CANEncoder encoderRight2 = new CANEncoder(right2);
+    CANEncoder encoderRight3 = new CANEncoder(right3);
     
     // Actual drivetrain stuff
     private SpeedControllerGroup leftSide = new SpeedControllerGroup(left1, left2, left3);

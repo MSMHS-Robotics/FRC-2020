@@ -14,7 +14,7 @@ public class AutoClimb extends SequentialCommandGroup {
         super(
             new ClimbUpCommand(climber),
             new WaitCommand(timeout),
-            new StopClimb(climber)
+            new StopClimbCommand(climber)
             );
     }
 }

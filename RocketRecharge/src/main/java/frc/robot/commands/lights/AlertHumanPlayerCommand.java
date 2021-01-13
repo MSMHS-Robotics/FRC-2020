@@ -1,4 +1,4 @@
-package frc.robot.commands.drivetrain;
+package frc.robot.commands.lights;
 
 import frc.robot.subsystems.Lights;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -10,9 +10,9 @@ public class AlertHumanPlayerCommand extends CommandBase {
   private Lights blinkin;
 
   /** A command to alert the human player to some event, using the LEDs
-   * @param lights a Lights subsystem
+   * @param light a Lights subsystem
    */
-  public AlertHumanPlayerCommand(Lights lights) {
+  public AlertHumanPlayerCommand(Lights light) {
     blinkin = light;
     addRequirements(light);
   }

@@ -28,24 +28,24 @@ import frc.robot.diagnostics.Update;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.commands.drivetrain.TurnOnHeading;
-
 // import our subsystems
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Diagnostics;;
 
 /**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the {@link Robot} periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  //subsytems
+  // subsytems
   private final Climber climber = new Climber(13, 14);
   private final Diagnostics diagnostics = new Diagnostics();
   private final Drivetrain drivetrain = new Drivetrain(1, 2, 3, 4, 5, 6);
@@ -53,13 +53,13 @@ public class RobotContainer {
   private final Lights blinkin = new Lights(0);
   private final Limelight limelight = new Limelight();
   private final Shooter shooter = new Shooter(7, 8);
-  
-  //joysticks
-  //raw axis 2 and 5 are the Y axis for the left and right joysticks.
+
+  // joysticks
+  // raw axis 2 and 5 are the Y axis for the left and right joysticks.
   private final Joystick gamepad1 = new Joystick(0);
   private final Joystick gamepad2 = new Joystick(1);
-  
-  //get ready for some buttons and stuff
+
+  // get ready for some buttons and stuff
   private JoystickButton aButton = new JoystickButton(gamepad1, 1);
   private JoystickButton bButton = new JoystickButton(gamepad1, 2);
   private JoystickButton xButton = new JoystickButton(gamepad1, 3);
@@ -69,12 +69,12 @@ public class RobotContainer {
   private JoystickButton bButton2 = new JoystickButton(gamepad2, 2);
   private JoystickButton xButton2 = new JoystickButton(gamepad2, 3);
   private JoystickButton yButton2 = new JoystickButton(gamepad2, 4);
-  
+
   private JoystickButton leftBumper = new JoystickButton(gamepad1, 5);
   private JoystickButton rightBumper = new JoystickButton(gamepad1, 6);
   private JoystickButton leftBumper2 = new JoystickButton(gamepad2, 5);
   private JoystickButton rightBumper2 = new JoystickButton(gamepad2, 6);
-  
+
   private double rightTrigger = gamepad1.getRawAxis(3);
 
   private JoystickButton back = new JoystickButton(gamepad1, 7);
@@ -82,22 +82,22 @@ public class RobotContainer {
 
   private JoystickButton start = new JoystickButton(gamepad1, 8);
   private JoystickButton start2 = new JoystickButton(gamepad2, 8);
-  
-  //now for some commands
-  //climber
-  private final RaiseClimber raiseClimber = new RaiseClimber(climber);
+
+  // now for some commands
+  // climber
+  private final RaiseClimberCommand raiseClimber = new RaiseClimberCommand(climber);
   private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
-  private final StopClimb stopClimb = new StopClimb(climber);
-  private final StopRaise stopRaise = new StopRaise(climber);
-  
-  //drivetrain
+  private final StopClimbCommand stopClimb = new StopClimbCommand(climber);
+  private final StopRaiseCommand stopRaise = new StopRaiseCommand(climber);
+
+  // drivetrain
   private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
   private final ToggleZoomCommand toggleVision = new ToggleZoomCommand(limelight);
   private final SetRedHeartbeatCommand setFire = new SetRedHeartbeatCommand(blinkin);
   private final AlertHumanPlayerCommand setRainbow = new AlertHumanPlayerCommand(blinkin);
   
   //intake + indexer
-  private final DeployIntake deployIntake = new DeployIntake(intake, 1);
+  private final DeployIntakeCommand deployIntake = new DeployIntakeCommand(intake, 1);
   private final RetractIntakeCommand retractIntake = new RetractIntakeCommand(intake, -1);
   private final RunIntakeCommand intakeIn = new RunIntakeCommand(intake, -1);
   private final RunIntakeCommand intakeOut = new RunIntakeCommand(intake, 1);

@@ -11,7 +11,7 @@ public class AutoIntakeDeployCommand extends SequentialCommandGroup {
     */
     public AutoIntakeDeployCommand(Intake intake) {
         super(
-            new DeployIntake(intake, 1),
+            new DeployIntakeCommand(intake, 1),
             new RunIntakeCommand(intake, -1),
             new RunIndexerCommand(intake, 0)
             );

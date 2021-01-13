@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants;
@@ -98,8 +100,8 @@ public class Limelight extends SubsystemBase {
     */
     public double getNeededRPM() {
         double d = this.getDist(); //distance to target
-        double angle = Contstants.shooterAngle; //angle we are shooting at
-        double g = Contstants.accel_due_to_gravity; //acceleration due to gravity
+        double angle = Constants.shooterAngle; //angle we are shooting at
+        double g = Constants.accel_due_to_gravity; //acceleration due to gravity
         double h = Constants.limelight_height; //height above ground we are shooting at
         
         // the 60 is to convert RPM into seconds to get m/s for velocity. RPM / 60 * wheel radius = tangential velocity

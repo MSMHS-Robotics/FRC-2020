@@ -27,7 +27,7 @@ public class ManualTriggerWheelCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      intake.runTrigger(x);
+      intake.runTrigger(power);
   }
   
   // Called once the command ends or is interrupted.

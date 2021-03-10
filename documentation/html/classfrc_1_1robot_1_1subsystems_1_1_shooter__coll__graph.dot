@@ -1,0 +1,16 @@
+digraph "frc.robot.subsystems.Shooter"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node2 [label="frc.robot.subsystems.Shooter",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="SubsystemBase",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" angleMotor" ,fontname="Helvetica"];
+  Node4 [label="WPI_TalonSRX",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node5 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" encoder" ,fontname="Helvetica"];
+  Node5 [label="CANEncoder",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node6 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" shooterMotor\nshooterMotor2" ,fontname="Helvetica"];
+  Node6 [label="CANSparkMax",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" anglePID\nshooterPID" ,fontname="Helvetica"];
+  Node7 [label="CANPIDController",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

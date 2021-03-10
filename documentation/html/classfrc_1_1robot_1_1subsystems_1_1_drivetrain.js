@@ -1,0 +1,26 @@
+var classfrc_1_1robot_1_1subsystems_1_1_drivetrain =
+[
+    [ "Drivetrain", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#aff4aa346ba6ed3dba1ff823580d887c2", null ],
+    [ "driveDistance", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#a74d9dd4924a494d83e273919d04cfe54", null ],
+    [ "driveOnHeading", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#aba4fc5414a4beba3e46111370bb84c7b", null ],
+    [ "drivingPIDReset", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#ae4c10b6a517820bd92ad1a7c7e4cdbaa", null ],
+    [ "encoderAverage", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#a09db9834b3e04d1958a43fda49c41ea9", null ],
+    [ "encoderReset", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#af03890b6402f846278bca915353dda84", null ],
+    [ "getDist", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#a38f849d3cdfd6701290c4cf0e247bd2e", null ],
+    [ "getNeededRPM", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#a7c9da51a47ed36b8e61073967b86e536", null ],
+    [ "getVisionType", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#ae4444caf21646119fcf26ebb20487f7f", null ],
+    [ "headingPIDReset", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#aa8b6266eba022d48577c177d5ab53116", null ],
+    [ "isVisionAligned", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#a4100299da2f4979a4da354ace2fba70c", null ],
+    [ "ledsOff", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#a1fe4f554ac4b64dfe9fdb32722fe11c2", null ],
+    [ "ledsOn", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#a24dc3135c3b9b0135361f5cd3bee3c22", null ],
+    [ "leftEncoderAverage", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#ac639538f679fdef6705465866588d61a", null ],
+    [ "periodic", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#aec049cfe73457d2227472dcf923436cd", null ],
+    [ "resetGyro", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#ae3f074912ce738293bcbcd9b948400cf", null ],
+    [ "rightEncoderAverage", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#a2c051dc9e0904bad4de2298a2545edbd", null ],
+    [ "tankDrive", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#a72f36ea8e6e56a063d23c17636f47610", null ],
+    [ "toggleVisionAlign", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#a908262f83e90eb07b9a26270fc6c5183", null ],
+    [ "visionAlign", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#acbd8f8e487dd83bcbec05768bbc2e414", null ],
+    [ "visionAlignSnipa", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#a5089dad64c0052b03ac489744b727d8b", null ],
+    [ "visionPIDReset", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#a0462511f142bc7414eb7944c4c5dfbdc", null ],
+    [ "speed", "classfrc_1_1robot_1_1subsystems_1_1_drivetrain.html#a47e980480fdd3749f80f186f314c9616", null ]
+];

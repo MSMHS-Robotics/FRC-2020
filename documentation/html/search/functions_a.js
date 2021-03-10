@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['raiseclimber',['raiseClimber',['../a00342.html#ab0d8d7a67183b09e7f2cce5a25ef0bc1',1,'frc::robot::subsystems::Climber']]],
+  ['raiseclimbercommand',['RaiseClimberCommand',['../a00202.html#aeb6b95eafffc95b7d6fb788272b8b713',1,'frc::robot::commands::climber::RaiseClimberCommand']]],
+  ['reset',['reset',['../a00326.html#a6c8a5ec4e0c000b71362bfcdd36e07f8',1,'frc::robot::devices::RocketEncoder']]],
+  ['resetgyro',['resetGyro',['../a00350.html#ae3f074912ce738293bcbcd9b948400cf',1,'frc::robot::subsystems::Drivetrain']]],
+  ['resetgyrocommand',['ResetGyroCommand',['../a00230.html#a6827d67c57ea7e18ca87369d68cf8781',1,'frc::robot::commands::drivetrain::ResetGyroCommand']]],
+  ['retractintake',['retractIntake',['../a00354.html#add73fedbfbda76c622d71bfeac1934f2',1,'frc::robot::subsystems::Intake']]],
+  ['retractintakecommand',['RetractIntakeCommand',['../a00262.html#a2f39f65a0e1bce2a8cbd1143efbed6a3',1,'frc::robot::commands::intake::RetractIntakeCommand']]],
+  ['rightencoderaverage',['rightEncoderAverage',['../a00350.html#a2c051dc9e0904bad4de2298a2545edbd',1,'frc::robot::subsystems::Drivetrain']]],
+  ['robotcontainer',['RobotContainer',['../a00338.html#ab0ea038f5ce3328722a60e0823f51887',1,'frc::robot::RobotContainer']]],
+  ['robotinit',['robotInit',['../a00334.html#a1d28582cf3dc31568c3581f631c92f13',1,'frc::robot::Robot']]],
+  ['robotperiodic',['robotPeriodic',['../a00334.html#a7e63e32ebe8ad3d33bbc3b09092a9f1f',1,'frc::robot::Robot']]],
+  ['runindexer',['runIndexer',['../a00354.html#a8c9d1c790739393d03ca78bed694e567',1,'frc::robot::subsystems::Intake']]],
+  ['runindexercommand',['RunIndexerCommand',['../a00266.html#a13e731cd0aaee525f144896329a10be6',1,'frc::robot::commands::intake::RunIndexerCommand']]],
+  ['runintake',['runIntake',['../a00354.html#ac17ce1e132de0d42e3ed4b07eac37a5f',1,'frc::robot::subsystems::Intake']]],
+  ['runintakecommand',['RunIntakeCommand',['../a00270.html#a8f0ba32ff8a4d54b0a94d4de317d4960',1,'frc::robot::commands::intake::RunIntakeCommand']]],
+  ['runtrigger',['runTrigger',['../a00354.html#a5401732463db3dac7e02f6e82445867e',1,'frc::robot::subsystems::Intake']]]
+];

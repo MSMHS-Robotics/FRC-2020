@@ -6,15 +6,16 @@ import frc.robot.commands.drivetrain.AlignToTargetCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
 /** An auto command sequence to shoot with the Limelight. I guess. */
 public class VisionShotSeq extends SequentialCommandGroup {
-    public VisionShotSeq(Drivetrain drivetrain, Lights blinkin, Joystick joystick, Shooter shooter, Intake intake) {
+    public VisionShotSeq(Drivetrain drivetrain, Lights blinkin, Limelight vision, Joystick joystick, Shooter shooter, Intake intake) {
         super(
-            new AlignToTargetCommand(drivetrain, blinkin),
-            new WarmupCommand(shooter, joystick, -1, false, drivetrain),
-            new ShootBurstVisionCommand(shooter, intake, joystick, -1, -1, false, drivetrain)
+            new AlignToTargetCommand(drivetrain, vision, blinkin),
+            new WarmupCommand(shooter, drivetrain, joystick, -1, false),
+            new ShootBurstVisionCommand(shooter, intake, drivetrain, vision, joystick, -1, false)
             );
     }
 }

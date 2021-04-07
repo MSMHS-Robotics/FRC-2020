@@ -37,14 +37,19 @@ public final class Constants {
     public static double TenFootRPM = 3150;
     public static double LayupAngle = 10;
     public static double LayupRPM = 3800;
-
+    
     public static double accelerationTolerance = 1;
     public static double RPMTolerance = 100;
     public static double AngleTolerance = 10;
     
     // Vision constants
     public static double[] visionPID = {0.019, 0.08, 0.0085};
-    public static double[] visionConstraints = {-0.35, 0.35};
+    public static double[] visionPIDconstraints = {-0.35, 0.35};
+    public static double visionThreshold = 0.5; //TODO tune
+    public static double shooterAngle = 45; // degrees
+    public static double gravity = -9.8; // feet/s TODO make it inches/s^2
+    public static double limelightHeight = 20; // inches
+
     
     // Auton constants
     public static double[] headingPID = {0.05,0.001,0.001};

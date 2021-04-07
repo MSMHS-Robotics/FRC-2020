@@ -73,6 +73,7 @@ public class Limelight extends SubsystemBase {
             }
             return x_offset; // return x offset
         }
+        return -1;
     }
 
     /**
@@ -101,8 +102,8 @@ public class Limelight extends SubsystemBase {
     public double getNeededRPM() {
         double d = this.getDist(); //distance to target
         double angle = Constants.shooterAngle; //angle we are shooting at
-        double g = Constants.accel_due_to_gravity; //acceleration due to gravity
-        double h = Constants.limelight_height; //height above ground we are shooting at
+        double g = Constants.gravity; //acceleration due to gravity
+        double h = Constants.limelightHeight; //height above ground we are shooting at
         
         // the 60 is to convert RPM into seconds to get m/s for velocity. RPM / 60 * wheel radius = tangential velocity
         // wheel radius is 2 because we are using the blue 4" wheels

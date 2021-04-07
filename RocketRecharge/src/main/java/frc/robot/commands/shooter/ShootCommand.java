@@ -3,6 +3,7 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.commands.RocketTimedCommand;
 
@@ -15,6 +16,7 @@ public class ShootCommand extends RocketTimedCommand {
     private Intake intake;
     private Joystick joystick;
     private Drivetrain drivetrain;
+    private Limelight vision;
     
     private int preset;
     private double timeout;
@@ -31,13 +33,14 @@ public class ShootCommand extends RocketTimedCommand {
      * @param timout the timout for the command
      * @param isAuto a boolean representing if we are running in auton or not
      */
-    public ShootCommand(Shooter shooter, Intake intake, Drivetrain drivetrain, Joystick joystick, int preset, double timeout, boolean isAuto) {
+    public ShootCommand(Shooter shooter, Intake intake, Drivetrain drivetrain, Limelight vision, Joystick joystick, int preset, double timeout, boolean isAuto) {
         this.shooter = shooter;
         this.intake = intake;
         this.joystick = joystick;
         this.preset = preset;
         this.timeout = timeout;
         this.drivetrain = drivetrain;
+        this.vision = vision;
         this.isAuto = isAuto;
         
         addRequirements(shooter, intake, drivetrain);
@@ -75,7 +78,7 @@ public class ShootCommand extends RocketTimedCommand {
                 shooter.layupShot();
                 break;
             case 270:
-                shooter.customShot(drivetrain.getNeededRPM());
+                shooter.customShot(vision.getNeededRPM());
                 break;
             default:
                 //warmup sets up the case

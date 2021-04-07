@@ -94,14 +94,14 @@ public class Drivetrain extends SubsystemBase {
   
   private ShuffleboardTab toggleTab = Shuffleboard.getTab("Toggle Tab");
   private NetworkTableEntry toggleDiag = toggleTab.add("Comp Mode?", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
-
-  // Powers for scaling inputs
-  private double leftPow = 0;
-  private double rightPow = 0;
   
   // Encoder test
   private Encoder throughboreRight = new Encoder(6, 8);
   private Encoder throughboreLeft = new Encoder(2,3);
+
+  private SpeedControllerGroup leftSide;
+  private SpeedControllerGroup rightSide;
+  private DifferentialDrive drivetrain;
 
   // VisIoN!
   private Limelight limelight = new Limelight();
@@ -125,9 +125,9 @@ public class Drivetrain extends SubsystemBase {
     CANEncoder encoderRight3 = new CANEncoder(right3);
     
     // Actual drivetrain stuff
-    private SpeedControllerGroup leftSide = new SpeedControllerGroup(left1, left2, left3);
-    private SpeedControllerGroup rightSide = new SpeedControllerGroup(right1, right2, right3);
-    private DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
+    SpeedControllerGroup leftSide = new SpeedControllerGroup(left1, left2, left3);
+    SpeedControllerGroup rightSide = new SpeedControllerGroup(right1, right2, right3);
+    DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
 
     // Sets the error tolerance to 5, and the error derivative tolerance to 10 per second
     headingPID.setTolerance(2, 5);
@@ -139,9 +139,7 @@ public class Drivetrain extends SubsystemBase {
     // Sets the error tolerance to 5, and the error derivative tolerance to 10 per second
     drivingPID.setTolerance(2, 5);
     drivingPID.setIntegratorRange(-0.5, 0.5);
-    // Enables continuous input on a range from -180 to 180
-    //drivingPID.enableContinuousInput(-180, 180);
-
+    
     // Encoder initialize stuff
     encoderLeft1.setPositionConversionFactor(1);
     encoderLeft2.setPositionConversionFactor(1);
@@ -168,8 +166,6 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //ooooooooof get ready
-    
     leftEncoderValue.setDouble(leftEncoderAverage());
     rightEncoderValue.setDouble(rightEncoderAverage());
     encoderaverage.setDouble(encoderAverage());
@@ -191,7 +187,7 @@ public class Drivetrain extends SubsystemBase {
 
     // If comp mode is true
     if(toggleDiag.getBoolean(false)) { 
-      continue; // skip the rest for speeeed
+      return; // skip the rest for speeeed
     }
 
     // now for changing the PID values on robot and in Constants.java. this is going to be _very_ long
@@ -376,7 +372,7 @@ public class Drivetrain extends SubsystemBase {
    */
   public void tankDrive(double leftStick, double rightStick) {
     //scale inputs (needs to be non-even number, otherwise we can't drive backwards because -1 ** 2 == 1 != -1)
-    drivetrain.tankDrive(Math.pow(leftStick, 3), Math.pow(rightStick, 3)); //actually drive
+    drivetrain.tankDrive(leftStick, rightStick); //actually drive
   }
 
   /** Aligns us to the target using the LL subsystem
@@ -386,7 +382,7 @@ public class Drivetrain extends SubsystemBase {
    */
   public boolean alignToTarget() {
     double offset = limelight.getXOffset();
-    drivetrain.arcadeDrive(0, MathUtil.clamp(visionPID.calculate(offset), Constants.visionConstraints[0], Constants.visionConstraints[1]));
+    drivetrain.arcadeDrive(0, MathUtil.clamp(visionPID.calculate(offset), Constants.visionPIDconstraints[0], Constants.visionPIDconstraints[1]));
     return limelight.isAligned();
   }
 

@@ -19,10 +19,12 @@ import frc.robot.autonomous.UnchargedThreeBallAuto;
 
 // Import the commands
 import frc.robot.commands.intake.*;
+import frc.robot.commands.lights.AlertHumanPlayerCommand;
+import frc.robot.commands.lights.SetRedHeartbeatCommand;
 import frc.robot.commands.climber.*;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.shooter.*;
-import frc.robot.diagnostics.Update;
+import frc.robot.commands.diagnostics.Update;
 
 // import some stuff
 import edu.wpi.first.wpilibj2.command.Command;
@@ -91,7 +93,7 @@ public class RobotContainer {
   private final StopRaiseCommand stopRaise = new StopRaiseCommand(climber);
 
   // drivetrain
-  private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
+  private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, limelight, blinkin);
   private final ToggleZoomCommand toggleVision = new ToggleZoomCommand(limelight);
   private final SetRedHeartbeatCommand setFire = new SetRedHeartbeatCommand(blinkin);
   private final AlertHumanPlayerCommand setRainbow = new AlertHumanPlayerCommand(blinkin);
@@ -112,8 +114,8 @@ public class RobotContainer {
   
   //shooter
   private final ShooterStopCommand stopShooter = new ShooterStopCommand(shooter);
-  private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad2, 1, false, drivetrain);
-  private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
+  private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, drivetrain, gamepad2, 1, false);
+  private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, drivetrain, limelight, gamepad1, 1, 1, false); //this timeout right?
   private final ShooterStopCommand stopWarmupPlease = new ShooterStopCommand(shooter);
   
   //diagnostics
@@ -142,11 +144,11 @@ public class RobotContainer {
     
     //auto selector stuff
     autos.put("Drive Off Line", new DriveOffLine(drivetrain));
-    autos.put("Three Ball Auto", new ThreeBallAuto(drivetrain, intake, shooter));
-    autos.put("Delay Three Ball Auto", new DelayedThreeBallAuto(drivetrain, intake, shooter));
-    autos.put("Uncharged Three Ball Auto", new UnchargedThreeBallAuto(drivetrain, intake, shooter));
+    autos.put("Three Ball Auto", new ThreeBallAuto(drivetrain, intake, shooter, limelight));
+    autos.put("Delay Three Ball Auto", new DelayedThreeBallAuto(drivetrain, intake, shooter, limelight));
+    autos.put("Uncharged Three Ball Auto", new UnchargedThreeBallAuto(drivetrain, intake, shooter, limelight));
     autos.put("Drive Off Line Reverse", new DriveOffLineReverse(drivetrain));
-    autos.put("Eight Ball Auto", new EightBallAuto(drivetrain, intake, shooter));
+    autos.put("Eight Ball Auto", new EightBallAuto(drivetrain, intake, shooter, limelight));
     autoNames = new ArrayList<>(autos.keySet());
     lengthOfList = autoNames.size();
   }

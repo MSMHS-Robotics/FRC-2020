@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Limelight;
 import frc.robot.commands.RocketTimedCommand;
 
 /**
@@ -15,6 +16,7 @@ public class ShootBurstCommand extends RocketTimedCommand {
     private Shooter shooter;
     private Intake intake;
     private Drivetrain drivetrain;
+    private Limelight vision;
     
     private Joystick joystick;
     
@@ -34,10 +36,11 @@ public class ShootBurstCommand extends RocketTimedCommand {
      * @param timeout the timeout for the command
      * @param auto a boolean. True if in autonomous mode, false otherwise
     */
-    public ShootBurstCommand(Shooter shooter, Intake intake, Drivetrain drivetrain, Joystick joystick, int preset, double timeout, boolean isAuto) {
+    public ShootBurstCommand(Shooter shooter, Intake intake, Drivetrain drivetrain, Limelight vision, Joystick joystick, int preset, double timeout, boolean isAuto) {
         this.shooter = shooter;
         this.intake = intake;
         this.drivetrain = drivetrain;
+        this.vision = vision;
         this.joystick = joystick;
         
         this.preset = preset;
@@ -79,7 +82,7 @@ public class ShootBurstCommand extends RocketTimedCommand {
                 shooter.trenchShot();
                 break;
             case 270:
-                shooter.customShot(drivetrain.getNeededRPM());
+                shooter.customShot(vision.getNeededRPM());
                 break;
             default:
                 //warmup sets up case

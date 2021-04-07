@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
 /** An auto command sequence that does something */
@@ -15,11 +16,11 @@ public class WarmupThenShootCommand extends SequentialCommandGroup {
      * @param intake an intake subsystem
      * @param joystick a Joystick
     */
-    public WarmupThenShootCommand(Shooter shooter, Drivetrain drivetrain, Intake intake, Joystick joystick) {
+    public WarmupThenShootCommand(Shooter shooter, Drivetrain drivetrain, Intake intake, Limelight vision, Joystick joystick) {
         super(
-            new WarmupCommand(shooter, joystick, -1, true, drivetrain),
+            new WarmupCommand(shooter, drivetrain, joystick, -1, true),
             new WaitCommand(0.5),
-            new ShootBurstCommand(shooter, intake, joystick, -1, -1, false, drivetrain)
+            new ShootBurstCommand(shooter, intake, drivetrain, vision, joystick, -1, -1, false)
             );
     }
 }

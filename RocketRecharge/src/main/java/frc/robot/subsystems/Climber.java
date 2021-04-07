@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 // Import shuffleboard stuff
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants;
@@ -121,7 +122,7 @@ public class Climber extends SubsystemBase {
 
 		// If comp mode is true
 		if(toggleDiag.getBoolean(false)) { 
-			continue;
+			return;
 		}
 		
 		double TempClimberSpeed = climbSpeed.getDouble(1);

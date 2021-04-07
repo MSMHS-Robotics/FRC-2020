@@ -1,9 +1,6 @@
 package frc.robot.subsystems;
 
 // Motors
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
@@ -195,7 +192,7 @@ public class Shooter extends SubsystemBase {
 
 		// If comp mode is true
 		if(toggleDiag.getBoolean(false)) { 
-			continue;
+			return;
 		}
   
     //now for changing the PID values on robot and in Constants.java. this is going to be _very_ long
@@ -275,50 +272,14 @@ public class Shooter extends SubsystemBase {
       Constants.accelerationTolerance = tempATolerance;
     }
 
-    //angle motor
-    double tempAkp = AnglekP.getDouble(Constants.AnglekP);
-    if(Constants.AnglekP != tempAkp && anglePID != null) {
-      Constants.AnglekP = tempAkp;
-      anglePID.setP(Constants.AnglekP);
-    }
-    
-    double tempAki = AnglekI.getDouble(Constants.AnglekI);
-    if(Constants.AnglekI != tempAki && anglePID != null) {
-      Constants.AnglekI = tempAki;
-      anglePID.setI(Constants.AnglekI);
-    }
-
-    double tempAkd = AnglekD.getDouble(Constants.AnglekD);
-    if(Constants.AnglekD != tempAkd && anglePID != null) {
-      Constants.AnglekD = tempAkd;
-      anglePID.setD(Constants.AnglekD);
-    }
-    
-    
-    //Preset
-    double tempTrenchAngle = TrenchAngle.getDouble(Constants.TrenchAngle);
-    if(Constants.TrenchAngle != tempTrenchAngle) {
-      Constants.TrenchAngle = tempTrenchAngle;
-    }
-
     double tempTrenchRPM = TrenchRPM.getDouble(Constants.TrenchRPM);
     if(Constants.TrenchRPM != tempTrenchRPM){
       Constants.TrenchRPM = tempTrenchRPM;
     }
 
-    double tempTenFootAngle = TenFootAngle.getDouble(Constants.TenFootAngle);
-    if(Constants.TenFootAngle != tempTenFootAngle) {
-      Constants.TenFootAngle = tempTenFootAngle;
-    }
-
     double tempTenFootRPM = TenFootRPM.getDouble(Constants.TenFootRPM);
     if(Constants.TenFootRPM != tempTenFootRPM){
       Constants.TenFootRPM = tempTenFootRPM;
-    }
-
-    double tempLayupAngle = LayupAngle.getDouble(Constants.LayupAngle);
-    if(Constants.LayupAngle != tempLayupAngle) {
-      Constants.LayupAngle = tempLayupAngle;
     }
 
     double tempLayupRPM = LayupRPM.getDouble(Constants.LayupRPM);

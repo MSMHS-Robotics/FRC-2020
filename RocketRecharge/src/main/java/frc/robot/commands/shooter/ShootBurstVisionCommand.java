@@ -3,6 +3,7 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.commands.RocketTimedCommand;
 
@@ -12,6 +13,7 @@ public class ShootBurstVisionCommand extends RocketTimedCommand {
     private Shooter shooter;
     private Intake intake;
     private Drivetrain drivetrain;
+    private Limelight vision;
     
     private double timeout;
     private boolean isAuto;
@@ -24,11 +26,12 @@ public class ShootBurstVisionCommand extends RocketTimedCommand {
      * @param timeout the timout for the command
      * @param isAuto true if in an auton, false otherwise
     */
-    public ShootBurstVisionCommand(Shooter shooter, Intake intake, Drivetrain drivetrain, Joystick joystick, double timeout, boolean isAuto) {
+    public ShootBurstVisionCommand(Shooter shooter, Intake intake, Drivetrain drivetrain, Limelight vision, Joystick joystick, double timeout, boolean isAuto) {
         this.shooter = shooter;
         this.intake = intake;
         this.timeout = timeout;
         this.drivetrain = drivetrain;
+        this.vision = vision;
         this.isAuto = isAuto;
         
         addRequirements(shooter, intake, drivetrain);
@@ -45,7 +48,7 @@ public class ShootBurstVisionCommand extends RocketTimedCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        shooter.customShot(drivetrain.getNeededRPM());
+        shooter.customShot(vision.getNeededRPM());
     }
 
     // Called once the command ends or is interrupted.

@@ -67,8 +67,6 @@ public class WarmupCommand extends CommandBase {
         case 180:
             shooter.trenchShot();
             break;
-        case 270:
-            shooter.customShot(drivetrain.getNeededRPM());
         default:
             shooter.tenFootShot(); //maybe change this?
             break;

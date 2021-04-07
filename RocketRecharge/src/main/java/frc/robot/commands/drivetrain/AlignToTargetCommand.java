@@ -2,6 +2,7 @@ package frc.robot.commands.drivetrain;
 
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** A command to align the robot with the vision target */
@@ -9,15 +10,18 @@ public class AlignToTargetCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
   private final Drivetrain drivetrain;
+  private Limelight vision;
   private final Lights blinkin;
+  private boolean aligned = false;
 
   /** 
    * Constructor
    * @param drivetrain a drivetrain subsystem
    * @param blinkin a lights subsystem
    */
-  public AlignToTargetCommand(Drivetrain drivetrain, Lights blinkin) {
+  public AlignToTargetCommand(Drivetrain drivetrain, Limelight vision, Lights blinkin) {
     this.drivetrain = drivetrain;
+    this.vision = vision;
     this.blinkin = blinkin;
     addRequirements(drivetrain, blinkin);
   }
@@ -31,7 +35,7 @@ public class AlignToTargetCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean aligned = drivetrain.visionAlign();
+    boolean aligned = drivetrain.alignToTarget();
     if (aligned) {
       blinkin.setGreen();
     }

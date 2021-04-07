@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,7 +14,6 @@ public class Climber extends SubsystemBase {
 
 	private WPI_TalonSRX extendMotor;
 	private WPI_TalonSRX climbMotor;
-	private DigitalInput bottomLimitSwitch;
 
 	double downSetpoint = 0;
 	

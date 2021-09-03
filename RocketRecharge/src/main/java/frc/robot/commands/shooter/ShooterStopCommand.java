@@ -6,7 +6,6 @@ import frc.robot.subsystems.Shooter;
 public class ShooterStopCommand extends RocketTimedCommand {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
     private final Shooter shooter;
-    private Boolean stopSucceded;
     
     /**
      * Creates a new StopShooterCommand.
@@ -15,7 +14,6 @@ public class ShooterStopCommand extends RocketTimedCommand {
      */
     public ShooterStopCommand(Shooter shooter) {
         this.shooter = shooter;
-        stopSucceded = false;
         addRequirements(shooter);
     }
 
@@ -27,7 +25,7 @@ public class ShooterStopCommand extends RocketTimedCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        shooter.stopPercent();
+        shooter.stop();
     }
 
     // Called once the command ends or is interrupted.

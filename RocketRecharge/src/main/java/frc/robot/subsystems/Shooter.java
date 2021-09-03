@@ -1,29 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
-/*READ ME:
-
-Zack says hi. The programers are doing a great job. Keep up all the hard work!*/
-
-/*BIG NOTE: 
- In order for the code to download smoothly and not freak out,
- all of the motor related actions are commented out. 
- Once we got all of the Spark Maxes attached for shooter
- UNCOMMENT THEM
- 
- ALSO:
- We may or may not remove the angle motor stuff depending on what we are doing
- 
- Also justin is a nerd*/
-/*
-  Daniel says hi as well. And that the limelight is bright. -Daniel
-*/
-//Daniel wrote the above comment on 2/25/20 while avoiding work. mostly avoiding work.
-
 package frc.robot.subsystems;
 
 import java.util.Map;
@@ -46,19 +20,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-  CANSparkMax shooterMotor;
-  CANSparkMax shooterMotor2;
-  WPI_TalonSRX angleMotor;
-  CANPIDController shooterPID;
-  CANPIDController anglePID;
-  CANEncoder encoder;
-  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
+  private CANSparkMax shooterMotor;
+  private CANSparkMax shooterMotor2;
+  private CANPIDController shooterPID;
+  private CANPIDController anglePID;
+  private CANEncoder encoder;
+  private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   private double RPMSetpoint;
-  private double angleSetpoint;
-
-  double pastTime = 0;
-  double pastVelocity = 0;
-  double shotAcceleration = 0;
+  
+  private double pastTime = 0;
+  private double pastVelocity = 0;
+  private double shotAcceleration = 0;
 
   private ShuffleboardTab tab1 = Shuffleboard.getTab("Shooter");
   private NetworkTableEntry ShooterkP = tab1.addPersistent("ShooterkP", Constants.ShooterkP).getEntry();
@@ -79,13 +51,10 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry AccelerationTolerance = tab1.addPersistent("Acceleration Tolerance",Constants.accelerationTolerance).getEntry();
   private NetworkTableEntry isShooterGood = tab1.addPersistent("is Shooter Good", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
   private NetworkTableEntry isShooting = tab1.addPersistent("Shooter is Shooting", false).withWidget("Boolean Box").withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red")).getEntry();
-  private Boolean shootingFlag;
-  //RIP MaxRPM you will be missed D:
 
   private NetworkTableEntry AnglekP = tab1.addPersistent("AnglekP", Constants.AnglekP).getEntry();
   private NetworkTableEntry AnglekI = tab1.addPersistent("AnglekI", Constants.AnglekI).getEntry();
-  private NetworkTableEntry AnglekD = tab1.addPersistent("AnglekD", Constants.AnglekD).getEntry();
-  
+  private NetworkTableEntry AnglekD = tab1.addPersistent("AnglekD", Constants.AnglekD).getEntry();  
 
   private ShuffleboardTab tab2 = Shuffleboard.getTab("Shooter Presets");
   private NetworkTableEntry TrenchAngle = tab2.addPersistent("TrenchAngle", Constants.TrenchAngle).getEntry();
@@ -100,7 +69,6 @@ public class Shooter extends SubsystemBase {
    * Creates a new ExampleSubsystem.
    */
   public Shooter() {
-    shootingFlag = false;
     shooterMotor = new CANSparkMax(7, MotorType.kBrushless);
     if (shooterMotor != null) {
       shooterMotor.restoreFactoryDefaults();
@@ -128,102 +96,36 @@ public class Shooter extends SubsystemBase {
       shooterPID.setFF(Constants.ShooterkFF);
       shooterPID.setOutputRange(Constants.ShooterkMinOutput, Constants.ShooterkMaxOutput);
     }
-    // set PID coefficients
-   /* 
-    //angle motor config
-    if (angleMotor != null){
-      angleMotor.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-    }
-     //Config the peak and nominal outputs 
-    if (angleMotor != null){
-		  angleMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
-		  angleMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		  angleMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
-		  angleMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-    }
-  
-    //Config the Velocity closed loop gains in slot0
-    if (angleMotor != null){ 
-		  angleMotor.config_kF(Constants.kPIDLoopIdx, Constants.AnglekF, Constants.kTimeoutMs);
-		  angleMotor.config_kP(Constants.kPIDLoopIdx, Constants.AnglekP, Constants.kTimeoutMs);
-		  angleMotor.config_kI(Constants.kPIDLoopIdx, Constants.AnglekI, Constants.kTimeoutMs);
-      angleMotor.config_kD(Constants.kPIDLoopIdx, Constants.AnglekD, Constants.kTimeoutMs);
-    }
-    */
   }
   
- 
-  public boolean warmUp(double RPM) { 
-    if (shooterPID != null){
-      //Shooter with Neo
-      shooterPID.setReference(RPM, ControlType.kVelocity);
-      return true;
-    }
-    return false; 
+  public void warmUp(double RPM) { 
+    shooterPID.setReference(RPM, ControlType.kVelocity);
   }
 
-  /*
-  public boolean shooterAngle(double angle) {
-    if (angleMotor != null){
-      angleMotor.set(ControlMode.Position, angle);
-      return Math.abs(angleMotor.getClosedLoopError()) < 1;
-    }
-    return false;
-  }
-  */
-
-  public boolean stopPlease() {
-    if (shooterMotor != null) {
-      shooterMotor.setVoltage(0);
-      return true;
-    }
-    return false;
+  public void shoot(double RPM) {
+    warmUp(RPM);
   }
 
-  public boolean stopPercent() {
-    if(shooterMotor != null) {
-      shooterMotor.set(0);
-      return true;
-    }
-    return false;
-  }
-
-  public void setShootingFlag(Boolean stillShooting) {
-    shootingFlag = stillShooting;
-    isShooting.setBoolean(shootingFlag);
-  }
-
-  public boolean shooting() {
-    return shootingFlag;
-  }
-
-  public void customShot(double rpm) {
-    //shooterAngle(Constants.TrenchAngle); //need to change. this is temp. we don't have an articulating hood yet, so should be fine for now
-    warmUp(rpm);
-    RPMSetpoint = rpm;
-    angleSetpoint = Constants.TrenchAngle; //also temp. <!-- !!!CHANGE!!! -->
-    neededRPM.setDouble(rpm);
+  public void stop() {
+    shooterMotor.set(0);
   }
 
   public void trenchShot() {
    // shooterAngle(Constants.TrenchAngle);
     warmUp(Constants.TrenchRPM);
     RPMSetpoint = Constants.TrenchRPM;
-    angleSetpoint = Constants.TrenchAngle;
   }
 
   public void tenFootShot() {
    // shooterAngle(Constants.TenFootAngle);
     warmUp(Constants.TenFootRPM);
     RPMSetpoint = Constants.TenFootRPM;
-    angleSetpoint = Constants.TenFootAngle;
   }
 
   public void layupShot() {
     //shooterAngle(Constants.LayupAngle);
     warmUp(Constants.LayupRPM);
     RPMSetpoint = Constants.LayupRPM;
-    angleSetpoint = Constants.LayupAngle;
   }
 
   public boolean isShooterGood() {

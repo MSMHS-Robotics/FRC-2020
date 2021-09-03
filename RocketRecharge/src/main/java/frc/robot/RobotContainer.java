@@ -7,13 +7,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-import frc.robot.autonomous.DriveOffLine;
-import frc.robot.autonomous.DriveOffLineReverse;
-import frc.robot.autonomous.EightBallAuto;
-import frc.robot.autonomous.ThreeBallAuto;
-import frc.robot.autonomous.DelayedThreeBallAuto;
-import frc.robot.autonomous.UnchargedThreeBallAuto;
-
 import frc.robot.commands.intake.*; //a lot easier than importing them one by one
 import frc.robot.commands.climber.*;
 import frc.robot.commands.drivetrain.*;
@@ -92,33 +85,21 @@ public class RobotContainer {
   
   
   //drivetrain
-  private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
+  //private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
   private final ToggleVisionTypeCommand toggleVision = new ToggleVisionTypeCommand(drivetrain);
   private final SetRedHeartbeatCommand setFire = new SetRedHeartbeatCommand(blinkin);
   private final AlertHumanPlayerCommand setRainbow = new AlertHumanPlayerCommand(blinkin);
   
   //intake + indexer
-  private final DeployIntake deployIntake = new DeployIntake(intake, 1);
-  private final RetractIntake retractIntake = new RetractIntake(intake, -1);
-  private final RunIntakeCommand intakeIn = new RunIntakeCommand(intake, -1);
-  private final RunIntakeCommand intakeOut = new RunIntakeCommand(intake, 1);
-  private final RunIntakeCommand stopIntake = new RunIntakeCommand(intake, 0);
-  private final AutoIntakeDeployCommand autoDeploy = new AutoIntakeDeployCommand(intake);
-  
-
   private final RunIndexerCommand unjam = new RunIndexerCommand(intake, -1);
   private final FeedCommand feedForward = new FeedCommand(intake, 1);
   private final FeedCommand feedReverse = new FeedCommand(intake, -1);
   private final FeedCommand stopFeed = new FeedCommand(intake, 0);
-  private final RunIntakeCommand setIdle = new RunIntakeCommand(intake, 0);
   
-  private final PrepShotCommand prepShot = new PrepShotCommand(intake);
-
   //shooter
   //private final ShooterStop stopShooter = new ShooterStop(shooter);
   private final ShooterStopCommand stopShooter = new ShooterStopCommand(shooter);
-  private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad2, 1, false, drivetrain);
-  private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
+  //private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad2, 1, false, drivetrain);
   private final ShooterStopCommand stopWarmupPlease = new ShooterStopCommand(shooter);
   //private final WarmupThenShoot shootTeleop = new WarmupThenShoot(shooter, gamepad1, drivetrain, intake);
 
@@ -144,17 +125,7 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
-    //auto selector stuff
-    autos.put("Drive Off Line", new DriveOffLine(drivetrain));
-    autos.put("Three Ball Auto", new ThreeBallAuto(drivetrain, intake, shooter));
-    autos.put("Delay Three Ball Auto", new DelayedThreeBallAuto(drivetrain, intake, shooter));
-    autos.put("Uncharged Three Ball Auto", new UnchargedThreeBallAuto(drivetrain, intake, shooter));
-    autos.put("Drive Off Line Reverse", new DriveOffLineReverse(drivetrain));
-    autos.put("Eight Ball Auto", new EightBallAuto(drivetrain, intake, shooter));
-    autoNames = new ArrayList<>(autos.keySet());
-    lengthOfList = autoNames.size();
+      configureButtonBindings();
   }
 
   /**
@@ -166,33 +137,28 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //drivetrain stuff. working on toggle hardware zoom with 1 button
     //update: TOGGLING DONE! untested though
-    aButton.whenPressed(align);
-    aButton.whenReleased(runDrivetrain);
-    aButton.whenReleased(setFire);
-    start.whenPressed(toggleVision);
-    start.whenReleased(runDrivetrain);
+    //aButton.whenPressed(align);
+    //aButton.whenReleased(runDrivetrain);
+    //aButton.whenReleased(setFire);
+    //start.whenPressed(toggleVision);
+    //start.whenReleased(runDrivetrain);
     back.whenPressed(runDrivetrain); //so we can use less buttons
     
     //intake stuff. intake automagically sets power to 0 after command ends
-    rightBumper.whenHeld(autoDeploy); //extends, runs intake + belt
-    rightBumper.whenReleased(stopIntake);
-    yButton.whileHeld(retractIntake);
-    leftBumper.whenHeld(intakeOut);
-    leftBumper.whenReleased(stopIntake);
+    //rightBumper.whenHeld(autoDeploy); //extends, runs intake + belt
+    //rightBumper.whenReleased(stopIntake);
+    //yButton.whileHeld(retractIntake);
+    //leftBumper.whenHeld(intakeOut);
+    //leftBumper.whenReleased(stopIntake);
     xButton.whenPressed(feedForward);
     xButton.whenReleased(stopFeed);
     
     //climber
-    yButton2.whenPressed(climbUp);
-    yButton2.whenReleased(stopClimb);
-    //xButton2.whenPressed(LowerClimber);//added just in case
-    rightBumper2.whenPressed(raiseClimber);
-    rightBumper2.whenReleased(stopRaise);
-
+    
 
     //shooter
-    bButton2.whileHeld(shooterWarmup);
-    bButton.whileHeld(shootTeleop);
+    //bButton2.whileHeld(shooterWarmup);
+    //bButton.whileHeld(shootTeleop);
     bButton.whenReleased(stopShooter);
     bButton.whenReleased(runDrivetrain);
     aButton2.whenPressed(stopShooter);
@@ -241,10 +207,6 @@ public class RobotContainer {
   //public WarmupThenShoot getShootCommand(){
    // return shootTeleop;
   //}
-
-  public WarmupCommand getWarmupCommand(){
-    return shooterWarmup; 
-  }
 
   public Joystick getJoystick1() {
     return gamepad1;

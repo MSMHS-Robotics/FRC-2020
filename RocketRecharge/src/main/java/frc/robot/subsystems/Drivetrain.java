@@ -5,80 +5,20 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpiutil.math.MathUtil;
-import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
     private AHRS ahrs;
-
-    private PIDController visionPID = new PIDController(visionPIDconstant1, visionPIDconstant2, visionPIDconstant3);
-    private PIDController headingPID = new PIDController(.15, 0, 0);
-    private PIDController drivingPID = new PIDController(1, 0, 0);
-
     private ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain Tab");
-
-    private NetworkTableEntry visionConstraintMax = tab.addPersistent("VisionPIDMax", Constants.visionPIDconstraints[1])
-            .getEntry();
-    private NetworkTableEntry visionConstraintMin = tab.addPersistent("VisionPIDMin", Constants.visionPIDconstraints[0])
-            .getEntry();
-    private NetworkTableEntry headingConstraintMin = tab
-            .addPersistent("HeadingPIDMin", Constants.headingPIDconstraints[0]).getEntry();
-    private NetworkTableEntry headingConstraintMax = tab
-            .addPersistent("HeadingPIDmax", Constants.headingPIDconstraints[1]).getEntry();
-    private NetworkTableEntry drivingConstraintMin = tab
-            .addPersistent("DrivingPIDMin", Constants.drivingPIDconstraints[0]).getEntry();
-    private NetworkTableEntry drivingConstraintMax = tab
-            .addPersistent("DrivingPIDMax", Constants.drivingPIDconstraints[1]).getEntry();
-    private NetworkTableEntry visionKp = tab.addPersistent("VisionKp", Constants.visionPID[0]).getEntry();
-    private NetworkTableEntry visionKi = tab.addPersistent("VisionKi", Constants.visionPID[1]).getEntry();
-    private NetworkTableEntry visionKd = tab.addPersistent("VisionKd", Constants.visionPID[2]).getEntry();
-    private NetworkTableEntry visionError = tab.addPersistent("Vision Error", 0).getEntry();
-    private NetworkTableEntry drivingKp = tab.addPersistent("DrivingKp", Constants.drivingPID[0]).getEntry();
-    private NetworkTableEntry drivingKi = tab.addPersistent("DrivingKi", Constants.drivingPID[1]).getEntry();
-    private NetworkTableEntry drivingKd = tab.addPersistent("DrivingKd", Constants.drivingPID[2]).getEntry();
-    private NetworkTableEntry headingKp = tab.addPersistent("HeadingKp", Constants.headingPID[0]).getEntry();
-    private NetworkTableEntry headingKi = tab.addPersistent("HeadingKi", Constants.headingPID[1]).getEntry();
-    private NetworkTableEntry headingKd = tab.addPersistent("HeadingKd", Constants.headingPID[2]).getEntry();
-    private NetworkTableEntry hdgTolerance = tab.addPersistent("hdgTolerance", Constants.headingTolerance[0])
-            .getEntry();
-    private NetworkTableEntry hdgVTolerance = tab.addPersistent("hdgVTolerance", Constants.headingTolerance[1])
-            .getEntry();
-    private NetworkTableEntry vsnTolerance = tab.addPersistent("vsnTolerance", Constants.visionTolerance[0]).getEntry();
-    private NetworkTableEntry vsnVTolerance = tab.addPersistent("vsnVTolerance", Constants.visionTolerance[1])
-            .getEntry();
-    private NetworkTableEntry drvTolerance = tab.addPersistent("drvTolerance", Constants.drivingTolerance[0])
-            .getEntry();
-    private NetworkTableEntry drvVTolerance = tab.addPersistent("drvVTolerance", Constants.drivingTolerance[1])
-            .getEntry();
-    private NetworkTableEntry rightTickConstant = tab.addPersistent("RTickConstant", Constants.rightTickConstant)
-            .getEntry();
-    private NetworkTableEntry leftTickConstant = tab.addPersistent("LTickConstant", Constants.leftTickConstant)
-            .getEntry();
-    private NetworkTableEntry leftEncoderValue = tab.addPersistent("LeftEncoder", 0).getEntry();
-    private NetworkTableEntry rightEncoderValue = tab.addPersistent("RightEncoder", 0).getEntry();
-    private NetworkTableEntry encoderaverage = tab.addPersistent("encoderaverage", 0).getEntry();
-    private NetworkTableEntry throughBoreRight = tab.addPersistent("Through Bore Right", 0).getEntry();
-    private NetworkTableEntry throughBoreLeft = tab.addPersistent("Through Bore Left", 0).getEntry();
-    private NetworkTableEntry rTickBoreConstant = tab.addPersistent("RTickBoreConstant", Constants.rTickBoreConstant)
-            .getEntry();
-    private NetworkTableEntry lTickBoreConstant = tab.addPersistent("LTickBoreConstant", Constants.lTickBoreConstant)
-            .getEntry();
-
-    private NetworkTableEntry resetGyroCommandEntry = tab.add("Reset Gyro", false)
-            .withWidget(BuiltInWidgets.kToggleButton).getEntry();
+    private NetworkTableEntry resetGyroCommandEntry = tab.add("Reset Gyro", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
     private final CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
     private final CANSparkMax left2 = new CANSparkMax(2, MotorType.kBrushless);
@@ -104,33 +44,14 @@ public class Drivetrain extends SubsystemBase {
     private Encoder throughboreLeft = new Encoder(2, 3);
 
     private DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
-    private double speed;
-    private boolean aligned = false;
-    private boolean alignZoom = true;
 
     public Drivetrain() {
-        ledsOff();
-        headingPID.setTolerance(2, 5);
-        headingPID.setIntegratorRange(-0.5, 0.5);
-        headingPID.enableContinuousInput(-180, 180);
-
-        drivingPID.setTolerance(2, 5);
-        drivingPID.setIntegratorRange(-0.5, 0.5);
-
         encoderLeft1.setPositionConversionFactor(1);
         encoderLeft2.setPositionConversionFactor(1);
         encoderLeft3.setPositionConversionFactor(1);
         encoderRight1.setPositionConversionFactor(1);
         encoderRight2.setPositionConversionFactor(1);
         encoderRight3.setPositionConversionFactor(1);
-
-        // reset for shuffleboard
-        encoderLeft1.setPosition(0);
-        encoderLeft2.setPosition(0);
-        encoderLeft3.setPosition(0);
-        encoderRight1.setPosition(0);
-        encoderRight2.setPosition(0);
-        encoderRight3.setPosition(0);
 
         // through bore encoder
         throughboreRight.reset();
@@ -141,159 +62,10 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        leftEncoderValue.setDouble(leftEncoderAverage());
-        rightEncoderValue.setDouble(rightEncoderAverage());
-        encoderaverage.setDouble(encoderAverage());
-        throughBoreLeft.setDouble(throughboreLeft.getDistance());
-        throughBoreRight.setDouble(throughboreRight.getDistance());
-
-        Constants.headingPIDconstraints[0] = headingConstraintMin.getDouble(Constants.headingPIDconstraints[0]);
-        Constants.headingPIDconstraints[1] = headingConstraintMax.getDouble(Constants.headingPIDconstraints[1]);
-
-        Constants.visionPIDconstraints[0] = visionConstraintMin.getDouble(Constants.visionPIDconstraints[0]);
-        Constants.visionPIDconstraints[1] = visionConstraintMax.getDouble(Constants.visionPIDconstraints[1]);
-
-        Constants.drivingPIDconstraints[0] = drivingConstraintMin.getDouble(Constants.drivingPIDconstraints[0]);
-        Constants.drivingPIDconstraints[1] = drivingConstraintMax.getDouble(Constants.drivingPIDconstraints[1]);
-
-        double tempVP = visionKp.getDouble(Constants.visionPID[0]);
-        if (Constants.visionPID[0] != tempVP) {
-            Constants.visionPID[0] = tempVP;
-            visionPID.setP(Constants.visionPID[0]);
-        }
-
-        double tempVI = visionKi.getDouble(Constants.visionPID[1]);
-        if (Constants.visionPID[1] != tempVI) {
-            Constants.visionPID[1] = tempVI;
-            visionPID.setI(Constants.visionPID[1]);
-        }
-
-        double tempVD = visionKd.getDouble(Constants.visionPID[2]);
-        if (Constants.visionPID[2] != tempVD) {
-            Constants.visionPID[2] = tempVD;
-            visionPID.setD(Constants.visionPID[2]);
-        }
-
-        double tempVisionTolerance = vsnTolerance.getDouble(Constants.visionTolerance[0]);
-        if (Constants.visionTolerance[0] != tempVisionTolerance) {
-            Constants.visionTolerance[0] = tempVisionTolerance;
-            visionPID.setTolerance(Constants.visionTolerance[0], Constants.visionTolerance[1]);
-        }
-
-        double tempVisionVTolerance = vsnVTolerance.getDouble(Constants.visionTolerance[1]);
-        if (Constants.visionTolerance[1] != tempVisionVTolerance) {
-            Constants.visionTolerance[1] = tempVisionVTolerance;
-            visionPID.setTolerance(Constants.visionTolerance[0], Constants.visionTolerance[1]);
-        }
-
-        // end visionPID. now for driving
-
-        double tempDP = drivingKp.getDouble(Constants.drivingPID[0]);
-        if (Constants.drivingPID[0] != tempDP) {
-            Constants.drivingPID[0] = tempDP;
-            drivingPID.setP(Constants.drivingPID[0]);
-        }
-
-        double tempDI = drivingKi.getDouble(Constants.drivingPID[1]);
-        if (Constants.drivingPID[1] != tempDI) {
-            Constants.drivingPID[1] = tempDI;
-            drivingPID.setI(Constants.drivingPID[1]);
-        }
-
-        double tempDD = drivingKd.getDouble(Constants.drivingPID[2]);
-        if (Constants.drivingPID[2] != tempDD) {
-            Constants.drivingPID[2] = tempDD;
-            drivingPID.setD(Constants.drivingPID[2]);
-        }
-
-        double tempDrivingTolerance = drvTolerance.getDouble(Constants.drivingTolerance[0]);
-        if (Constants.drivingTolerance[0] != tempDrivingTolerance) {
-            Constants.drivingTolerance[0] = tempDrivingTolerance;
-            drivingPID.setTolerance(Constants.drivingTolerance[0], Constants.drivingTolerance[1]);
-        }
-
-        double tempDrivingVTolerance = drvVTolerance.getDouble(Constants.drivingTolerance[1]);
-        if (Constants.drivingTolerance[1] != tempDrivingVTolerance) {
-            Constants.drivingTolerance[1] = tempDrivingVTolerance;
-            drivingPID.setTolerance(Constants.drivingTolerance[0], Constants.drivingTolerance[1]);
-        }
-
-        // heading PID stuff
-        double tempHP = headingKp.getDouble(Constants.headingPID[0]);
-        if (Constants.headingPID[0] != tempHP) {
-            Constants.headingPID[0] = tempHP;
-            headingPID.setP(Constants.headingPID[0]);
-        }
-
-        double tempHI = headingKi.getDouble(Constants.headingPID[1]);
-        if (Constants.headingPID[1] != tempHI) {
-            Constants.headingPID[1] = tempHI;
-            headingPID.setI(Constants.headingPID[1]);
-        }
-
-        double tempHD = headingKd.getDouble(Constants.headingPID[2]);
-        if (Constants.headingPID[2] != tempHD) {
-            Constants.headingPID[2] = tempHD;
-            headingPID.setD(Constants.headingPID[2]);
-        }
-
-        double tempHeadingTolerance = hdgTolerance.getDouble(Constants.headingTolerance[0]);
-        if (Constants.headingTolerance[0] != tempHeadingTolerance) {
-            Constants.headingTolerance[0] = tempHeadingTolerance;
-            headingPID.setTolerance(Constants.headingTolerance[0], Constants.headingTolerance[1]);
-        }
-
-        double tempHeadingVTolerance = hdgVTolerance.getDouble(Constants.headingTolerance[1]);
-        if (Constants.headingTolerance[1] != tempHeadingVTolerance) {
-            Constants.headingTolerance[1] = tempHeadingVTolerance;
-            headingPID.setTolerance(Constants.headingTolerance[0], Constants.headingTolerance[1]);
-        }
-
-        // tick constants
-
-        double tempRTickConstant = rightTickConstant.getDouble(Constants.rightTickConstant);
-        if (Constants.rightTickConstant != tempRTickConstant) {
-            Constants.rightTickConstant = tempRTickConstant;
-            encoderRight1.setPositionConversionFactor(Constants.rightTickConstant);
-            encoderRight2.setPositionConversionFactor(Constants.rightTickConstant);
-            encoderRight3.setPositionConversionFactor(Constants.rightTickConstant);
-        }
-
-        double tempLTickConstant = leftTickConstant.getDouble(Constants.leftTickConstant);
-        if (Constants.leftTickConstant != tempLTickConstant) {
-            Constants.leftTickConstant = tempLTickConstant;
-            encoderLeft1.setPositionConversionFactor(Constants.leftTickConstant);
-            encoderLeft2.setPositionConversionFactor(Constants.leftTickConstant);
-            encoderLeft3.setPositionConversionFactor(Constants.leftTickConstant);
-        }
-
-        double tempRTickBoreConstant = rTickBoreConstant.getDouble(Constants.rTickBoreConstant);
-        if (Constants.rTickBoreConstant != tempRTickBoreConstant) {
-            Constants.rTickBoreConstant = tempRTickBoreConstant;
-            throughboreRight.setDistancePerPulse(Constants.rTickBoreConstant);
-        }
-
-        double tempLTickBoreConstant = lTickBoreConstant.getDouble(Constants.lTickBoreConstant);
-        if (Constants.lTickBoreConstant != tempLTickBoreConstant) {
-            Constants.lTickBoreConstant = tempLTickBoreConstant;
-            throughboreLeft.setDistancePerPulse(Constants.lTickBoreConstant);
-        }
-
         if (resetGyroCommandEntry.getBoolean(false)) {
             this.resetGyro();
+            resetGyroCommandEntry.setBoolean(true);
         }
-    }
-
-    public void headingPIDReset() {
-        headingPID.reset();
-    }
-
-    public void drivingPIDReset() {
-        drivingPID.reset();
-    }
-
-    public void visionPIDReset() {
-        visionPID.reset();
     }
 
     public void encoderReset() {
@@ -306,126 +78,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void tankDrive(double leftStick, double rightStick) {
-        drivetrain.tankDrive(leftPow, rightPow); // tankDrive auto-squares inputs
-    }
-
-    public double getDist() {
-        NetworkTableEntry ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty");
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
-        ledsOn();
-        double dist = 70.25 / Math.tan(10 + ty.getDouble(20)); // ooh maths. taken from limelight docs (equation is d = (h2-h1) / tan(a1+a2))
-
-        if (dist < 30) {
-            return dist;
-        }
-        return -1;
-        // the 70.25 is height of center of the circle (in the hexagon frame) in inches
-        // minus how high lens is off the groun (20 inches) (h2 - h1)
-        // 10 is angle limelight lens is at (a1)
-        // 20 is a random default value to return (a2)
-    }
-
-    public double getNeededRPM() {
-        double d = this.getDist(); // distance to target
-        double angle = 45; // angle we are shooting at
-        double g = -9.81; // acceleration due to gravity
-        double h = 20; // height above ground we are shooting at
-        // the 60 is to convert RPM into seconds to get m/s for velocity. RPM / 60 *
-        // wheel radius = tangential velocity
-        // wheel radius is 2 because we are using the blue 4" wheels
-        // the ball rotates to match the tangential velocity so center of mass rotates
-        // to have .5 the velocity. so the * 2 of tangent_v equation cancels the /2 of
-        // this so you don't see it in the below actual code equation
-        // units are in inches and degrees and seconds and stuff
-        return 60 * ((1 / Math.cos(angle) * Math.sqrt((0.5 * (d * d) * g) / (d * Math.tan(angle) + h))));
-    }
-
-    public void ledsOff() {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
-    }
-
-    public void ledsOn() {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
-    }
-
-    /**
-     * Aligns us with the vision target. This function is called in the
-     * AlignToTargetCommand.java. You need to import NetworkTable and
-     * NetworkTableEntry
-     */
-    public void visionAlign() {
-        ledsOn();
-        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-
-        NetworkTableEntry tv = table.getEntry("tv");
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
-
-        if (tv.getDouble(0) == 1) {
-            NetworkTableEntry tx = table.getEntry("tx");
-
-            double x_offset = tx.getDouble(0);
-            visionError.setDouble(x_offset);
-            drivetrain.arcadeDrive(0, MathUtil.clamp(-visionPID.calculate(x_offset), Constants.visionPIDconstraints[0], Constants.visionPIDconstraints[1]));
-            if (x_offset < Constants.visionTolerance[0]) {
-                aligned = true;
-            } else {
-                aligned = false;
-            }
-        } else {
-            drivetrain.arcadeDrive(0, 0);
-        }
-    }
-
-    /**
-     * Aligns us with the vision target, but with 2x snipaaaaaaaaaa hardware zoom.
-     * This function is called in the AlignToTargetCommand.java. You need to import
-     * NetworkTable and NetworkTableEntry
-     */
-    public void visionAlignSnipa() {
-        ledsOn();
-        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-        NetworkTableEntry tv = table.getEntry("tv");
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
-        if (tv.getDouble(0) == 1) {
-            NetworkTableEntry tx = table.getEntry("tx");
-
-            // start loop
-            double x_offset = tx.getDouble(0);
-            visionError.setDouble(x_offset);
-            drivetrain.arcadeDrive(0, MathUtil.clamp(-visionPID.calculate(x_offset), Constants.visionPIDconstraints[0],
-                    Constants.visionPIDconstraints[1]));
-            if (x_offset < Constants.visionTolerance[0]) {
-                aligned = true;
-            } else {
-                aligned = false;
-            }
-        } else {
-            drivetrain.arcadeDrive(0, 0);
-        }
-    }
-
-    /**
-     * this function returns if we are aligned with the vision target or not
-     */
-    public boolean isVisionAligned() {
-        return aligned;
-    }
-
-    public void toggleVisionAlign() {
-        alignZoom = !alignZoom;
-        if (alignZoom) {
-            NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
-        } else {
-            NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
-        }
-    }
-
-    /**
-     * gets the vision align type
-     * @return true if zoomed, else false
-     */
-    public boolean getVisionType() {
-        return alignZoom;
+        drivetrain.tankDrive(leftPow, rightPow, false); // don't auto-square inputs
     }
 
     /**
@@ -436,35 +89,25 @@ public class Drivetrain extends SubsystemBase {
         return (leftEncoderAverage() + rightEncoderAverage()) / 2;
     }
 
+    /**
+     * Gets the left encoder average
+     * @return the average of the left encoders
+     */
+
     public double leftEncoderAverage() {
-        double average = encoderLeft1.getPosition();
-        average += encoderLeft2.getPosition();
-        average += encoderLeft3.getPosition();
-        average /= 3;
-        return average;
+        return (encoderLeft1.getPosition() + encoderLeft2.getPosition() + encoderLeft3.getPosition()) / 3;
     }
 
+    /**
+     * Gets the right side encoder average
+     * @return the average of the right encoders
+     */
     public double rightEncoderAverage() {
         double average = encoderRight1.getPosition();
         average += encoderRight2.getPosition();
         average += encoderRight3.getPosition();
         average /= 3;
         return average;
-    }
-
-    public boolean driveOnHeading(double power, double angle) {
-        final double currentAngle = ahrs.getYaw(); // is this right?
-        final double turnPower = MathUtil.clamp(headingPID.calculate(currentAngle, angle),
-                Constants.headingPIDconstraints[0], Constants.headingPIDconstraints[1]);
-        drivetrain.arcadeDrive(power, turnPower);
-        return headingPID.atSetpoint();
-    }
-
-    public boolean driveDistance(double distance, double angle) {
-        final double currentDistance = encoderAverage();// is this right?
-        final double drivePower = MathUtil.clamp(drivingPID.calculate(currentDistance, angle), -0.5, 0.5);
-        final boolean headingAligned = this.driveOnHeading(drivePower, angle);
-        return drivingPID.atSetpoint() && headingAligned;
     }
 
     /**
@@ -474,11 +117,4 @@ public class Drivetrain extends SubsystemBase {
         ahrs.reset();
         return true;
     }
-
-    // would this help? Maybe make smaller?
-    /*
-     * private NetworkTableEntry addP(String name, double defaultValue) { return
-     * tab.addPersistent(name, defaultValue).getEntry(); }
-     */
-
 }

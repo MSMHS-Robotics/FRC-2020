@@ -5,30 +5,26 @@ import java.util.TreeMap;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
-import frc.robot.autonomous.DriveOffLine;
-import frc.robot.autonomous.DriveOffLineReverse;
-import frc.robot.autonomous.EightBallAuto;
-import frc.robot.autonomous.ThreeBallAuto;
-import frc.robot.autonomous.DelayedThreeBallAuto;
-import frc.robot.autonomous.UnchargedThreeBallAuto;
-
-import frc.robot.commands.intake.*; //a lot easier than importing them one by one
-import frc.robot.commands.climber.*;
-import frc.robot.commands.drivetrain.*;
-import frc.robot.commands.shooter.*;
-import frc.robot.diagnostics.Update;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.commands.drivetrain.TurnOnHeading;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.drivetrain.AlertHumanPlayerCommand;
+import frc.robot.commands.drivetrain.SetRedHeartbeatCommand;
+import frc.robot.commands.intake.AutoIntakeDeployCommand;
+import frc.robot.commands.intake.DeployIntake;
+import frc.robot.commands.intake.FeedCommand;
+import frc.robot.commands.intake.PrepShotCommand;
+import frc.robot.commands.intake.RetractIntake;
+import frc.robot.commands.intake.RunIndexerCommand;
+import frc.robot.commands.intake.RunIntakeCommand;
+import frc.robot.commands.shooter.ShootBurstCommand;
+import frc.robot.commands.shooter.ShooterStopCommand;
+import frc.robot.commands.shooter.WarmupCommand;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
-import frc.robot.subsystems.Diagnostics;;
+import frc.robot.subsystems.Shooter;;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -37,21 +33,11 @@ import frc.robot.subsystems.Diagnostics;;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-
-  //subsystems go here:
-  //auto commands
-  // private final TurnOnHeading m_autoCommand = new TurnOnHeading(drivetrain, 90, -1);
-  //private final EightBallAuto eightBallAuto = new EightBallAuto(drivetrain);
-  //private final DriveOffLine driveAuto = new DriveOffLine(drivetrain);
-  
   //subsytems
-  private final Climber climber = new Climber();
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Lights blinkin = new Lights();
-  private final Diagnostics diagnostics = new Diagnostics();
   
   //joysticks
   //raw axis 2 and 5 are the Y axis for the left and right joysticks.
@@ -83,17 +69,7 @@ public class RobotContainer {
   private JoystickButton start2 = new JoystickButton(gamepad2, 8);
   
   //now for some commands
-  //climber
-  private final RaiseClimber raiseClimber = new RaiseClimber(climber);
-  private final ClimbUpCommand climbUp = new ClimbUpCommand(climber);
-  private final StopClimb stopClimb = new StopClimb(climber);
-  private final StopRaise stopRaise = new StopRaise(climber);
-  //private final LowerClimber lowerClimber = new LowerClimber(climber);//added just in case
-  
-  
   //drivetrain
-  private final AlignToTargetCommand align = new AlignToTargetCommand(drivetrain, blinkin);
-  private final ToggleVisionTypeCommand toggleVision = new ToggleVisionTypeCommand(drivetrain);
   private final SetRedHeartbeatCommand setFire = new SetRedHeartbeatCommand(blinkin);
   private final AlertHumanPlayerCommand setRainbow = new AlertHumanPlayerCommand(blinkin);
   
@@ -105,7 +81,6 @@ public class RobotContainer {
   private final RunIntakeCommand stopIntake = new RunIntakeCommand(intake, 0);
   private final AutoIntakeDeployCommand autoDeploy = new AutoIntakeDeployCommand(intake);
   
-
   private final RunIndexerCommand unjam = new RunIndexerCommand(intake, -1);
   private final FeedCommand feedForward = new FeedCommand(intake, 1);
   private final FeedCommand feedReverse = new FeedCommand(intake, -1);
@@ -115,16 +90,11 @@ public class RobotContainer {
   private final PrepShotCommand prepShot = new PrepShotCommand(intake);
 
   //shooter
-  //private final ShooterStop stopShooter = new ShooterStop(shooter);
   private final ShooterStopCommand stopShooter = new ShooterStopCommand(shooter);
   private final WarmupCommand shooterWarmup = new WarmupCommand(shooter, gamepad2, 1, false, drivetrain);
   private final ShootBurstCommand shootTeleop = new ShootBurstCommand(shooter, intake, gamepad1, 1, 1, false, drivetrain); //this timeout right?
   private final ShooterStopCommand stopWarmupPlease = new ShooterStopCommand(shooter);
-  //private final WarmupThenShoot shootTeleop = new WarmupThenShoot(shooter, gamepad1, drivetrain, intake);
-
-  //diagnostics
-  //private final Update diagnosticsCommand = new Update(diagnostics);
-
+  
   //Stupid axis stuff
   //this works for some reason and is the only way we can work with joysticks (x + y) apparently
   private final RunCommand runDrivetrain = new RunCommand(() -> drivetrain.tankDrive(
@@ -146,15 +116,6 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    //auto selector stuff
-    autos.put("Drive Off Line", new DriveOffLine(drivetrain));
-    autos.put("Three Ball Auto", new ThreeBallAuto(drivetrain, intake, shooter));
-    autos.put("Delay Three Ball Auto", new DelayedThreeBallAuto(drivetrain, intake, shooter));
-    autos.put("Uncharged Three Ball Auto", new UnchargedThreeBallAuto(drivetrain, intake, shooter));
-    autos.put("Drive Off Line Reverse", new DriveOffLineReverse(drivetrain));
-    autos.put("Eight Ball Auto", new EightBallAuto(drivetrain, intake, shooter));
-    autoNames = new ArrayList<>(autos.keySet());
-    lengthOfList = autoNames.size();
   }
 
   /**
@@ -202,45 +163,18 @@ public class RobotContainer {
     
   }
 
-  //stuff for auto selector
-  public String getNames() {
-    String tempAutoNames = "";
-    for(int i = 0; i < this.getLength(); i++) {
-      tempAutoNames += (autoNames.get(i) + ", ");
-    }
-    return tempAutoNames;
-  }
-
-  public String getName(int y) {
-    return "\n>>" + autoNames.get(y);
-  }
-
-  public void setAutoNum(int x) {
-    curr_auto = x;
-  }
-
-  public int getLength() {
-    return lengthOfList;
-  }
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    //this might automagically work. no touchy.
-    return autos.get(autoNames.get(curr_auto));
+    return null;
   }
 
   public RunCommand getDriveCommand() {
     return runDrivetrain;
   }
-
-  //Backup shoot code
-  //public WarmupThenShoot getShootCommand(){
-   // return shootTeleop;
-  //}
 
   public WarmupCommand getWarmupCommand(){
     return shooterWarmup; 
@@ -261,8 +195,4 @@ public class RobotContainer {
   public Lights getBlinkin() {
     return blinkin;
   }
-
-  /*public Command getDiagnosticsCommand() {
-    return diagnosticsCommand;
-  }*/
 }

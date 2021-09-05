@@ -60,7 +60,7 @@
  - RPM setpoint
 ## Functions
  - shoot(double)
- - get()
+ - get()?
 ## Commands
  - Set(double)
 

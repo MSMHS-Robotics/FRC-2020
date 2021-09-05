@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+//TODO documentation
 public class Drivetrain extends SubsystemBase {
   private CANSparkMax left1;
   private CANSparkMax left2;
@@ -62,26 +63,32 @@ public class Drivetrain extends SubsystemBase {
     drive = new DifferentialDrive(leftSide, rightSide);
   }
 
+  //TODO documentation
   public double getLeftEncAvg() {
     return (left1Encoder.getPosition() + left2Encoder.getPosition() + left3Encoder.getPosition()) / 3;
   }
 
+  //TODO documentation
   public double getRightEncAvg() {
     return (right1Encoder.getPosition() + right2Encoder.getPosition() + right3Encoder.getPosition()) / 3;
   }
 
+    //TODO documentation
   public double getEncAvg() {
     return (getLeftEncAvg() + getRightEncAvg()) / 2;
   }
 
+    //TODO documentation
   public void driveTeleOp(double left, double right) {
     drive.tankDrive(left * speedMod, right * speedMod, false);
   }
 
+    //TODO documentation
   public void resetGyro() {
     gyro.reset();
   }
 
+    //TODO documentation
   public void resetEncoders() {
     left1Encoder.setPosition(0);
     left2Encoder.setPosition(0);
@@ -91,14 +98,17 @@ public class Drivetrain extends SubsystemBase {
     right3Encoder.setPosition(0);
   }
 
+    //TODO documentation
   public void resetSpeedPID() {
     speedPID.reset();
   }
 
+    //TODO documentation
   public void resetHeadingPID() {
     headingPID.reset();
   }
 
+    //TODO documentation
   public double getHeading() {
     return gyro.getFusedHeading();
   }

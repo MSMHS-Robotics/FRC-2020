@@ -37,6 +37,9 @@ public class Drivetrain extends SubsystemBase {
   private PIDController speedPID;
   private PIDController headingPID;
 
+  private double angle;
+  private double setSpeed; //TODO make shuffleboard
+
   //TODO Shuffleboard
   
   public Drivetrain() {
@@ -113,8 +116,17 @@ public class Drivetrain extends SubsystemBase {
     return gyro.getFusedHeading();
   }
 
+  public void setAngle() {
+    angle = getHeading();
+  }
+
   //TODO make getSpeed work
   public double getSpeed() {
     return 0;
+  }
+
+  //TODO documenetation and DEFINATELY FREAKIN TEST THIS BIT
+  public void driveOnHeading() {
+    drive.arcadeDrive(speedPID.calculate(setSpeed - getSpeed()), headingPID.calculate(angle - getHeading()), false);
   }
 }

@@ -36,4 +36,10 @@ public class Shooter extends SubsystemBase {
   public void shoot(double RPM) {
     shooterPID.setReference(RPM, ControlType.kVelocity);
   }
+
+  //TODO documentation and verify that this is indeed necesssery
+  public void stop() {
+    shooterMotor1.setVoltage(0);
+    shooterMotor2.setVoltage(0);
+  }
 }

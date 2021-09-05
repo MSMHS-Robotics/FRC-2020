@@ -1,60 +1,26 @@
 package frc.robot.subsystems;
 
-import java.util.Map; //need for boolean box widget on ShuffleBoard
-
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX; //hardware components
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
-import edu.wpi.first.networktables.NetworkTableEntry; //shuffleboard
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.Constants;
-
 public class Intake extends SubsystemBase {
-	private WPI_TalonSRX beltMotor;
+	private CANSparkMax beltMotor1;
+	private CANSparkMax beltMotor2;
 	private CANSparkMax triggerMotor;
 
-	private ShuffleboardTab Intaketab = Shuffleboard.getTab("Intake Tab");
-	private NetworkTableEntry intakePosition = Intaketab.addPersistent("Intake Position", false).getEntry();
-	private NetworkTableEntry intakeEncoderValue = Intaketab.addPersistent("IntakeEncoder", 0).getEntry();
-
-	// intake PID
-
+	//TODO make sure this runs at a constant encoder-based speed and pids and stuff
 	public Intake() {
-		beltMotor = new WPI_TalonSRX(11);
+		beltMotor1 = new CANSparkMax(15, MotorType.kBrushless);
+		beltMotor2 = new CANSparkMax(15, MotorType.kBrushless);
+		triggerMotor = new CANSparkMax(30, MotorType.kBrushless);
 	}
 
-
-	public void runIndexer(double pow) {
-		if (beltMotor != null) {
-			beltMotor.set(pow);
-		}
-	}
-
-	public void runTrigger(double power) {
-		if (triggerMotor != null) {
-			triggerMotor.set(power);
-		}
-	}
-
+	//TODO documentation
 	public void feed(double power) {
-
-		if (beltMotor != null) {
-			beltMotor.set(power);
-		}
-		if (triggerMotor != null) {
-			triggerMotor.set(power);
-		}
-	}
-		
-	@Override
-	public void periodic() {
-		intakePosition.setBoolean(false);
+		beltMotor1.set(power);
+		beltMotor2.set(power);
+		triggerMotor.set(power);
 	}
 }

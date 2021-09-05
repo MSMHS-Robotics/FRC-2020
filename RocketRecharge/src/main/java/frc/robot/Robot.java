@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.cscore.UsbCamera;
@@ -32,19 +25,10 @@ public class Robot extends TimedRobot {
 
   private RobotContainer robotContainer;
 
-  private int tempCurrAuto = 0;
-  private ShuffleboardTab autoTab = Shuffleboard.getTab("Auto Tab");
-  private NetworkTableEntry CurrentAuto = autoTab.addPersistent("Current Auto", "initializing").getEntry();
-  private NetworkTableEntry allAutos = autoTab.addPersistent("All Auto Programs", "intiializing").getEntry();
   private Joystick gamepad1;
-  private Joystick gamepad2;
   private Lights blinkin;
-  private Boolean wasPressed = false;
-  private Boolean unplugged1 = false;
-  private Boolean unplugged2 = false;
   private UsbCamera camera1;
   private UsbCamera climberCamera;
-  private Command monitor;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -56,17 +40,14 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
     gamepad1 = robotContainer.getJoystick1();
-    gamepad2 = robotContainer.getJoystick2();
     blinkin = robotContainer.getBlinkin();
     
     camera1 = CameraServer.getInstance().startAutomaticCapture(0);
     camera1.setVideoMode(PixelFormat.kMJPEG, 400, 300, 10);
     //climberCamera = CameraServer.getInstance().startAutomaticCapture(1);
     //climberCamera.setVideoMode(PixelFormat.kMJPEG, 25, 25, 2);
-
-   // monitor = robotContainer.getDiagnosticsCommand();
   }
-
+  
   /**
    * This function is called every robot packet, no matter the mode. Use this for items like
    * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
@@ -81,8 +62,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    //monitor.schedule();
-
   }
 
   /**
@@ -90,37 +69,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    allAutos.setString(robotContainer.getNames());
     blinkin.setFire();
   }
 
   @Override
   public void disabledPeriodic() {
-    //if(!isSet) {blinkin.setRedLarson();isSet=true;} //for lights might work just so we can look cool this is not important
-    if(gamepad1.getPOV() == -1) {
-      wasPressed = false;
-    }
-    else if(!wasPressed) {
-      
-      //180 is up and 0 is down
-      if(gamepad1.getPOV() == 180) {
-        if(tempCurrAuto < robotContainer.getLength() - 1) {
-          tempCurrAuto += 1;
-          wasPressed = true;
-        }
-        robotContainer.setAutoNum(tempCurrAuto);
-      }
-      else if(gamepad1.getPOV() == 0) {
-        if(tempCurrAuto > 0) {
-          tempCurrAuto -= 1;
-          wasPressed = true;
-        }
-        robotContainer.setAutoNum(tempCurrAuto);
-      }
-    }
-   
-    
-    CurrentAuto.setString(robotContainer.getName(tempCurrAuto));
   }
 
   /**
